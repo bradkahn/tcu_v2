@@ -91,7 +91,7 @@ architecture rtl of tcu_top is
     signal sys_clk_100MHz_ext   : std_logic;
 
     -- Debug signals
-    constant VERSION        : std_logic_vector(7 downto 0) := "00000001";
+    constant VERSION        : std_logic_vector(7 downto 0) := "00000010";
     constant ID             : std_logic_vector(7 downto 0) := "01010001";
     signal reg_bank         : ram_type := (others => "1111111111111111");
     signal led_reg          : std_logic_vector(15 downto 0) := "0000000000000000";
