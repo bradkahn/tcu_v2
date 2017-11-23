@@ -9,10 +9,6 @@ use IEEE.STD_LOGIC_ARITH.ALL;  -- not a standard library
 library UNISIM;
 use UNISIM.VComponents.all;
 
--------------------------------------------------------------------------------
--- Declare input and output pins for rhino_proc_intrfc_top
--------------------------------------------------------------------------------
-
 entity tcu_top is
 port
 (
