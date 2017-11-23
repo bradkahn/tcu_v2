@@ -1,35 +1,13 @@
-                    ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    21:56:34 02/01/2011 
--- Design Name: 
--- Module Name:    rhino_proc_intrfc_top - Behavioral 
--- Project Name:   TCU
--- Target Devices: Rhino
--- Tool versions:  
--- Description:    Synchronisation Controller for NeXtRAD
---
--- Dependencies: 
---
--- Revision: $Rev: 189 $ $Id: gpmc_test.vhd 189 2011-07-01 16:17:20Z al98277 $
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
+
 use IEEE.NUMERIC_STD.ALL;
+-- TODO:  remove this library and convert assoc signals to unsigned/integer
 use IEEE.STD_LOGIC_ARITH.ALL;  -- not a standard library
 
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
 library UNISIM;
 use UNISIM.VComponents.all;
-
 
 ------------------------------------------------------------------------------------
 -- Declare input and output pins for rhino_proc_intrfc_top
@@ -57,10 +35,10 @@ port
    sys_clk_P		  : in std_logic; -- 100MHz system clock
    sys_clk_N	 	  : in std_logic; -- 100MHz system clock
 	sys_clk_ext		  : in std_logic; -- External Clock
-	
+
 	 -- BCD pins
 	bcd					: out std_logic_vector(31 downto 0);
-	
+
 	-------------
 	-- Ethernet ports
 	-------------
@@ -78,9 +56,9 @@ port
 	GIGE_GTX_CLK 	: out std_logic;
 	GIGE_TX_EN		: out std_logic;
 	GIGE_TX_ER		: out std_logic;
-	
+
 	THISISALWAYSON	: out std_logic
-		
+
 );
 end gpmc_test_top;
 
@@ -95,15 +73,12 @@ architecture rtl of gpmc_test_top is
 ------------------------------------------------------------------------------------
 
     type ram_type is array (255 downto 0) of std_logic_vector(15 downto 0);
-	 type word32_type is array (1 downto 0) of std_logic_vector(15 downto 0);
-	 --type word48_type is array (2 downto 0) of std_logic_vector(15 downto 0);
-	 type word64_type is array (3 downto 0) of std_logic_vector(15 downto 0);
+    type word32_type is array (1 downto 0) of std_logic_vector(15 downto 0);
+    type word64_type is array (3 downto 0) of std_logic_vector(15 downto 0);
 
 ------------------------------------------------------------------------------------
 -- Declare signals
 ------------------------------------------------------------------------------------
-
-	signal delay			: std_logic_vector(26 downto 0);
 
 -- Define signals for the gpmc bus
     signal gpmc_clk_i_b       : std_logic;  --buffered  gpmc_clk_i
@@ -116,10 +91,10 @@ architecture rtl of gpmc_test_top is
     signal dcm_locked		    : std_logic;
     signal rd_cs_en            : std_logic:='0';
     signal we_cs_en            : std_logic:='0';
-	 
+
 --Clocks
     signal sys_clk_100MHz		: std_logic;
-	 
+
 	 signal sys_clk_100MHz_ext	: std_logic;
 
 -- Debug signals
@@ -131,26 +106,26 @@ architecture rtl of gpmc_test_top is
 	 signal M_reg		: word32_type := (x"f000",x"f000");
 	 signal M_reg_cmp	: std_logic_vector(31 downto 0);
 	 signal N_reg		: std_logic_vector(15 downto 0) := x"0002";
-	 
+
 -- Dominic's Debug signals
 --	signal reg_32_bit : word32_type := (x"1200",x"0045");
 --	signal reg_read	: word32_type := (x"0000",x"0000");
 --	signal PRI 			: word32_type := (x"1234",x"0045");
-	 
+
 -- Used for processing (Skippy)
 	-- indicates that experiment is ready to start.
 	-- triggered by trigger(0) and gpioIn(0)
 	signal ready		:	std_logic;
-	
+
 	--signal NM			:	std_logic;
 	signal nextload	:	std_logic;
 	signal MBsig 		:	STD_LOGIC;
 	signal Dsig 		:	STD_LOGIC;
 	signal Psig 		:	STD_LOGIC;
-	
+
 	--signal N					:	integer range 0 to 32;
 	signal M					:	std_logic_vector(31 downto 0) := (others => '0');
-	
+
 	signal MB				:	integer range 0 to 65535 := 0;
 	signal MBcounter		:	integer range 0 to 65535 := 0;
 	signal D					:	integer range 0 to 65535 := 0;
@@ -161,23 +136,23 @@ architecture rtl of gpmc_test_top is
 	signal P					:	std_logic_vector(31 downto 0) := x"00000000";
 	signal Pcounter		:	std_logic_vector(31 downto 0) := x"00000000";
 	signal one				:  std_logic_vector(31 downto 0) := x"00000001";
-	
+
 	signal triggers 		: std_logic_vector(15 downto 0) := x"0000";
 	signal status_reg 	: std_logic_vector(15 downto 0) := x"0000";
-	
+
 	signal PC				:	integer range 0 to 255 := 0;
 	signal dataout			:	std_logic_vector(95 downto 0);
-	
+
 	-- Ethernet
 	signal sys_rst_i		:	std_logic := '0';
 	signal send_packet	:	std_logic := '0';
 	signal REX_status			:	std_logic_vector(15 downto 0) := x"0000";
 	signal REX_status_confirmed : std_logic := '0';
-	
+
 	-- Transmit settings to REX = 00;
 	-- Ask REX for status msg	 = 01;
 --	signal eth_msg_type	:	std_logic_vector(1 downto 0) := "00";
-	
+
 	signal eth_in_len		:	std_logic_vector(15 downto 0);
 	signal eth_in_type	:	std_logic_vector(15 downto 0);
 	signal eth_in_status	:	std_logic_vector(15 downto 0);
@@ -186,51 +161,51 @@ architecture rtl of gpmc_test_top is
 	signal eth_in_msg		:	std_logic_vector(87 downto 0);
 --
 -- end
-  
+
 -- ALIASES
-    -- Support 64 memory banks, each with a maximum of 2MW 
-	 ALIAS reg_bank_address: std_logic_vector(3 downto 0) IS gpmc_address(25 downto 22);  
-	 -- Currently each register is 64 x 16 
+    -- Support 64 memory banks, each with a maximum of 2MW
+	 ALIAS reg_bank_address: std_logic_vector(3 downto 0) IS gpmc_address(25 downto 22);
+	 -- Currently each register is 64 x 16
 	 ALIAS reg_file_address:   std_logic_vector(7 downto 0) IS gpmc_address(7 downto 0);
 
 
 	---------------------------------------------------------------------------
-	--	Ethernet Signal declaration section 
+	--	Ethernet Signal declaration section
 	---------------------------------------------------------------------------
-	
+
 	attribute S: string;
 	attribute keep : string;
-	
+
 	attribute S of GIGE_RXD   : signal is "TRUE";
 	attribute S of GIGE_RX_DV : signal is "TRUE";
 	attribute S of GIGE_RX_ER : signal is "TRUE";
-	
+
 	-- define constants
 	constant UDP_TX_DATA_BYTE_LENGTH : integer := 16;		--not SET TO MINIMUM LENGTH
 	constant UDP_RX_DATA_BYTE_LENGTH : integer := 37;
 	constant TX_DELAY						: integer := 100;
-	
+
 	-- system control
 	signal clk_125mhz   		: std_logic;
 	signal clk_100mhz    	: std_logic;
 	signal clk_25mhz    		: std_logic;
 	signal sys_reset     	: std_logic;
 	signal sysclk_locked 	: std_logic;
-	
+
 	-- MAC signals
 	signal udp_tx_pkt_data  : std_logic_vector (8 * UDP_TX_DATA_BYTE_LENGTH - 1 downto 0);
 	signal udp_tx_pkt_vld 	: std_logic;
 	signal udp_tx_pkt_sent  : std_logic;
 	signal udp_tx_pkt_vld_r : std_logic;
 	signal udp_tx_rdy			: std_logic;
-			
+
 	signal udp_rx_pkt_data  : std_logic_vector(8 * UDP_RX_DATA_BYTE_LENGTH - 1 downto 0);
 	signal udp_rx_pkt_data_r: std_logic_vector(8 * UDP_RX_DATA_BYTE_LENGTH - 1 downto 0);
 	signal udp_rx_pkt_req   : std_logic;
    signal udp_rx_rdy			: std_logic;
 	signal udp_rx_rdy_r  	: std_logic;
-	
-	
+
+
 	signal dst_mac_addr     : std_logic_vector(47 downto 0);
 --	signal tx_state			: std_logic_vector(2 downto 0) := "000";
 	signal rx_state			: std_logic_vector(1 downto 0) := "00";
@@ -238,29 +213,29 @@ architecture rtl of gpmc_test_top is
 	signal mac_init_done		: std_logic;
 	signal GIGE_GTX_CLK_r   : std_logic;
 	signal GIGE_MDC_r			: std_logic;
-	
-	signal tx_delay_cnt		: integer := 0; 
-	
+
+	signal tx_delay_cnt		: integer := 0;
+
 	signal udp_send_packet	: std_logic;
 	signal udp_send_flag		: std_logic;
 	signal udp_receive_packet: std_logic_vector(1 downto 0) := "00";
 --	signal udp_receive_flag	: std_logic  := '0';
 	signal udp_packet			: std_logic_vector (8 * UDP_TX_DATA_BYTE_LENGTH - 1 downto 0);
 	signal rex_set				: std_logic;
-	
+
 	signal l_band_freq	: std_logic_vector (15 downto 0) := x"1405";
 	signal x_band_freq	: std_logic_vector (15 downto 0) := x"3421";
 	signal pol				: std_logic_vector (15 downto 0) := x"0000";
 	signal pol_mode		: std_logic_vector (2 downto 0);
-	
-	
+
+
 	-- Amplifiers and switches
-	
+
 	signal l_band_amp_on : std_logic;
 	signal x_band_amp_on : std_logic;
-	
+
 	---------------------------------------------------------------------------
-	--	Ethernet Component declaration section 
+	--	Ethernet Component declaration section
 	---------------------------------------------------------------------------
 	component clk_manager is
 	port(
@@ -272,15 +247,15 @@ architecture rtl of gpmc_test_top is
 
 		-- Clock out ports
 		clk_125mhz    : out std_logic;
-		clk_100mhz    : out std_logic;	
+		clk_100mhz    : out std_logic;
 		clk_25mhz     : out std_logic;
-		
+
 		-- Status and control signals
 		RESET         : out std_logic;
 		sysclk_locked : out std_logic
 	);
 	end component clk_manager;
-	
+
 	component UDP_1GbE is
 	  generic(
 			UDP_TX_DATA_BYTE_LENGTH : natural := 1;
@@ -304,8 +279,8 @@ architecture rtl of gpmc_test_top is
 			udp_rx_pkt_req    : in  std_logic;
 			udp_rx_rdy		   : out std_logic;
 
-			mac_init_done	   : out std_logic;	
-					
+			mac_init_done	   : out std_logic;
+
 			-- MAC interface
 			GIGE_COL			: in std_logic;
 			GIGE_CRS			: in std_logic;
@@ -321,7 +296,7 @@ architecture rtl of gpmc_test_top is
 			GIGE_GTX_CLK 	: out std_logic;
 			GIGE_TX_EN		: out std_logic;
 			GIGE_TX_ER		: out std_logic;
-			
+
 			-- system control
 			clk_125mhz     : in  std_logic;
 			clk_100mhz     : in  std_logic;
@@ -329,11 +304,11 @@ architecture rtl of gpmc_test_top is
 			sysclk_locked  : in  std_logic
 	);
 	end component UDP_1GbE;
-	
-	
-	
-	
-	
+
+
+
+
+
 --==========================
 begin --architecture RTL
 --==========================
@@ -342,7 +317,7 @@ begin --architecture RTL
 	--	Ethernet components
 	---------------------------------------------------------------------------
 
-UDP_1GbE_inst : UDP_1GbE 	  
+UDP_1GbE_inst : UDP_1GbE
 	generic map(
 			UDP_TX_DATA_BYTE_LENGTH => UDP_TX_DATA_BYTE_LENGTH,
 			UDP_RX_DATA_BYTE_LENGTH => UDP_RX_DATA_BYTE_LENGTH
@@ -353,23 +328,23 @@ UDP_1GbE_inst : UDP_1GbE
 			own_mac_addr      => x"0e0e0e0e0e0b",
 			dst_ip_addr       => x"c0a86b1d",	-- 192.168.107.29
 			dst_mac_addr      => x"0e0e0e0e0e0c",
-			
+
 			-- mac's MAC is x"406c8f0012cd"
 			-- REx's MAC is x"0e0e0e0e0e0c"
-			
+
 			udp_src_port  		=> x"1f40", --8000
 			udp_dst_port      => x"1f43", --8003
-			
+
 			udp_tx_pkt_data	=> udp_tx_pkt_data,
 			udp_tx_pkt_vld    => udp_tx_pkt_vld,
 			udp_tx_rdy		   => udp_tx_rdy,
-			
+
 			udp_rx_pkt_data   => udp_rx_pkt_data,
 			udp_rx_pkt_req    => udp_rx_pkt_req,
 			udp_rx_rdy		   => udp_rx_rdy,
-			
-			mac_init_done	   => mac_init_done,	
-			
+
+			mac_init_done	   => mac_init_done,
+
 			-- MAC interface
 			GIGE_COL			=> GIGE_COL,
 			GIGE_CRS			=> GIGE_CRS,
@@ -385,15 +360,15 @@ UDP_1GbE_inst : UDP_1GbE
 			GIGE_GTX_CLK 	=> GIGE_GTX_CLK,
 			GIGE_TX_EN		=> GIGE_TX_EN,
 			GIGE_TX_ER		=> GIGE_TX_ER,
-			
+
 			-- system control
 			clk_125mhz     => clk_125mhz,
 			clk_100mhz     => clk_100mhz,
 			sys_rst_i      => sys_reset,
 			sysclk_locked  => sysclk_locked
-	  );	 
-	  
-	  clk_manager_inst : clk_manager 
+	  );
+
+	  clk_manager_inst : clk_manager
 		port map(
 			--External Control
 			dcm_100mhz_in => sys_clk_100mhz,
@@ -405,10 +380,10 @@ UDP_1GbE_inst : UDP_1GbE
 			clk_125mhz    => clk_125mhz,
 			clk_100mhz    => clk_100mhz,
 			clk_25mhz     => clk_25mhz,
-			
+
 			-- Status and control signals
 			RESET         => sys_reset,
-			sysclk_locked => sysclk_locked 
+			sysclk_locked => sysclk_locked
 		);
 
 ------------------------------------------------------------------------------------
@@ -445,9 +420,6 @@ port map
 	O => sys_clk_100MHz
 );
 
-
-
-
 IBUFGDS_tcu_clk : IBUFG
 generic map
 (
@@ -459,9 +431,6 @@ port map
     I => sys_clk_ext,
     O => sys_clk_100MHz_ext
 );
-
-
-
 
 ------------------------------------------------------------------------------------
 -- Misc signal wiring
@@ -475,7 +444,6 @@ led <= led_reg(7 downto 0);
 gpmc_busy_0 <= '0';
 gpmc_busy_1 <= '0';
 
-
 --=====================================--
 -- GPMC interface
 --=====================================--
@@ -486,7 +454,7 @@ process (gpmc_clk_i_b,gpmc_n_cs,gpmc_n_oe,gpmc_n_we,gpmc_n_adv_ale,gpmc_d,gpmc_a
 
 begin
   if (gpmc_n_cs /= "1111111")  then             -- CS 1
-    if gpmc_clk_i_b'event and gpmc_clk_i_b = '1' then  
+    if gpmc_clk_i_b'event and gpmc_clk_i_b = '1' then
 		--First cycle of the bus transaction record the address
 		if (gpmc_n_adv_ale = '0') then
           gpmc_address <= gpmc_a & gpmc_d;   -- Address of 16 bit word
@@ -514,14 +482,14 @@ begin
 				  when 3 => reg_bank(conv_integer(reg_file_address)) <= gpmc_data_i;
 				  when 4 => M_reg(conv_integer(reg_file_address)) <= gpmc_data_i;
 				  when 5 => N_reg <= gpmc_data_i;
-				  --when 6 => 
+				  --when 6 =>
 				--	reg_32_bit(conv_integer(reg_file_address)) <= gpmc_data_i;
 				--reg_read <= reg_32_bit;
  				  when others => null;
 			end case;
 		end if;
-     end if; 
-   end if; 
+     end if;
+   end if;
 end process;
 
 nextload <= (MBsig and Dsig and Psig);
@@ -540,7 +508,7 @@ bcd(31 downto 16) <= bcd_int(1);
 
 -- Remember to uncomment this
 -- It includes a new status bit that indicates when an experiment is happening
---status_reg(1) <= ready and not(status_reg(0)) and triggers(0); 
+--status_reg(1) <= ready and not(status_reg(0)) and triggers(0);
 
 -- M_reg_cmp is used when comparing with the counter
 M_reg_cmp(31 downto 16) <= M_reg(1);
@@ -573,27 +541,19 @@ process(sys_clk_100MHz_ext)
 	variable del : integer range 0 to 500000;
 	variable l_band_freq_var	: std_logic_vector (15 downto 0) := x"1405";
 	variable x_band_freq_var	: std_logic_vector (15 downto 0) := x"3421";
-	
-	
-	
+
+
+
 begin
 	if rising_edge(sys_clk_100MHz_ext) then
-	
-	
-		delay <= delay + '1';
-		
---		led_reg(2) <= delay(26);
-		
 		-- populate dataout from regbank based on Program Counter (PC)
 		dataout <= reg_bank(PC) & reg_bank(PC+1) & reg_bank(PC+2) & reg_bank(PC+3) & reg_bank(PC+4) & reg_bank(PC+5);
 		MB <= conv_integer(reg_bank(PC));
 		D <= conv_integer(reg_bank(PC+1));
-		--P <= conv_integer(reg_bank(PC+2));
 		P <= reg_bank(PC+2) & reg_bank(PC+5);
 		--PRI(1) <= P(31 downto 16);
 		--PRI(0) <= P(15 downto 0);
 		pol_mode <= reg_bank(PC+4)(10 downto 8);
-
 
 		-- setup certain ports depending on the mode of operation
 		case pol_mode is
@@ -647,22 +607,20 @@ begin
 				x_band_amp_on <= '1';
 			when others => null;
 		end case;
-		
-		
+
 		-- Time critical process
-		
+
 		if(triggers(0) = '1' and gpioIn(0) = '1') then
-			ready <= '1';	
+			ready <= '1';
 		elsif(triggers(0) = '0') then
 			ready <= '0';
 		end if;
-		
+
 		-- The experiment commences when triggered by the ready signal above, as long as it isnt the end of the experiment and as long as it is still "soft on" (kept on by the triggers register).
 		if(ready = '1' and status_reg(0) = '0' and triggers(0) = '1') then
-		
-		--eth_msg_type <= "00";
-			sys_rst_i <= '0';		-- turn ethernet on
 
+			sys_rst_i <= '0';		-- turn ethernet on
+            
 			if ((MBsig and Dsig and Psig) = '1') then
 				-- reset all counters at the end of Interval
 				MBcounter <= 0;
@@ -672,7 +630,6 @@ begin
 				MBsig <= '0';
 				Dsig <= '0';
 				Psig <= '0';
-				
 				-- increments PC or resets PC to zero. enables stop register if it has completed the last instruction
 				if(PC = conv_integer(N_reg(7 downto 0))*6) then
 					PC <= 0;
@@ -692,11 +649,9 @@ begin
 					Pcounter <= Pcounter + one;
 					Psig <= '0';
 				end if;
-				
 				-- turn amplifiers off
 				gpio(13) <= '0';
 				gpio(12) <= '0';
-				
 			-- increments D if MB is active
 			elsif(MBsig = '1') then
 				if(Dcounter = D) then
@@ -720,7 +675,6 @@ begin
 					-- turn on appropriate amplifier (X or L) depending on pol_mode
 					gpio(13) <= l_band_amp_on;
 					gpio(12) <= x_band_amp_on;
-					
 				end if;
 			end if;
 		--===========--
@@ -730,76 +684,37 @@ begin
 			PC <= 0;
 			M <= (others => '0');
 			status_reg(0) <= '0';
-			
 			sys_rst_i <= '0';				-- turn ethernet on (was off)
 			udp_send_packet <= '0';
-			
 			--	set counters to zero
 			MBcounter <= 0;
 			Dcounter <= 0;
 			--Pcounter <= 0;
 			Pcounter <= x"00000000";
-			
 			-- turn amplifiers off
 			gpio(13) <= '0';
 			gpio(12) <= '0';
-			
 			-- turn off MB, D and P signals
 			MBsig <= '0';
 			Dsig <= '0';
 			Psig <= '0';
 			del := 0;
-			
-			
-			
---			if(triggers(1) = '1' and rex_set = '0') then
---				udp_send_packet <= '1';
---				rex_set <= '1';
---			elsif(triggers(1) = '1' and rex_set = '1') then
---				udp_send_packet <= '0';
---			else
---				udp_send_packet <= '0';
---				rex_set <= '0';
---			end if;
---			
-			
-			
-		---- Retrieves status of the REX over ethernet
-		-- 1) sets eth_msg_type to '01' which is to send a 'retrieve status' frame.
-		--		sets REX_status_confirmed to '1' indicating that REX_status(0) has been acknowledged
-		-- 2) 
---		elsif(triggers(1) = '1' and udp_receive_packet = "00") then
---			eth_msg_type <= "01";
---			udp_send_packet <= '1';
---			REX_status_confirmed <= '1';
---			
---		elsif(udp_receive_packet = "11") then
---			REX_status_confirmed <= '0';
---		
---		elsif(triggers(1) = '1') then
---			udp_send_packet <= '0';
-			
-		
 		else
 			udp_send_packet <= '0';
-			
-		end if;
 
+		end if;
 		--=========--
 		-- Ethernet--
 		--=========--
 
-		
 	end if;
 end process;
 
 ------------------------------------------------------------------------------------
--- Manage the tri-state bus 
+-- Manage the tri-state bus
 ---------------------------------------------------------------------------------
 gpmc_d <= gpmc_data_o when (gpmc_n_oe = '0') else (others => 'Z');
 gpmc_data_i <= gpmc_d;
-
-
 
 -----------------------------------------------------------------------
 --				UDP TRANSMISSION SECTION
@@ -811,113 +726,22 @@ begin
 		if(udp_send_packet = '1' and udp_send_flag <= '0') then
 			udp_send_flag <= '1';
 			udp_tx_pkt_vld_r <= '0';
-			
 		elsif(udp_tx_rdy = '1' and udp_send_flag = '1') then
-			
 			if(tx_delay_cnt = TX_DELAY) then
 				tx_delay_cnt <= 0;
 				udp_tx_pkt_vld_r <= '1';												-- LAUNCH
-				
---				case eth_msg_type is
---					when "00" =>		--	L band Tx=V Rx=V
-						udp_tx_pkt_data  <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;	 --x"0d000000000004000300140534210000";
---					when "01" =>
---						udp_tx_pkt_data <= x"08000200000004000400" & x"000000000000";
---					when others => null;
---				end case;
-				
-				
+                udp_tx_pkt_data  <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;	 --x"0d000000000004000300140534210000";
 				udp_send_flag <= '0';
 			else
 				udp_tx_pkt_vld_r <= '0';
 				tx_delay_cnt <= tx_delay_cnt + 1;
 			end if;
-			
-		else 
+		else
 			udp_tx_pkt_vld_r <= '0';												-- ARM
 		end if;
-		
-		
 	end if;
-
 end process;
 
 udp_tx_pkt_vld <= udp_tx_pkt_vld_r;
 
-
----------------------------------------------------------------------
---				UDP RECEPTION SECTION
----------------------------------------------------------------------
---rx_proc : process(sys_clk_100mhz)
---begin
-----	if(REX_status_confirmed = '0' and udp_receive_packet = "11") then
-----		udp_receive_packet = "00";
---		
---	if(rising_edge(sys_clk_100mhz)) then
---	
---		if(triggers(1) = '0') then
---			rx_state <= "00";
---		else
---
---			case rx_state is
---				when "00" =>
---					udp_rx_pkt_req <= '1';
---					udp_rx_rdy_r <= udp_rx_rdy;
---					rx_state <= "01";	
---				when "01" =>
---					if(udp_rx_rdy = '1') then
---						udp_rx_pkt_data_r <= udp_rx_pkt_data;
-----						status_reg(15 downto 1) <= udp_rx_pkt_data(94 downto 80);
---						udp_rx_rdy_r <= udp_rx_rdy;
---						rx_state <= "10";	
---					end if;
---				when "10" =>						
---					udp_rx_pkt_data_r <= (others => '0');
---					rx_state <= "11";	
---					udp_rx_rdy_r <= udp_rx_rdy;
---				when others =>
---					null;
---			end case;
---					
---					
---					--comment this out					 64	
-----					udp_rx_pkt_data_r <= x"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
---			
---		end if;
---			
---		
---	end if;
-----	
-----	
---end process;
---status_reg(15 downto 1) <= "111111111111111";
-
-
----------------------------------------
---
---
---process(udp_rx_rdy_r)
---begin
---	if(rising_edge(udp_rx_rdy_r)) then
---status_reg(15 downto 1) <= udp_rx_pkt_data_r(94 downto 80);
---	end if;
---end process;
-
-
---	if(rising_edge(sys_clk_100mhz)) then
---		if(udp_receive_packet = '1' and udp_receive_flag <= '0') then
---		
---			udp_rx_pkt_req <= '1';
---			udp_receive_flag <= '1';
---		
---		elsif(udo_receive_flag <= '1' and udp_rx_rdy = '1') then
---		
---			udp_rx_pkt_data_r <= udp_rx_pkt_data;
---		
---		end if;
---	end if; 
-
-
-	  
-    
 end rtl;
