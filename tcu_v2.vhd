@@ -13,7 +13,7 @@ use UNISIM.VComponents.all;
 -- Declare input and output pins for rhino_proc_intrfc_top
 -------------------------------------------------------------------------------
 
-entity gpmc_test_top is
+entity tcu_top is
 port
 (
     -- FPGA-processor interface pins
@@ -58,14 +58,14 @@ port
     THISISALWAYSON  : out   std_logic
 
 );
-end gpmc_test_top;
+end tcu_top;
 
 
 -------------------------------------------------------------------------------
 -- Architecture of rhino_proc_intrfc_top
 -------------------------------------------------------------------------------
 
-architecture rtl of gpmc_test_top is
+architecture rtl of tcu_top is
     ---------------------------------------------------------------------------
     -- Declare types
     ---------------------------------------------------------------------------
@@ -703,20 +703,20 @@ begin --architecture RTL
         begin
         if(rising_edge(sys_clk_100mhz)) then
             if(udp_send_packet = '1' and udp_send_flag <= '0') then
-                udp_send_flag       <= '1';
-                udp_tx_pkt_vld_r    <= '0';
+                udp_send_flag    <= '1';
+                udp_tx_pkt_vld_r <= '0';
             elsif(udp_tx_rdy = '1' and udp_send_flag = '1') then
                 if(tx_delay_cnt = TX_DELAY) then
-                    tx_delay_cnt        <= 0;
-                    udp_tx_pkt_vld_r    <= '1';    -- LAUNCH
-                    udp_tx_pkt_data     <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;	 --x"0d000000000004000300140534210000";
-                    udp_send_flag       <= '0';
+                    tx_delay_cnt     <= 0;
+                    udp_tx_pkt_vld_r <= '1';    -- LAUNCH
+                    udp_tx_pkt_data  <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;	 --x"0d000000000004000300140534210000";
+                    udp_send_flag    <= '0';
                 else
-                    udp_tx_pkt_vld_r    <= '0';
-                    tx_delay_cnt        <= tx_delay_cnt + 1;
+                    udp_tx_pkt_vld_r <= '0';
+                    tx_delay_cnt     <= tx_delay_cnt + 1;
                 end if;
             else
-                udp_tx_pkt_vld_r    <= '0';    -- ARM
+                udp_tx_pkt_vld_r <= '0';    -- ARM
             end if;
         end if;
     end process udp_tx;
