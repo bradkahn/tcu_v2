@@ -9,9 +9,9 @@ use IEEE.STD_LOGIC_ARITH.ALL;  -- not a standard library
 library UNISIM;
 use UNISIM.VComponents.all;
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- Declare input and output pins for rhino_proc_intrfc_top
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 entity gpmc_test_top is
 port
@@ -39,9 +39,7 @@ port
     -- BCD pins
     bcd             : out   std_logic_vector(31 downto 0);
 
-    -------------
     -- Ethernet ports
-    -------------
     GIGE_COL        : in    std_logic;
     GIGE_CRS        : in    std_logic;
     GIGE_MDC        : out   std_logic;
@@ -63,22 +61,22 @@ port
 end gpmc_test_top;
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- Architecture of rhino_proc_intrfc_top
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 architecture rtl of gpmc_test_top is
-    ------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
     -- Declare types
-    ------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
 
     type ram_type       is array (255 downto 0) of std_logic_vector(15 downto 0);
     type word32_type    is array (1 downto 0)   of std_logic_vector(15 downto 0);
     type word64_type    is array (3 downto 0)   of std_logic_vector(15 downto 0);
 
-    ------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
     -- Declare signals
-    ------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
 
     -- Define signals for the gpmc bus
     signal gpmc_clk_i_b     : std_logic;  --buffered  gpmc_clk_i
@@ -377,9 +375,9 @@ begin --architecture RTL
         sysclk_locked   => sysclk_locked
     );
 
-------------------------------------------------------------------------------------
--- Instantiate input buffer for FPGA_PROC_BUS_CLK
-------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
+    -- Instantiate input buffer for FPGA_PROC_BUS_CLK
+    ---------------------------------------------------------------------------
 
     IBUFG_gpmc_clk_i : IBUFG
     generic map
@@ -393,9 +391,9 @@ begin --architecture RTL
         O => gpmc_clk_i_b
     );
 
-    -----------------------------------------------------------------------------------------
-    -- Instantiate differential input clockl buffer, for 100MHz clock (for UART and Ethernet)
-    -----------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
+    -- Diff input clockl buffer, for 100MHz clock (for UART and Ethernet)
+    ---------------------------------------------------------------------------
 
     IBUFGDS_sys_clk: IBUFGDS
     generic map
@@ -423,9 +421,9 @@ begin --architecture RTL
         O => sys_clk_100MHz_ext
     );
 
-    ------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
     -- Misc signal wiring
-    ------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
 
     -- Map important processor bus pins to GPIO header
     led         <= led_reg(7 downto 0);
@@ -440,7 +438,7 @@ begin --architecture RTL
     --=====================================--
 
     -- Interface between the ARM processor and the FPGA
-    process (gpmc_clk_i_b,gpmc_n_cs,gpmc_n_oe,gpmc_n_we,gpmc_n_adv_ale,gpmc_d,gpmc_a)
+    gpmc_interface : process (gpmc_clk_i_b,gpmc_n_cs,gpmc_n_oe,gpmc_n_we,gpmc_n_adv_ale,gpmc_d,gpmc_a)
     begin
         if (gpmc_n_cs /= "1111111")  then             -- CS 1
             if gpmc_clk_i_b'event and gpmc_clk_i_b = '1' then
@@ -479,9 +477,9 @@ begin --architecture RTL
                 end if;
             end if;
         end if;
-    end process;
+    end process gpmc_interface;
 
-    ------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
     -- Manage the tri-state bus
     ---------------------------------------------------------------------------
     gpmc_d      <= gpmc_data_o when (gpmc_n_oe = '0') else (others => 'Z');
@@ -534,19 +532,19 @@ begin --architecture RTL
     --=====================================--
     -- The actual TCU processes happen here
     --=====================================--
-    process(sys_clk_100MHz_ext)
+    tcu : process(sys_clk_100MHz_ext)
         variable l_band_freq_var    : std_logic_vector (15 downto 0) := x"1405";
         variable x_band_freq_var    : std_logic_vector (15 downto 0) := x"3421";
     begin
         if rising_edge(sys_clk_100MHz_ext) then
             -- populate dataout from regbank based on Program Counter (PC)
-            dataout     <= reg_bank(PC) & reg_bank(PC+1) & reg_bank(PC+2) & reg_bank(PC+3) & reg_bank(PC+4) & reg_bank(PC+5);
-            MB          <= conv_integer(reg_bank(PC));
-            D           <= conv_integer(reg_bank(PC+1));
-            P           <= reg_bank(PC+2) & reg_bank(PC+5);
+            dataout  <= reg_bank(PC) & reg_bank(PC+1) & reg_bank(PC+2) & reg_bank(PC+3) & reg_bank(PC+4) & reg_bank(PC+5);
+            MB       <= conv_integer(reg_bank(PC));
+            D        <= conv_integer(reg_bank(PC+1));
+            P        <= reg_bank(PC+2) & reg_bank(PC+5);
             --PRI(1) <= P(31 downto 16);
             --PRI(0) <= P(15 downto 0);
-            pol_mode    <= reg_bank(PC+4)(10 downto 8);
+            pol_mode <= reg_bank(PC+4)(10 downto 8);
         -- setup certain ports depending on the mode of operation
         case pol_mode is
             when "000" =>		--	L band Tx=V Rx=V
@@ -561,7 +559,7 @@ begin --architecture RTL
                 x_band_freq     <= x_band_freq_var;
                 l_band_freq     <= reg_bank(PC+3);
                 pol             <= x"0000";
-                gpio(14)        <=	'1';
+                gpio(14)        <= '1';
                 gpio(15)        <= '0';
                 l_band_amp_on   <= '1';
                 x_band_amp_on   <= '0';
@@ -569,7 +567,7 @@ begin --architecture RTL
                 x_band_freq     <= x_band_freq_var;
                 l_band_freq     <= reg_bank(PC+3);
                 pol             <= x"0000";
-                gpio(14)        <=	'1';
+                gpio(14)        <= '1';
                 gpio(15)        <= '0';
                 l_band_amp_on   <= '1';
                 x_band_amp_on   <= '0';
@@ -600,8 +598,9 @@ begin --architecture RTL
             when others => null;
         end case;
 
+        -----------------------------------------------------------------------
         -- Time critical process
-
+        -----------------------------------------------------------------------
         if(triggers(0) = '1' and gpioIn(0) = '1') then
             ready <= '1';
         elsif(triggers(0) = '0') then
@@ -615,13 +614,13 @@ begin --architecture RTL
 
             if ((MBsig and Dsig and Psig) = '1') then
                 -- reset all counters at the end of Interval
-                MBcounter   <= 0;
-                Dcounter    <= 0;
+                MBcounter <= 0;
+                Dcounter  <= 0;
                 --  Pcounter <= 0;
-                Pcounter    <= x"00000000";
-                MBsig       <= '0';
-                Dsig        <= '0';
-                Psig        <= '0';
+                Pcounter  <= x"00000000";
+                MBsig     <= '0';
+                Dsig      <= '0';
+                Psig      <= '0';
                 -- increments PC or resets PC to zero. enables stop register if it has completed the last instruction
                 if(PC = conv_integer(N_reg(7 downto 0))*6) then
                     PC  <= 0;
@@ -633,42 +632,42 @@ begin --architecture RTL
                 else
                     PC <= PC + 6 ;
                 end if;
-            -- increments P if MB and D are active
-            elsif((MBsig and Dsig) = '1') then
-                if(Pcounter = P) then
-                    Psig <= '1';
-                else
-                    Pcounter <= Pcounter + one;
-                    Psig <= '0';
-                end if;
-                -- turn amplifiers off
-                gpio(13) <= '0';
-                gpio(12) <= '0';
-            -- increments D if MB is active
-            elsif(MBsig = '1') then
-                if(Dcounter = D) then
-                    Dsig <= '1';
-                else
-                    Dcounter <= Dcounter + 1;
-                    Dsig <= '0';
-                end if;
-            else
-                if(MBcounter = MB) then
-                    MBsig <= '1';
-                else
-                    MBsig <= '0';
-                    MBcounter <= MBcounter + 1;
-                    -- send Ethernet packet at the very start
-                    if(MBcounter <= 2) then
-                        udp_send_packet <= '1';
+                -- increments P if MB and D are active
+                elsif((MBsig and Dsig) = '1') then
+                    if(Pcounter = P) then
+                        Psig <= '1';
                     else
-                        udp_send_packet <= '0';
+                        Pcounter <= Pcounter + one;
+                        Psig <= '0';
                     end if;
-                    -- turn on appropriate amplifier (X or L) depending on pol_mode
-                    gpio(13) <= l_band_amp_on;
-                    gpio(12) <= x_band_amp_on;
+                    -- turn amplifiers off
+                    gpio(13) <= '0';
+                    gpio(12) <= '0';
+                -- increments D if MB is active
+                elsif(MBsig = '1') then
+                    if(Dcounter = D) then
+                        Dsig <= '1';
+                    else
+                        Dcounter <= Dcounter + 1;
+                        Dsig <= '0';
+                    end if;
+                else
+                    if(MBcounter = MB) then
+                        MBsig <= '1';
+                    else
+                        MBsig <= '0';
+                        MBcounter <= MBcounter + 1;
+                        -- send Ethernet packet at the very start
+                        if(MBcounter <= 2) then
+                            udp_send_packet <= '1';
+                        else
+                            udp_send_packet <= '0';
+                        end if;
+                        -- turn on appropriate amplifier (X or L) depending on pol_mode
+                        gpio(13) <= l_band_amp_on;
+                        gpio(12) <= x_band_amp_on;
+                    end if;
                 end if;
-            end if;
             --===========--
             -- off state --
             --===========--
@@ -694,18 +693,18 @@ begin --architecture RTL
                 udp_send_packet <= '0';
             end if;
         end if;
-    end process;
+    end process tcu;
 
-    -----------------------------------------------------------------------
-    --				UDP TRANSMISSION SECTION
-    -----------------------------------------------------------------------
+    ---------------------------------------------------------------------------
+    -- UDP TRANSMISSION SECTION
+    ---------------------------------------------------------------------------
     --udp_packet <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;
-    process(udp_send_packet, sys_clk_100mhz)
+    udp_tx : process(udp_send_packet, sys_clk_100mhz)
         begin
         if(rising_edge(sys_clk_100mhz)) then
             if(udp_send_packet = '1' and udp_send_flag <= '0') then
-                udp_send_flag           <= '1';
-                udp_tx_pkt_vld_r        <= '0';
+                udp_send_flag       <= '1';
+                udp_tx_pkt_vld_r    <= '0';
             elsif(udp_tx_rdy = '1' and udp_send_flag = '1') then
                 if(tx_delay_cnt = TX_DELAY) then
                     tx_delay_cnt        <= 0;
@@ -717,10 +716,10 @@ begin --architecture RTL
                     tx_delay_cnt        <= tx_delay_cnt + 1;
                 end if;
             else
-                udp_tx_pkt_vld_r        <= '0';    -- ARM
+                udp_tx_pkt_vld_r    <= '0';    -- ARM
             end if;
         end if;
-    end process;
+    end process udp_tx;
 
     udp_tx_pkt_vld <= udp_tx_pkt_vld_r;
 
