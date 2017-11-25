@@ -1,6 +1,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
+
 ENTITY tcu_v2_top_tb IS
 END tcu_v2_top_tb;
 
@@ -88,6 +88,7 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
    constant GIGE_TX_CLK_period : time := 10 ns;
    constant GIGE_RX_CLK_period : time := 10 ns;
    constant GIGE_GTX_CLK_period : time := 10 ns;
+   constant sys_clk_period :  time := 10 ns;
 
 BEGIN
 
@@ -150,6 +151,16 @@ BEGIN
 		wait for GIGE_GTX_CLK_period/2;
 		GIGE_GTX_CLK <= '1';
 		wait for GIGE_GTX_CLK_period/2;
+   end process;
+
+   SYS_CLK_process :process
+   begin
+		sys_clk_P <= '0';
+		sys_clk_P <= '1';
+		wait for sys_clk_period/2;
+		sys_clk_P <= '1';
+		sys_clk_P <= '0';
+		wait for sys_clk_period/2;
    end process;
 
 
