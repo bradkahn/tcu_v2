@@ -86,11 +86,11 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
     signal THISISALWAYSON : std_logic;
 
     -- Clock period definitions
-    constant GIGE_TX_CLK_period   : time := 10 ns;
-    constant GIGE_RX_CLK_period   : time := 10 ns;
-    constant GIGE_GTX_CLK_period  : time := 10 ns;
+    constant GIGE_TX_CLK_period   : time := 10 ns;  -- TODO: set correct period
+    constant GIGE_RX_CLK_period   : time := 10 ns;  -- TODO: set correct period
+    constant GIGE_GTX_CLK_period  : time := 10 ns;  -- TODO: set correct period
     constant sys_clk_period       : time := 10 ns;
-    constant gpmc_fclk_period     : time := ?? ns;
+    constant gpmc_fclk_period     : time := 6 ns; -- gpmc_fclk is 2x gpmc clock (83Mhz = 12ns)
 
 BEGIN
 
@@ -179,93 +179,111 @@ BEGIN
 
     -- Stimulus process
     stim_proc: process
-        procedure register_write(   address : in STD_LOGIC_VECTOR(0 downto 0);
+
+        procedure register_write(   address : in STD_LOGIC_VECTOR(25 downto 0);
                                     data    : in STD_LOGIC_VECTOR(15 downto 0)
                                 )   is
         begin
             ------------------------------------------------------------------------
             -- WRITE OPERATION
-            -- TAKES 6 GPMC_FCLK CYCLES
+            -- BASED ON OBSERVED WAVEFORMS:
+            -- TAKES 10 GPMC_FCLK CYCLES
             -- GPMC_FCLK IS AN INTERNAL CLK THAT RUNS AT TWICE THE RATE OF GPMC_CLK
+            -- See -> gpmc_timing_diagram.pdf
             ------------------------------------------------------------------------
 
+            -- TODO:    clean up code for periods where no signal changes happen
+
+            wait until gpmc_fclk = '1';
+
             -- time 0
-            -- "ARM WRITES"
-            gpmc_clk  <= '0';
-            gpmc_n_cs <= "1111110";
-            gpmc_n_we <= '1';
-            gpmc_n_oe <= '1';
-            gpmc_n_adv_ale <= '1';
-            gpmc_a <= "0001000000";
-            gpmc_d <= "0000000000000000";
-            wait for gpmc_fclk_period;
+            gpmc_clk_i      <= '0';
+            gpmc_n_cs       <= "1111110";
+            gpmc_n_we       <= '1';
+            gpmc_n_oe       <= '1';
+            gpmc_n_adv_ale  <= '0';
+            gpmc_a          <= address(25 downto 16);
+            gpmc_d          <= address(15 downto 0);
+            wait for gpmc_fclk_period/2;
 
             -- time 1
-            gpmc_clk  <= '0';
-            gpmc_n_cs <= "1111110";
-            gpmc_n_we <= '1';
-            gpmc_n_oe <= '1';
-            gpmc_n_adv_ale <= '0';
-            gpmc_d <= "0000000000000000";
-            wait for gpmc_fclk_period;
+            wait for gpmc_fclk_period/2;
 
             -- time 2
-            -- "FPGA READS ADDR"
-            gpmc_clk  <= '1';
-            gpmc_n_cs <="1111110";
-            gpmc_n_we <= '1';
-            gpmc_n_oe <= '1';
-            gpmc_n_adv_ale <= '0';
-            gpmc_d <= "0000000000000000";
-            wait for gpmc_fclk_period;
-
+            wait for gpmc_fclk_period/2;
 
             -- time 3
-            -- "ARM WRITES DATA"
-            gpmc_clk  <= '0';
-            gpmc_n_cs <= "1111110";
-            gpmc_n_we <= '0';
-            gpmc_n_oe <= '1';
-            gpmc_n_adv_ale <= '1';
-            gpmc_d <= "0000000011111111";
-            wait for gpmc_fclk_period;
+            wait for gpmc_fclk_period/2;
 
             -- time 4
-            -- "FPGA READS DATA"
-            gpmc_clk  <= '1';
-            gpmc_n_cs <= "1111110";
-            gpmc_n_we <= '0';
-            gpmc_n_oe <= '1';
-            gpmc_n_adv_ale <= '1';
-            gpmc_a <= (others => '0');
-            gpmc_d <= "0000000010101111";
-            wait for gpmc_fclk_period;
+            wait for gpmc_fclk_period/2;
 
             -- time 5
-            gpmc_clk  <= '0';
-            gpmc_n_cs <=  "1111111";
-            gpmc_n_we <= '1';
-            gpmc_n_oe <= '1';
-            gpmc_n_adv_ale <= '1';
-            gpmc_a <= (others => '0');
-            gpmc_d <= (others => 'Z');
-            wait for gpmc_fclk_period;
+            gpmc_clk_i <= '1';
+            wait for gpmc_fclk_period/2;
 
             -- time 6
-            gpmc_clk  <= '1';
-            gpmc_n_cs <=  "1111111";
-            gpmc_n_we <= '1';
-            gpmc_n_oe <= '1';
-            gpmc_n_adv_ale <= '1';
-            gpmc_a <= (others => '0');
-            gpmc_d <= (others => 'Z');
-            wait for gpmc_fclk_period;
+            wait for gpmc_fclk_period/2;
 
-            gpmc_clk <= '0';
-            wait for gpmc_fclk_period*10;
+            -- time 7
+            gpmc_a          <= (others => 'X');
+            gpmc_d          <= data;
+            gpmc_n_adv_ale  <= '1';
+            gpmc_n_we       <= '0';
+            gpmc_clk_i      <= '0';
+            wait for gpmc_fclk_period/2;
+
+            -- time 8
+
+            wait for gpmc_fclk_period/2;
+
+            -- time 9
+
+            wait for gpmc_fclk_period/2;
+
+            -- time 10
+            gpmc_clk_i       <= '1';
+            wait for gpmc_fclk_period/2;
+
+            -- time 11
+            wait for gpmc_fclk_period/2;
+
+            -- time 12
+            gpmc_clk_i       <= '0';
+            wait for gpmc_fclk_period/2;
+
+            -- time 13
+            wait for gpmc_fclk_period/2;
+
+            -- time 14
+            wait for gpmc_fclk_period/2;
+
+            -- time 15
+            gpmc_clk_i       <= '1';
+            wait for gpmc_fclk_period/2;
+
+            -- time 16
+            wait for gpmc_fclk_period/2;
+
+            -- time 17
+            gpmc_n_cs       <= (others => '1');
+            gpmc_d          <= (others => 'X');
+            gpmc_n_we       <= '1';
+            gpmc_clk_i      <= '0';
+
+            -- time 18
+            wait for gpmc_fclk_period/2;
+
+            -- time 19
+            wait for gpmc_fclk_period/2;
+
+            -- time 20
+            gpmc_n_adv_ale  <= '0';
+            wait for gpmc_fclk_period/2;
         end register_write;
 
-        procedure register_read(address     : in STD_LOGIC_VECTOR(1 downto 0)) is
+        procedure register_read (    address     : in STD_LOGIC_VECTOR(1 downto 0)
+                                ) is
         begin
             ------------------------------------------------------------------------
             -- READ OPERATION
@@ -285,12 +303,12 @@ BEGIN
 
             -- time 2
             -- "FPGA READS ADDRESS"
-            gpmc_clk  <= '1';
+            gpmc_clk_i <= '1';
             wait for gpmc_fclk_period;
 
             -- time 3
             -- "ARM RELEASES ADDRESS BUS"
-            gpmc_clk  <= '0';
+            gpmc_clk_i <= '0';
             gpmc_n_adv_ale <= '1';
             gpmc_n_oe <= '0';
             gpmc_a <= (others => 'X');
@@ -299,32 +317,31 @@ BEGIN
 
             -- time 4
             -- "FPGA WRITES DATA"
-            gpmc_clk  <= '1';
+            gpmc_clk_i <= '1';
             wait for gpmc_fclk_period;
 
             -- time 5
             -- "ARM READS DATA"
-            gpmc_clk  <= '0';
+            gpmc_clk_i <= '0';
             gpmc_n_cs <=  "1111111";
             gpmc_n_oe <= '0';
             wait for gpmc_fclk_period;
 
             -- time 6
             -- "FPGA RELEASES DATA BUS"
-            gpmc_clk  <= '1';
+            gpmc_clk_i <= '1';
             gpmc_d <= (others => 'Z'); -- check if this is done by vhdl
             wait for gpmc_fclk_period;
             -- time 7
-            gpmc_clk  <= '0';wait;
+            gpmc_clk_i <= '0';wait;
         end register_read;
 
     begin
-        -- hold reset state for 100 ns.
-        wait for 100 ns;
-
-        wait for GIGE_TX_CLK_period*10;
 
         -- insert stimulus here
+        wait for 100 ns;
+
+        register_write(address=>"00000000000000000000001011", data=>x"ABCD");
 
         wait;
     end process;
