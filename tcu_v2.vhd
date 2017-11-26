@@ -68,7 +68,6 @@ architecture rtl of tcu_top is
 
     type ram_type       is array (255 downto 0) of std_logic_vector(15 downto 0);
     type word32_type    is array (1 downto 0)   of std_logic_vector(15 downto 0);
-    type word64_type    is array (3 downto 0)   of std_logic_vector(15 downto 0);
 
     ---------------------------------------------------------------------------
     -- Declare signals
