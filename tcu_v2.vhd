@@ -76,8 +76,8 @@ architecture rtl of tcu_top is
     -- Define signals for the gpmc bus
     signal gpmc_clk_i_b     : std_logic;  --buffered  gpmc_clk_i
     signal gpmc_address     : std_logic_vector(25 downto 0):=(others => '0');         -- Full de-multiplexed address bus (ref. 16 bits)
-    signal gpmc_data_o      : std_logic_vector(15 downto 0):="0000000000000000";      -- Register for output bus value
-    signal gpmc_data_i      : std_logic_vector(15 downto 0):="0000000000000000";      -- Register for input bus value
+    signal gpmc_data_o      : std_logic_vector(15 downto 0):=(others => '0');      -- Register for output bus value
+    signal gpmc_data_i      : std_logic_vector(15 downto 0):=(others => '0');      -- Register for input bus value
 
     --Other signals
     signal heartbeat        : std_logic;
@@ -93,7 +93,7 @@ architecture rtl of tcu_top is
     constant VERSION        : std_logic_vector(7 downto 0) := "00000010";
     constant ID             : std_logic_vector(7 downto 0) := "01010001";
     signal reg_bank         : ram_type := (others => "1111111111111111");
-    signal led_reg          : std_logic_vector(15 downto 0) := "0000000000000000";
+    signal led_reg          : std_logic_vector(15 downto 0) := (others => '0');
     signal bcd_int          : word32_type := (x"0000",x"0000");
     signal M_reg            : word32_type := (x"f000",x"f000");
     signal M_reg_cmp        : std_logic_vector(31 downto 0);
@@ -125,12 +125,12 @@ architecture rtl of tcu_top is
     --signal P					 	integer range 0 to 65535 := 0;
     --signal Pcounter		:	integer range 0 to 65535 := 0;
     -- 32 bit versions of P and P counter
-    signal P                : std_logic_vector(31 downto 0) := x"00000000";
-    signal Pcounter         : std_logic_vector(31 downto 0) := x"00000000";
+    signal P                : std_logic_vector(31 downto 0) := (others => '0');
+    signal Pcounter         : std_logic_vector(31 downto 0) := (others => '0');
     signal one              : std_logic_vector(31 downto 0) := x"00000001";
 
-    signal triggers         : std_logic_vector(15 downto 0) := x"0000";
-    signal status_reg       : std_logic_vector(15 downto 0) := x"0000";
+    signal triggers         : std_logic_vector(15 downto 0) := (others => '0');
+    signal status_reg       : std_logic_vector(15 downto 0) := (others => '0');
 
     signal PC               : integer range 0 to 255 := 0;
     signal dataout          : std_logic_vector(95 downto 0);
@@ -138,7 +138,7 @@ architecture rtl of tcu_top is
     -- Ethernet
     signal sys_rst_i        : std_logic := '0';
     signal send_packet      : std_logic := '0';
-    signal REX_status       : std_logic_vector(15 downto 0) := x"0000";
+    signal REX_status       : std_logic_vector(15 downto 0) := (others => '0');
     signal REX_status_confirmed : std_logic := '0';
 
 	-- Transmit settings to REX = 00;
