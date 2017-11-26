@@ -92,41 +92,41 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
 
 BEGIN
 
-	-- Instantiate the Unit Under Test (UUT)
-   uut: tcu_top PORT MAP (
-          gpmc_a => gpmc_a,
-          gpmc_d => gpmc_d,
-          gpmc_clk_i => gpmc_clk_i,
-          gpmc_n_cs => gpmc_n_cs,
-          gpmc_n_we => gpmc_n_we,
-          gpmc_n_oe => gpmc_n_oe,
-          gpmc_n_adv_ale => gpmc_n_adv_ale,
-          gpmc_n_wp => gpmc_n_wp,
-          gpmc_busy_0 => gpmc_busy_0,
-          gpmc_busy_1 => gpmc_busy_1,
-          gpio => gpio,
-          gpioIn => gpioIn,
-          led => led,
-          sys_clk_P => sys_clk_P,
-          sys_clk_N => sys_clk_N,
-          sys_clk_ext => sys_clk_ext,
-          bcd => bcd,
-          GIGE_COL => GIGE_COL,
-          GIGE_CRS => GIGE_CRS,
-          GIGE_MDC => GIGE_MDC,
-          GIGE_MDIO => GIGE_MDIO,
-          GIGE_TX_CLK => GIGE_TX_CLK,
-          GIGE_nRESET => GIGE_nRESET,
-          GIGE_RXD => GIGE_RXD,
-          GIGE_RX_CLK => GIGE_RX_CLK,
-          GIGE_RX_DV => GIGE_RX_DV,
-          GIGE_RX_ER => GIGE_RX_ER,
-          GIGE_TXD => GIGE_TXD,
-          GIGE_GTX_CLK => GIGE_GTX_CLK,
-          GIGE_TX_EN => GIGE_TX_EN,
-          GIGE_TX_ER => GIGE_TX_ER,
-          THISISALWAYSON => THISISALWAYSON
-        );
+    -- Instantiate the Unit Under Test (UUT)
+    uut: tcu_top PORT MAP (
+        gpmc_a => gpmc_a,
+        gpmc_d => gpmc_d,
+        gpmc_clk_i => gpmc_clk_i,
+        gpmc_n_cs => gpmc_n_cs,
+        gpmc_n_we => gpmc_n_we,
+        gpmc_n_oe => gpmc_n_oe,
+        gpmc_n_adv_ale => gpmc_n_adv_ale,
+        gpmc_n_wp => gpmc_n_wp,
+        gpmc_busy_0 => gpmc_busy_0,
+        gpmc_busy_1 => gpmc_busy_1,
+        gpio => gpio,
+        gpioIn => gpioIn,
+        led => led,
+        sys_clk_P => sys_clk_P,
+        sys_clk_N => sys_clk_N,
+        sys_clk_ext => sys_clk_ext,
+        bcd => bcd,
+        GIGE_COL => GIGE_COL,
+        GIGE_CRS => GIGE_CRS,
+        GIGE_MDC => GIGE_MDC,
+        GIGE_MDIO => GIGE_MDIO,
+        GIGE_TX_CLK => GIGE_TX_CLK,
+        GIGE_nRESET => GIGE_nRESET,
+        GIGE_RXD => GIGE_RXD,
+        GIGE_RX_CLK => GIGE_RX_CLK,
+        GIGE_RX_DV => GIGE_RX_DV,
+        GIGE_RX_ER => GIGE_RX_ER,
+        GIGE_TXD => GIGE_TXD,
+        GIGE_GTX_CLK => GIGE_GTX_CLK,
+        GIGE_TX_EN => GIGE_TX_EN,
+        GIGE_TX_ER => GIGE_TX_ER,
+        THISISALWAYSON => THISISALWAYSON
+    );
 
     -- Clock process definitions
     GIGE_TX_CLK_process :process
