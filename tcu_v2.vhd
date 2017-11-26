@@ -52,10 +52,8 @@ port
     GIGE_TX_ER      : out   std_logic;
 
     THISISALWAYSON  : out   std_logic
-
 );
 end tcu_top;
-
 
 -------------------------------------------------------------------------------
 -- Architecture of rhino_proc_intrfc_top
@@ -90,8 +88,7 @@ architecture rtl of tcu_top is
     signal sys_clk_100MHz_ext   : std_logic;
 
     -- Debug signals
-    constant VERSION        : std_logic_vector(7 downto 0) := "00000010";
-    constant ID             : std_logic_vector(7 downto 0) := "01010001";
+    constant VERSION        : std_logic_vector(7 downto 0) := "00000010"; -- add this back in
     signal reg_bank         : ram_type := (others => "1111111111111111");
     signal led_reg          : std_logic_vector(15 downto 0) := (others => '0');
     signal bcd_int          : word32_type := (x"0000",x"0000");
@@ -676,7 +673,7 @@ begin --architecture RTL
                 MBcounter       <= 0;
                 Dcounter        <= 0;
                 --Pcounter <= 0;
-                Pcounter        <= x"00000000";
+                Pcounter        <= (others => '0');
                 -- turn amplifiers off
                 gpio(13)        <= '0';
                 gpio(12)        <= '0';
