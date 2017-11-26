@@ -163,8 +163,151 @@ BEGIN
         wait for sys_clk_period/2;
     end process;
 
+
+    -- TODO:    MODIFY THIS TO SIMULATE WHAT THE GPMC LINES REALLY DO UNDER BORPH!
+    --          TAKE A LOOK AT THE SCREENSHOTS!
+
     -- Stimulus process
     stim_proc: process
+        procedure register_write(   address : in STD_LOGIC_VECTOR(0 downto 0);
+                                    data    : in STD_LOGIC_VECTOR(15 downto 0)
+                                )   is
+        begin
+            ------------------------------------------------------------------------
+            -- WRITE OPERATION
+            -- TAKES 6 GPMC_FCLK CYCLES
+            -- GPMC_FCLK IS AN INTERNAL CLK THAT RUNS AT TWICE THE RATE OF GPMC_CLK
+            ------------------------------------------------------------------------
+
+            -- time 0
+            -- "ARM WRITES"
+            gpmc_clk  <= '0';
+            gpmc_n_cs <= "1111110";
+            gpmc_n_we <= '1';
+            gpmc_n_oe <= '1';
+            gpmc_n_adv_ale <= '1';
+            gpmc_a <= "0001000000";
+            gpmc_d <= "0000000000000000";
+            wait for gpmc_fclk_period;
+
+            -- time 1
+            gpmc_clk  <= '0';
+            gpmc_n_cs <= "1111110";
+            gpmc_n_we <= '1';
+            gpmc_n_oe <= '1';
+            gpmc_n_adv_ale <= '0';
+            gpmc_d <= "0000000000000000";
+            wait for gpmc_fclk_period;
+
+            -- time 2
+            -- "FPGA READS ADDR"
+            gpmc_clk  <= '1';
+            gpmc_n_cs <="1111110";
+            gpmc_n_we <= '1';
+            gpmc_n_oe <= '1';
+            gpmc_n_adv_ale <= '0';
+            gpmc_d <= "0000000000000000";
+            wait for gpmc_fclk_period;
+
+
+            -- time 3
+            -- "ARM WRITES DATA"
+            gpmc_clk  <= '0';
+            gpmc_n_cs <= "1111110";
+            gpmc_n_we <= '0';
+            gpmc_n_oe <= '1';
+            gpmc_n_adv_ale <= '1';
+            gpmc_d <= "0000000011111111";
+            wait for gpmc_fclk_period;
+
+            -- time 4
+            -- "FPGA READS DATA"
+            gpmc_clk  <= '1';
+            gpmc_n_cs <= "1111110";
+            gpmc_n_we <= '0';
+            gpmc_n_oe <= '1';
+            gpmc_n_adv_ale <= '1';
+            gpmc_a <= (others => '0');
+            gpmc_d <= "0000000010101111";
+            wait for gpmc_fclk_period;
+
+            -- time 5
+            gpmc_clk  <= '0';
+            gpmc_n_cs <=  "1111111";
+            gpmc_n_we <= '1';
+            gpmc_n_oe <= '1';
+            gpmc_n_adv_ale <= '1';
+            gpmc_a <= (others => '0');
+            gpmc_d <= (others => 'Z');
+            wait for gpmc_fclk_period;
+
+            -- time 6
+            gpmc_clk  <= '1';
+            gpmc_n_cs <=  "1111111";
+            gpmc_n_we <= '1';
+            gpmc_n_oe <= '1';
+            gpmc_n_adv_ale <= '1';
+            gpmc_a <= (others => '0');
+            gpmc_d <= (others => 'Z');
+            wait for gpmc_fclk_period;
+
+            gpmc_clk <= '0';
+            wait for gpmc_fclk_period*10;
+        end register_write;
+
+        procedure register_read(address     : in STD_LOGIC_VECTOR(1 downto 0)) is
+        begin
+            ------------------------------------------------------------------------
+            -- READ OPERATION
+            -- TAKES 8 GPMC_FCLK CYCLES
+            ------------------------------------------------------------------------
+
+            -- time 0
+            -- "ARM WRITES ADDRESS"
+            gpmc_n_cs <=  "1111110";
+            gpmc_a <= "0001000000";
+            gpmc_d <= "0000000000000000";
+            wait for gpmc_fclk_period;
+
+            -- time 1
+            gpmc_n_adv_ale <= '0';
+            wait for gpmc_fclk_period;
+
+            -- time 2
+            -- "FPGA READS ADDRESS"
+            gpmc_clk  <= '1';
+            wait for gpmc_fclk_period;
+
+            -- time 3
+            -- "ARM RELEASES ADDRESS BUS"
+            gpmc_clk  <= '0';
+            gpmc_n_adv_ale <= '1';
+            gpmc_n_oe <= '0';
+            gpmc_a <= (others => 'X');
+            gpmc_d <= (others => 'Z');
+            wait for gpmc_fclk_period;
+
+            -- time 4
+            -- "FPGA WRITES DATA"
+            gpmc_clk  <= '1';
+            wait for gpmc_fclk_period;
+
+            -- time 5
+            -- "ARM READS DATA"
+            gpmc_clk  <= '0';
+            gpmc_n_cs <=  "1111111";
+            gpmc_n_oe <= '0';
+            wait for gpmc_fclk_period;
+
+            -- time 6
+            -- "FPGA RELEASES DATA BUS"
+            gpmc_clk  <= '1';
+            gpmc_d <= (others => 'Z'); -- check if this is done by vhdl
+            wait for gpmc_fclk_period;
+            -- time 7
+            gpmc_clk  <= '0';wait;
+        end register_read;
+
     begin
         -- hold reset state for 100 ns.
         wait for 100 ns;
