@@ -46,49 +46,49 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
     END COMPONENT;
 
 
-   --Inputs
-   signal gpmc_a : std_logic_vector(10 downto 1) := (others => '0');
-   signal gpmc_clk_i : std_logic := '0';
-   signal gpmc_n_cs : std_logic_vector(6 downto 0) := (others => '0');
-   signal gpmc_n_we : std_logic := '0';
-   signal gpmc_n_oe : std_logic := '0';
-   signal gpmc_n_adv_ale : std_logic := '0';
-   signal gpmc_n_wp : std_logic := '0';
-   signal gpioIn : std_logic_vector(1 downto 0) := (others => '0');
-   signal sys_clk_P : std_logic := '0';
-   signal sys_clk_N : std_logic := '0';
-   signal sys_clk_ext : std_logic := '0';
-   signal GIGE_COL : std_logic := '0';
-   signal GIGE_CRS : std_logic := '0';
-   signal GIGE_TX_CLK : std_logic := '0';
-   signal GIGE_RXD : std_logic_vector(7 downto 0) := (others => '0');
-   signal GIGE_RX_CLK : std_logic := '0';
-   signal GIGE_RX_DV : std_logic := '0';
-   signal GIGE_RX_ER : std_logic := '0';
+    --Inputs
+    signal gpmc_a : std_logic_vector(10 downto 1) := (others => '0');
+    signal gpmc_clk_i : std_logic := '0';
+    signal gpmc_n_cs : std_logic_vector(6 downto 0) := (others => '0');
+    signal gpmc_n_we : std_logic := '0';
+    signal gpmc_n_oe : std_logic := '0';
+    signal gpmc_n_adv_ale : std_logic := '0';
+    signal gpmc_n_wp : std_logic := '0';
+    signal gpioIn : std_logic_vector(1 downto 0) := (others => '0');
+    signal sys_clk_P : std_logic := '0';
+    signal sys_clk_N : std_logic := '0';
+    signal sys_clk_ext : std_logic := '0';
+    signal GIGE_COL : std_logic := '0';
+    signal GIGE_CRS : std_logic := '0';
+    signal GIGE_TX_CLK : std_logic := '0';
+    signal GIGE_RXD : std_logic_vector(7 downto 0) := (others => '0');
+    signal GIGE_RX_CLK : std_logic := '0';
+    signal GIGE_RX_DV : std_logic := '0';
+    signal GIGE_RX_ER : std_logic := '0';
 
-	--BiDirs
-   signal gpmc_d : std_logic_vector(15 downto 0);
-   signal GIGE_MDIO : std_logic;
+    --BiDirs
+    signal gpmc_d : std_logic_vector(15 downto 0);
+    signal GIGE_MDIO : std_logic;
 
- 	--Outputs
-   signal gpmc_busy_0 : std_logic;
-   signal gpmc_busy_1 : std_logic;
-   signal gpio : std_logic_vector(15 downto 2);
-   signal led : std_logic_vector(7 downto 0);
-   signal bcd : std_logic_vector(31 downto 0);
-   signal GIGE_MDC : std_logic;
-   signal GIGE_nRESET : std_logic;
-   signal GIGE_TXD : std_logic_vector(7 downto 0);
-   signal GIGE_GTX_CLK : std_logic;
-   signal GIGE_TX_EN : std_logic;
-   signal GIGE_TX_ER : std_logic;
-   signal THISISALWAYSON : std_logic;
+    	--Outputs
+    signal gpmc_busy_0 : std_logic;
+    signal gpmc_busy_1 : std_logic;
+    signal gpio : std_logic_vector(15 downto 2);
+    signal led : std_logic_vector(7 downto 0);
+    signal bcd : std_logic_vector(31 downto 0);
+    signal GIGE_MDC : std_logic;
+    signal GIGE_nRESET : std_logic;
+    signal GIGE_TXD : std_logic_vector(7 downto 0);
+    signal GIGE_GTX_CLK : std_logic;
+    signal GIGE_TX_EN : std_logic;
+    signal GIGE_TX_ER : std_logic;
+    signal THISISALWAYSON : std_logic;
 
-   -- Clock period definitions
-   constant GIGE_TX_CLK_period : time := 10 ns;
-   constant GIGE_RX_CLK_period : time := 10 ns;
-   constant GIGE_GTX_CLK_period : time := 10 ns;
-   constant sys_clk_period :  time := 10 ns;
+    -- Clock period definitions
+    constant GIGE_TX_CLK_period : time := 10 ns;
+    constant GIGE_RX_CLK_period : time := 10 ns;
+    constant GIGE_GTX_CLK_period : time := 10 ns;
+    constant sys_clk_period :  time := 10 ns;
 
 BEGIN
 
@@ -128,53 +128,52 @@ BEGIN
           THISISALWAYSON => THISISALWAYSON
         );
 
-   -- Clock process definitions
-   GIGE_TX_CLK_process :process
-   begin
-		GIGE_TX_CLK <= '0';
-		wait for GIGE_TX_CLK_period/2;
-		GIGE_TX_CLK <= '1';
-		wait for GIGE_TX_CLK_period/2;
-   end process;
+    -- Clock process definitions
+    GIGE_TX_CLK_process :process
+    begin
+        GIGE_TX_CLK <= '0';
+        wait for GIGE_TX_CLK_period/2;
+        GIGE_TX_CLK <= '1';
+        wait for GIGE_TX_CLK_period/2;
+    end process;
 
-   GIGE_RX_CLK_process :process
-   begin
-		GIGE_RX_CLK <= '0';
-		wait for GIGE_RX_CLK_period/2;
-		GIGE_RX_CLK <= '1';
-		wait for GIGE_RX_CLK_period/2;
-   end process;
+    GIGE_RX_CLK_process :process
+    begin
+        GIGE_RX_CLK <= '0';
+        wait for GIGE_RX_CLK_period/2;
+        GIGE_RX_CLK <= '1';
+        wait for GIGE_RX_CLK_period/2;
+    end process;
 
-   GIGE_GTX_CLK_process :process
-   begin
-		GIGE_GTX_CLK <= '0';
-		wait for GIGE_GTX_CLK_period/2;
-		GIGE_GTX_CLK <= '1';
-		wait for GIGE_GTX_CLK_period/2;
-   end process;
+    GIGE_GTX_CLK_process :process
+    begin
+        GIGE_GTX_CLK <= '0';
+        wait for GIGE_GTX_CLK_period/2;
+        GIGE_GTX_CLK <= '1';
+        wait for GIGE_GTX_CLK_period/2;
+    end process;
 
-   SYS_CLK_process :process
-   begin
-		sys_clk_P <= '0';
-		sys_clk_P <= '1';
-		wait for sys_clk_period/2;
-		sys_clk_P <= '1';
-		sys_clk_P <= '0';
-		wait for sys_clk_period/2;
-   end process;
+    SYS_CLK_process :process
+    begin
+        sys_clk_P <= '0';
+        sys_clk_N <= '1';
+        wait for sys_clk_period/2;
+        sys_clk_P <= '1';
+        sys_clk_N <= '0';
+        wait for sys_clk_period/2;
+    end process;
 
+    -- Stimulus process
+    stim_proc: process
+    begin
+        -- hold reset state for 100 ns.
+        wait for 100 ns;
 
-   -- Stimulus process
-   stim_proc: process
-   begin
-      -- hold reset state for 100 ns.
-      wait for 100 ns;
+        wait for GIGE_TX_CLK_period*10;
 
-      wait for GIGE_TX_CLK_period*10;
+        -- insert stimulus here
 
-      -- insert stimulus here
-
-      wait;
-   end process;
+        wait;
+    end process;
 
 END;
