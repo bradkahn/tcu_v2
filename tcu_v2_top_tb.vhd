@@ -282,58 +282,96 @@ BEGIN
             wait for gpmc_fclk_period/2;
         end register_write;
 
-        procedure register_read (    address     : in STD_LOGIC_VECTOR(1 downto 0)
+        procedure register_read (    address     : in STD_LOGIC_VECTOR(25 downto 0)
                                 ) is
         begin
             ------------------------------------------------------------------------
             -- READ OPERATION
-            -- TAKES 8 GPMC_FCLK CYCLES
+            -- BASED ON OBSERVED WAVEFORMS:
+            -- TAKES 32 GPMC_FCLK CYCLES
             ------------------------------------------------------------------------
 
+            wait until gpmc_fclk = '1';
+
             -- time 0
-            -- "ARM WRITES ADDRESS"
-            gpmc_n_cs <=  "1111110";
-            gpmc_a <= "0001000000";
-            gpmc_d <= "0000000000000000";
-            wait for gpmc_fclk_period;
+            gpmc_n_cs       <= "1111110";
+            gpmc_a          <= address(25 downto 16);
+            gpmc_d          <= address(15 downto 0);
+            wait for gpmc_fclk_period/2;
 
             -- time 1
-            gpmc_n_adv_ale <= '0';
-            wait for gpmc_fclk_period;
+            wait for gpmc_fclk_period/2;
 
             -- time 2
-            -- "FPGA READS ADDRESS"
-            gpmc_clk_i <= '1';
-            wait for gpmc_fclk_period;
+            wait for gpmc_fclk_period/2;
 
             -- time 3
-            -- "ARM RELEASES ADDRESS BUS"
-            gpmc_clk_i <= '0';
-            gpmc_n_adv_ale <= '1';
-            gpmc_n_oe <= '0';
-            gpmc_a <= (others => 'X');
-            gpmc_d <= (others => 'Z');
-            wait for gpmc_fclk_period;
+            wait for gpmc_fclk_period/2;
 
             -- time 4
-            -- "FPGA WRITES DATA"
-            gpmc_clk_i <= '1';
-            wait for gpmc_fclk_period;
+            gpmc_clk_i      <= '1';
+            wait for gpmc_fclk_period/2;
 
             -- time 5
-            -- "ARM READS DATA"
-            gpmc_clk_i <= '0';
-            gpmc_n_cs <=  "1111111";
-            gpmc_n_oe <= '0';
-            wait for gpmc_fclk_period;
+            wait for gpmc_fclk_period/2;
 
             -- time 6
-            -- "FPGA RELEASES DATA BUS"
-            gpmc_clk_i <= '1';
-            gpmc_d <= (others => 'Z'); -- check if this is done by vhdl
-            wait for gpmc_fclk_period;
+            gpmc_n_adv_ale  <= '1';
+            gpmc_n_oe       <= '0';
+            gpmc_clk_i      <= '0';
+            wait for gpmc_fclk_period/2;
+
             -- time 7
-            gpmc_clk_i <= '0';wait;
+            gpmc_a          <= (others => 'X');
+            gpmc_d          <= (others => 'Z');
+            wait for gpmc_fclk_period/2;
+
+            -- time 8
+            -- ***NOTE: DATA READ FROM REG SHOULD BE AVAILABLE HERE***
+            report "data DATA READ FROM REG SHOULD BE AVAILABLE HERE" severity note;
+            gpmc_clk_i      <= '1';
+            wait for gpmc_fclk_period/2;
+
+            -- time 9
+            wait for gpmc_fclk_period/2;
+
+            -- time 10
+            gpmc_clk_i      <= '0';
+            wait for gpmc_fclk_period/2;
+
+            -- time 11
+            wait for gpmc_fclk_period/2;
+
+            -- loop starts at time 12, must end at time 27
+            for i in 0 to 8 loop
+                gpmc_clk_i      <= '1';
+                wait for gpmc_fclk_period/2;
+                wait for gpmc_fclk_period/2;
+                gpmc_clk_i      <= '0';
+                wait for gpmc_fclk_period/2;
+                wait for gpmc_fclk_period/2;
+            end loop;
+
+            -- time 28
+            gpmc_clk_i      <= '1';
+            wait for gpmc_fclk_period/2;
+
+            -- time 29
+            wait for gpmc_fclk_period/2;
+
+            -- time 30
+            gpmc_n_cs       <= "1111111";
+            gpmc_n_oe       <= '1';
+            gpmc_clk_i      <= '0';
+            wait for gpmc_fclk_period/2;
+
+            -- time 31
+            wait for gpmc_fclk_period/2;
+
+            -- time 32
+            gpmc_n_adv_ale  <= '0';
+            wait for gpmc_fclk_period/2;
+
         end register_read;
 
     begin
@@ -341,7 +379,17 @@ BEGIN
         -- insert stimulus here
         wait for 100 ns;
 
-        register_write(address=>"00000000000000000000001011", data=>x"ABCD");
+        -- status      3 0x08000000 0x02
+        -- reg_led     3 0x08800000 0x02
+        -- reg_fmc     3 0x09000000 0x02
+        -- reg_pulses  3 0x09800000 0x180
+        -- m           3 0x0A000000 0x04
+        -- n           3 0x0A800000 0x02
+        -- pri         1 0x0B000000 0x04
+
+        register_write(address=>"00010000000000000000000000", data=>x"ABCD");
+        wait for 20 ns;
+        register_read(address=>"00010000000000000000000000");
 
         wait;
     end process;
