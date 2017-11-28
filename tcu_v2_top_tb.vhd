@@ -45,7 +45,6 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
         );
     END COMPONENT;
 
-
     --Inputs
     signal gpmc_a         : std_logic_vector(10 downto 1) := (others => '0');
     signal gpmc_clk_i     : std_logic := '0';
@@ -445,6 +444,10 @@ BEGIN
         register_write(address => LED_REG_BASE, data=>x"0000");
         -- echo -e -n "\x01\x00" > /proc/671/hw/ioreg/reg_led
         register_write(address => LED_REG_BASE, data=>x"0001");
+
+        wait for 100ns;
+        -- FIRE!
+        gpioIn  <= "01";
 
         wait;
     end process;
