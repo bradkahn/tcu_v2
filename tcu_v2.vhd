@@ -96,11 +96,6 @@ architecture rtl of tcu_top is
     signal M_reg_cmp        : std_logic_vector(31 downto 0);                    -- M_reg_cmp <= M_reg(1) & M_reg(0)
     signal N_reg            : std_logic_vector(15 downto 0) := x"0002";
 
-    -- Dominic's Debug signals
-    --	signal reg_32_bit : word32_type := (x"1200",x"0045");
-    --	signal reg_read	: word32_type := (x"0000",x"0000");
-    --	signal PRI 			: word32_type := (x"1234",x"0045");
-
     signal ready            : std_logic;                                        -- indicates that experiment is ready to start, triggered by trigger(0) and gpioIn(0)
 
     --signal    NM			: std_logic;
@@ -444,8 +439,6 @@ begin --architecture RTL
                         when 3 => gpmc_data_o <= reg_bank(conv_integer(reg_file_address));
                         when 4 => gpmc_data_o <= M_reg(conv_integer(reg_file_address));
                         when 5 => gpmc_data_o <= N_reg;
-                        --when 6 => gpmc_data_o <= PRI(conv_integer(reg_file_address));
-                        --when 7 => gpmc_data_o <= reg_read(conv_integer(reg_file_address));
                         when others => gpmc_data_o <= (others => '0');
                 end case;
                 --Check for write
@@ -457,9 +450,6 @@ begin --architecture RTL
                         when 3 => reg_bank(conv_integer(reg_file_address)) <= gpmc_data_i;
                         when 4 => M_reg(conv_integer(reg_file_address)) <= gpmc_data_i;
                         when 5 => N_reg <= gpmc_data_i;
-                        --when 6 =>
-                        --	reg_32_bit(conv_integer(reg_file_address)) <= gpmc_data_i;
-                        --reg_read <= reg_32_bit;
                         when others => null;
                     end case;
                 end if;
