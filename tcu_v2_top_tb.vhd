@@ -90,6 +90,7 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
     constant GIGE_RX_CLK_period   : time := 10 ns;  -- TODO: set correct period
     constant GIGE_GTX_CLK_period  : time := 10 ns;  -- TODO: set correct period
     constant sys_clk_period       : time := 10 ns;
+    constant sys_clk_ext_period   : time := 10 ns;
     constant gpmc_fclk_period     : time := 6 ns; -- gpmc_fclk is 2x gpmc clock (83Mhz = 12ns)
 
 BEGIN
@@ -167,12 +168,19 @@ BEGIN
 
     GPMC_FCLK_CLK_process :process
     begin
-      gpmc_fclk <= '0';
-      wait for gpmc_fclk_period/2;
-      gpmc_fclk <= '1';
-      wait for gpmc_fclk_period/2;
+        gpmc_fclk <= '0';
+        wait for gpmc_fclk_period/2;
+        gpmc_fclk <= '1';
+        wait for gpmc_fclk_period/2;
     end process;
 
+    SYS_CLK_EXT_process : process
+    begin
+        sys_clk_ext <= '0';
+        wait for sys_clk_ext_period/2;
+        sys_clk_ext <= '1';
+        wait for sys_clk_ext_period/2;
+    end process;
 
     -- TODO:    MODIFY THIS TO SIMULATE WHAT THE GPMC LINES REALLY DO UNDER BORPH!
     --          TAKE A LOOK AT THE SCREENSHOTS!
