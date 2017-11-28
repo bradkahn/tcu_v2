@@ -113,7 +113,7 @@ architecture rtl of tcu_top is
     signal Psig             : std_logic;
 
     --signal N					 	integer range 0 to 32;
-    signal M                : std_logic_vector(31 downto 0) := (others => '0');
+    signal M_counter        : std_logic_vector(31 downto 0) := (others => '0');
 
     signal MB               : integer range 0 to 65535 := 0;
     signal MBcounter        : integer range 0 to 65535 := 0;
@@ -482,12 +482,12 @@ begin --architecture RTL
     ---------------------------------------------------------------------------
     nextload    <= (MBsig and Dsig and Psig);
     --led_reg(0)
-    --led_reg(1) <= when M = M_reg
+    --led_reg(1) <= when M_counter= M_reg
     --led_reg(2) <= MBsig;
     led_reg(3)  <= Dsig;
     led_reg(4)  <= Psig;
     led_reg(5)  <= nextload;
-    --led_reg(6) <= when M = M_reg
+    --led_reg(6) <= when M_counter= M_reg
     led_reg(6)  <= '1';
     led_reg(7)  <= gpioIn(1);
 
@@ -616,10 +616,10 @@ begin --architecture RTL
                 -- increments PC or resets PC to zero. enables stop register if it has completed the last instruction
                 if(PC = conv_integer(N_reg(7 downto 0))*6) then
                     PC  <= 0;
-                    if(M = M_reg_cmp) then
+                    if(M_counter = M_reg_cmp) then
                         status_reg(0) <= '1';
                     else
-                        M <= M + 1;
+                        M_counter <= M_counter+ 1;
                     end if;
                 else
                     PC <= PC + 6 ;
@@ -665,7 +665,7 @@ begin --architecture RTL
             --===========--
             elsif(triggers(0) = '0') then
                 PC              <= 0;
-                M               <= (others => '0');
+                M_counter       <= (others => '0');
                 status_reg(0)   <= '0';
                 sys_rst_i       <= '0';				-- turn ethernet on (was off)
                 udp_send_packet <= '0';
