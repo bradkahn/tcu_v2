@@ -113,24 +113,24 @@ architecture rtl of tcu_top is
     signal Psig             : std_logic;
 
     --signal N					 	integer range 0 to 32;
-    signal M_counter        : std_logic_vector(31 downto 0) := (others => '0');
+    signal M_counter        : std_logic_vector(31 downto 0) := (others => '0'); -- Number of repeats that have already ocurred
 
-    signal MB               : integer range 0 to 65535 := 0;
-    signal MBcounter        : integer range 0 to 65535 := 0;
-    signal D                : integer range 0 to 65535 := 0;
-    signal Dcounter         : integer range 0 to 65535 := 0;
+    signal MB               : integer range 0 to 65535 := 0;                    -- Main bang offset extracted from pulses reg
+    signal MBcounter        : integer range 0 to 65535 := 0;                    -- Main bang counter compared to Main bang offset
+    signal D                : integer range 0 to 65535 := 0;                    -- Digitisation offset extracted from pulses reg
+    signal Dcounter         : integer range 0 to 65535 := 0;                    -- Digitisation counter compared to Digitisation offset
     --signal P					 	integer range 0 to 65535 := 0;
     --signal Pcounter		:	integer range 0 to 65535 := 0;
     -- 32 bit versions of P and P counter
-    signal P                : std_logic_vector(31 downto 0) := (others => '0');
-    signal Pcounter         : std_logic_vector(31 downto 0) := (others => '0');
-    signal one              : std_logic_vector(31 downto 0) := x"00000001";
+    signal P                : std_logic_vector(31 downto 0) := (others => '0'); -- PRI offset extracted from pulses reg
+    signal Pcounter         : std_logic_vector(31 downto 0) := (others => '0'); -- PRI counter compared to PRI offset
+    signal one              : std_logic_vector(31 downto 0) := x"00000001";     -- Constant literal one (1)
 
-    signal triggers         : std_logic_vector(15 downto 0) := (others => '0');
-    signal status_reg       : std_logic_vector(15 downto 0) := (others => '0');
+    signal triggers         : std_logic_vector(15 downto 0) := (others => '0'); -- triggers(0) 'soft on' / arming bit from register
+    signal status_reg       : std_logic_vector(15 downto 0) := (others => '0'); -- status_reg(0) used to indicate that all pulse repeats for experiment are completed
 
-    signal PC               : integer range 0 to 255 := 0;
-    signal dataout          : std_logic_vector(95 downto 0);
+    signal PC               : integer range 0 to 255 := 0;                      -- Program Counter keeps track of current pulse
+    signal dataout          : std_logic_vector(95 downto 0);                    -- Contains all pulse parameters for current pulse
 
     -- Ethernet
     signal sys_rst_i        : std_logic := '0';
