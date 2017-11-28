@@ -387,9 +387,11 @@ BEGIN
         -- n           3 0x0A800000 0x02    <- # of pulses
         -- pri         1 0x0B000000 0x04    <- debug register
 
-        -- To initiate an experiment follow the following steps.
-        -- %setting the m (32 bit) and n (16 bit) registers:
-        -- NB: little endian
+        -- Set up a signal that triggers every 1 ms (1Khz), has a main bang and
+        -- digitisation offset of 500ns, a band frequency of 1300 MHz and
+        -- operating at L-band, you would write the following command.
+
+        -- NB: values echoed in are little endian
 
         -- echo -e -n "\x01\x00" > /proc/671/hw/ioreg/n
         register_write(address=>"00101000000000000000000000", data=>x"0001");
