@@ -72,14 +72,14 @@ architecture rtl of tcu_top is
     ---------------------------------------------------------------------------
 
     -- Define signals for the gpmc bus
-    signal gpmc_clk_i_b     : std_logic;  --buffered  gpmc_clk_i
+    signal gpmc_clk_i_b     : std_logic;                                        -- buffered gpmc_clk_i
     signal gpmc_address     : std_logic_vector(25 downto 0):=(others => '0');   -- Full de-multiplexed address bus (ref. 16 bits)
     signal gpmc_data_o      : std_logic_vector(15 downto 0):=(others => '0');   -- Register for output bus value
     signal gpmc_data_i      : std_logic_vector(15 downto 0):=(others => '0');   -- Register for input bus value
 
     --Clocks
-    signal sys_clk_100MHz   : std_logic;
-    signal sys_clk_100MHz_ext   : std_logic;
+    signal sys_clk_100MHz   : std_logic;                                        -- internal 100MHz clock
+    signal sys_clk_100MHz_ext   : std_logic;                                    -- external 100MHz clock coming in from FMC0 J1 P1
 
     -- TCU registers available to BORPH
     constant VERSION        : std_logic_vector(7 downto 0) := "00000010";       -- TODO: add VERSION register to symbol file to identify which TCU version is installed
@@ -90,13 +90,14 @@ architecture rtl of tcu_top is
     signal M_reg_cmp        : std_logic_vector(31 downto 0);                    -- M_reg_cmp <= M_reg(1) & M_reg(0)
     signal N_reg            : std_logic_vector(15 downto 0) := x"0002";         -- number of unique pulses (N)
 
-    signal ready            : std_logic;                                        -- indicates that experiment is ready to start, triggered by trigger(0) and gpioIn(0)
+    signal ready            : std_logic;                                        -- indicates that experiment is ready to start, asserted when trigger(0) and gpioIn(0) are high
 
-    signal MBsig            : std_logic;                                        -- indicates when Main Bang offset has been reached
-    signal Dsig             : std_logic;                                        -- indicates when Digitisation offset has been reached
-    signal Psig             : std_logic;                                        -- indicates when Next PRI offset has been reached
+    signal MBsig            : std_logic;                                        -- indicates when Main Bang offset has been reached, mapped to GPIO output pin 2, 8
+    signal Dsig             : std_logic;                                        -- indicates when Digitisation offset has been reached, mapped to GPIO output pin 3, 9
+    signal Psig             : std_logic;                                        -- indicates when Next PRI offset has been reached, mapped to GPIO output pin 4, 10
 
     --signal N					 	integer range 0 to 32;
+    -- TODO: convert the 32 bit verion of N to integer types like the other counters
     signal M_counter        : std_logic_vector(31 downto 0) := (others => '0'); -- Number of repeats that have already ocurred
 
     signal MB               : integer range 0 to 65535 := 0;                    -- Main bang offset extracted from pulses reg
@@ -106,6 +107,7 @@ architecture rtl of tcu_top is
     --signal P					 	integer range 0 to 65535 := 0;
     --signal Pcounter		:	integer range 0 to 65535 := 0;
     -- 32 bit versions of P and P counter
+    -- TODO: convert the 32 bit verions of P, Pcounter to integer types like the other counters
     signal P                : std_logic_vector(31 downto 0) := (others => '0'); -- PRI offset extracted from pulses reg
     signal Pcounter         : std_logic_vector(31 downto 0) := (others => '0'); -- PRI counter compared to PRI offset
     signal one              : std_logic_vector(31 downto 0) := x"00000001";     -- Constant literal one (1)
@@ -115,6 +117,10 @@ architecture rtl of tcu_top is
 
     signal PC               : integer range 0 to 255 := 0;                      -- Program Counter keeps track of current pulse
     signal dataout          : std_logic_vector(95 downto 0);                    -- Contains all pulse parameters for current pulse
+
+    -- Amplifiers and switches
+    signal l_band_amp_on        : std_logic;                                    -- gpio(13) <= l_band_amp_on;
+    signal x_band_amp_on        : std_logic;                                    -- gpio(12) <= x_band_amp_on;
 
     ---------------------------------------------------------------------------
     --	Ethernet Signal declaration section
@@ -174,7 +180,6 @@ architecture rtl of tcu_top is
     signal udp_rx_rdy           : std_logic;
     signal udp_rx_rdy_r         : std_logic;
 
-
     signal dst_mac_addr         : std_logic_vector(47 downto 0);
     --	signal tx_state			: std_logic_vector(2 downto 0) := "000";
     signal rx_state             : std_logic_vector(1 downto 0) := "00";
@@ -196,11 +201,6 @@ architecture rtl of tcu_top is
     signal x_band_freq          : std_logic_vector(15 downto 0) := x"3421";
     signal pol                  : std_logic_vector(15 downto 0) := x"0000";
     signal pol_mode             : std_logic_vector(2 downto 0);
-
-    -- Amplifiers and switches
-
-    signal l_band_amp_on        : std_logic;
-    signal x_band_amp_on        : std_logic;
 
     ---------------------------------------------------------------------------
     --	Ethernet Component declaration section
@@ -462,7 +462,7 @@ begin --architecture RTL
     --led_reg(2) <= MBsig;
     led_reg(3)  <= Dsig;
     led_reg(4)  <= Psig;
-    led_reg(5)  <= nextload;
+    led_reg(5)  <= (MBsig and Dsig and Psig);
     --led_reg(6) <= when M_counter= M_reg
     led_reg(6)  <= '1';
     led_reg(7)  <= gpioIn(1);
@@ -484,7 +484,7 @@ begin --architecture RTL
     gpio(9) <= Dsig;
     gpio(4) <= Psig;		-- Indicates when Next PRI offset has been reached
     gpio(10)<= Psig;
-    gpio(5) <= nextload;
+    gpio(5) <= (MBsig and Dsig and Psig);
 
     gpio(7) <= gpioIn(1);
 
