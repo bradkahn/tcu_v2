@@ -87,13 +87,13 @@ architecture rtl of tcu_top is
     signal sys_clk_100MHz   : std_logic;
     signal sys_clk_100MHz_ext   : std_logic;
 
-    -- Debug signals
-    constant VERSION        : std_logic_vector(7 downto 0) := "00000010"; -- add this back in
+    -- TCU registers available to BORPH
+    constant VERSION        : std_logic_vector(7 downto 0) := "00000010";       -- TODO: add VERSION register to symbol file to identify which TCU version is installed
     signal reg_bank         : ram_type := (others => "1111111111111111");
     signal led_reg          : std_logic_vector(15 downto 0) := (others => '0');
     signal bcd_int          : word32_type := (x"0000",x"0000");
     signal M_reg            : word32_type := (x"f000",x"f000");
-    signal M_reg_cmp        : std_logic_vector(31 downto 0);
+    signal M_reg_cmp        : std_logic_vector(31 downto 0);                    -- M_reg_cmp <= M_reg(1) & M_reg(0)
     signal N_reg            : std_logic_vector(15 downto 0) := x"0002";
 
     -- Dominic's Debug signals
@@ -101,16 +101,13 @@ architecture rtl of tcu_top is
     --	signal reg_read	: word32_type := (x"0000",x"0000");
     --	signal PRI 			: word32_type := (x"1234",x"0045");
 
-    -- Used for processing (Skippy)
-    	-- indicates that experiment is ready to start.
-    	-- triggered by trigger(0) and gpioIn(0)
-    signal ready            :	std_logic;
+    signal ready            : std_logic;                                        -- indicates that experiment is ready to start, triggered by trigger(0) and gpioIn(0)
 
     --signal    NM			: std_logic;
-    signal nextload         : std_logic;
-    signal MBsig            : std_logic;
-    signal Dsig             : std_logic;
-    signal Psig             : std_logic;
+    -- signal nextload         : std_logic;
+    signal MBsig            : std_logic;                                        -- indicates when Main Bang offset has been reached
+    signal Dsig             : std_logic;                                        -- indicates when Digitisation offset has been reached
+    signal Psig             : std_logic;                                        -- indicates when Next PRI offset has been reached
 
     --signal N					 	integer range 0 to 32;
     signal M_counter        : std_logic_vector(31 downto 0) := (others => '0'); -- Number of repeats that have already ocurred
@@ -132,7 +129,10 @@ architecture rtl of tcu_top is
     signal PC               : integer range 0 to 255 := 0;                      -- Program Counter keeps track of current pulse
     signal dataout          : std_logic_vector(95 downto 0);                    -- Contains all pulse parameters for current pulse
 
-    -- Ethernet
+    ---------------------------------------------------------------------------
+    --	Ethernet Signal declaration section
+    ---------------------------------------------------------------------------
+
     signal sys_rst_i        : std_logic := '0';
     signal send_packet      : std_logic := '0';
     signal REX_status       : std_logic_vector(15 downto 0) := (others => '0');
@@ -154,10 +154,6 @@ architecture rtl of tcu_top is
      ALIAS reg_bank_address : std_logic_vector(3 downto 0) IS gpmc_address(25 downto 22);
      -- Currently each register is 64 x 16
      ALIAS reg_file_address : std_logic_vector(7 downto 0) IS gpmc_address(7 downto 0);
-
-    ---------------------------------------------------------------------------
-    --	Ethernet Signal declaration section
-    ---------------------------------------------------------------------------
 
     attribute S     : string;
     attribute keep  : string;
@@ -480,7 +476,7 @@ begin --architecture RTL
     ---------------------------------------------------------------------------
     -- ?????????
     ---------------------------------------------------------------------------
-    nextload    <= (MBsig and Dsig and Psig);
+    -- nextload    <= (MBsig and Dsig and Psig);
     --led_reg(0)
     --led_reg(1) <= when M_counter= M_reg
     --led_reg(2) <= MBsig;
