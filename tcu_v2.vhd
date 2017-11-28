@@ -73,15 +73,9 @@ architecture rtl of tcu_top is
 
     -- Define signals for the gpmc bus
     signal gpmc_clk_i_b     : std_logic;  --buffered  gpmc_clk_i
-    signal gpmc_address     : std_logic_vector(25 downto 0):=(others => '0');         -- Full de-multiplexed address bus (ref. 16 bits)
-    signal gpmc_data_o      : std_logic_vector(15 downto 0):=(others => '0');      -- Register for output bus value
-    signal gpmc_data_i      : std_logic_vector(15 downto 0):=(others => '0');      -- Register for input bus value
-
-    --Other signals
-    signal heartbeat        : std_logic;
-    signal dcm_locked       : std_logic;
-    signal rd_cs_en         : std_logic:='0';
-    signal we_cs_en         : std_logic:='0';
+    signal gpmc_address     : std_logic_vector(25 downto 0):=(others => '0');   -- Full de-multiplexed address bus (ref. 16 bits)
+    signal gpmc_data_o      : std_logic_vector(15 downto 0):=(others => '0');   -- Register for output bus value
+    signal gpmc_data_i      : std_logic_vector(15 downto 0):=(others => '0');   -- Register for input bus value
 
     --Clocks
     signal sys_clk_100MHz   : std_logic;
@@ -89,17 +83,15 @@ architecture rtl of tcu_top is
 
     -- TCU registers available to BORPH
     constant VERSION        : std_logic_vector(7 downto 0) := "00000010";       -- TODO: add VERSION register to symbol file to identify which TCU version is installed
-    signal reg_bank         : ram_type := (others => "1111111111111111");
-    signal led_reg          : std_logic_vector(15 downto 0) := (others => '0');
+    signal reg_bank         : ram_type := (others => "1111111111111111");       -- pulses reg, stores pulse parameters
+    signal led_reg          : std_logic_vector(15 downto 0) := (others => '0'); -- lower 8 bits mapped to RHINO's LEDs for status indication
     signal bcd_int          : word32_type := (x"0000",x"0000");
-    signal M_reg            : word32_type := (x"f000",x"f000");
+    signal M_reg            : word32_type := (x"f000",x"f000");                 -- number of times each pulse must be cycled in an experiment
     signal M_reg_cmp        : std_logic_vector(31 downto 0);                    -- M_reg_cmp <= M_reg(1) & M_reg(0)
-    signal N_reg            : std_logic_vector(15 downto 0) := x"0002";
+    signal N_reg            : std_logic_vector(15 downto 0) := x"0002";         -- number of unique pulses (N)
 
     signal ready            : std_logic;                                        -- indicates that experiment is ready to start, triggered by trigger(0) and gpioIn(0)
 
-    --signal    NM			: std_logic;
-    -- signal nextload         : std_logic;
     signal MBsig            : std_logic;                                        -- indicates when Main Bang offset has been reached
     signal Dsig             : std_logic;                                        -- indicates when Digitisation offset has been reached
     signal Psig             : std_logic;                                        -- indicates when Next PRI offset has been reached
@@ -408,8 +400,7 @@ begin --architecture RTL
     -- Misc signal wiring
     ---------------------------------------------------------------------------
 
-    -- Map important processor bus pins to GPIO header
-    led         <= led_reg(7 downto 0);
+    led <= led_reg(7 downto 0);
 
     -- Set other outputs low
     --gpio    <= gpmc_clk_i_b & gpmc_n_cs(1) & gpmc_n_we & gpmc_n_oe & gpmc_a(4 downto 1) & gpmc_d(7 downto 0);
@@ -466,7 +457,6 @@ begin --architecture RTL
     ---------------------------------------------------------------------------
     -- ?????????
     ---------------------------------------------------------------------------
-    -- nextload    <= (MBsig and Dsig and Psig);
     --led_reg(0)
     --led_reg(1) <= when M_counter= M_reg
     --led_reg(2) <= MBsig;
