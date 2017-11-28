@@ -82,6 +82,26 @@ architecture rtl of tcu_top is
     signal sys_clk_100MHz_ext   : std_logic;                                    -- external 100MHz clock coming in from FMC0 J1 P1
 
     -- TCU registers available to BORPH
+    -- TODO: rename and change address of registers, using Harpoon framework
+    --     NAME        BITS       ADDR
+    -- +----------+----------+----------+
+    -- |VERSION   |    16    |0x08000000|
+    -- +--------------------------------+
+    -- |status    |    16    |          |
+    -- +--------------------------------+
+    -- |reg_led   |    16    |          |
+    -- +--------------------------------+
+    -- |reg_fmc   |    16    |          |
+    -- +--------------------------------+
+    -- |reg_pulses|  32x96   |          |
+    -- +--------------------------------+
+    -- |m         |    32    |          |
+    -- +--------------------------------+
+    -- |n         |    16    |          |
+    -- +--------------------------------+
+    -- |pri       |    32    |          |
+    -- +----------+---------------------+
+
     constant VERSION        : std_logic_vector(7 downto 0) := "00000010";       -- TODO: add VERSION register to symbol file to identify which TCU version is installed
     signal reg_bank         : ram_type := (others => "1111111111111111");       -- pulses reg, stores pulse parameters
     signal led_reg          : std_logic_vector(15 downto 0) := (others => '0'); -- lower 8 bits mapped to RHINO's LEDs for status indication
