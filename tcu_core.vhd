@@ -22,8 +22,7 @@ PORT (
     gpio            : out   std_logic_vector(15 downto 2);
     gpioIn          : in    std_logic_vector(1 downto 0);
     led             : out   std_logic_vector(7 downto 0);
-    sys_clk_P       : in    std_logic; -- 100MHz system clock
-    sys_clk_N       : in    std_logic; -- 100MHz system clock
+    sys_clk_100MHz  : in    std_logic; -- 100MHz system clock (from gpmc_wb)
     sys_clk_ext     : in    std_logic; -- External Clock
 
     -- BCD pins
@@ -373,8 +372,316 @@ begin
     ACK_O <= '1' when STB_I = '1' else 'Z';
 
     ---------------------------------------------------------------------------
-    -- IP CORE SPECIFIC LOGIC
+    --	Ethernet components
     ---------------------------------------------------------------------------
-    -- TODO: declare your logic here
-    -- (do something useful with the registers...)
+
+    UDP_1GbE_inst : UDP_1GbE
+    generic map(
+        UDP_TX_DATA_BYTE_LENGTH => UDP_TX_DATA_BYTE_LENGTH,
+        UDP_RX_DATA_BYTE_LENGTH => UDP_RX_DATA_BYTE_LENGTH
+    )
+    port map(
+        -- user logic interface
+        own_ip_addr     => x"c0a86b1c",	-- 192.168.107.28
+        own_mac_addr    => x"0e0e0e0e0e0b",
+        dst_ip_addr     => x"c0a86b1d",	-- 192.168.107.29
+        dst_mac_addr    => x"0e0e0e0e0e0c",
+
+        -- mac's MAC is x"406c8f0012cd"
+        -- REx's MAC is x"0e0e0e0e0e0c"
+
+        udp_src_port    => x"1f40", --8000
+        udp_dst_port    => x"1f43", --8003
+
+        udp_tx_pkt_data => udp_tx_pkt_data,
+        udp_tx_pkt_vld  => udp_tx_pkt_vld,
+        udp_tx_rdy      => udp_tx_rdy,
+
+        udp_rx_pkt_data => udp_rx_pkt_data,
+        udp_rx_pkt_req  => udp_rx_pkt_req,
+        udp_rx_rdy      => udp_rx_rdy,
+
+        mac_init_done   => mac_init_done,
+
+        -- MAC interface
+        GIGE_COL        => GIGE_COL,
+        GIGE_CRS        => GIGE_CRS,
+        GIGE_MDC        => GIGE_MDC,
+        GIGE_MDIO       => GIGE_MDIO,
+        GIGE_TX_CLK     => GIGE_TX_CLK,
+        GIGE_nRESET     => GIGE_nRESET,
+        GIGE_RXD        => GIGE_RXD,
+        GIGE_RX_CLK     => GIGE_RX_CLK,
+        GIGE_RX_DV      => GIGE_RX_DV,
+        GIGE_RX_ER      => GIGE_RX_ER,
+        GIGE_TXD        => GIGE_TXD,
+        GIGE_GTX_CLK    => GIGE_GTX_CLK,
+        GIGE_TX_EN      => GIGE_TX_EN,
+        GIGE_TX_ER      => GIGE_TX_ER,
+
+        -- system control
+        clk_125mhz      => clk_125mhz,
+        clk_100mhz      => clk_100mhz,
+        sys_rst_i       => sys_reset,
+        sysclk_locked   => sysclk_locked
+    );
+
+    clk_manager_inst : clk_manager
+    port map(
+        --External Control
+        dcm_100mhz_in   => sys_clk_100mhz,
+        --			SYS_CLK_P_i  => sys_clk_p,
+        --			SYS_CLK_N_i  => sys_clk_n,
+        SYS_RST_i       => sys_rst_i,
+
+        -- Clock out ports
+        clk_125mhz      => clk_125mhz,
+        clk_100mhz      => clk_100mhz,
+        clk_25mhz       => clk_25mhz,
+
+        -- Status and control signals
+        RESET           => sys_reset,
+        sysclk_locked   => sysclk_locked
+    );
+
+    ---------------------------------------------------------------------------
+    -- Misc signal wiring
+    ---------------------------------------------------------------------------
+
+    led <= reg_led(0)(7 downto 0);
+
+    ---------------------------------------------------------------------------
+    -- ?????????
+    ---------------------------------------------------------------------------
+    --reg_led(0)
+    --reg_led(1) <= when M_counter= M_reg
+    --reg_led(2) <= MB_flag;
+    reg_led(3)  <= DIG_flag;
+    reg_led(4)  <= PRI_flag;
+    reg_led(5)  <= (MB_flag and DIG_flag and PRI_flag);
+    --reg_led(6) <= when M_counter= M_reg
+    reg_led(6)  <= '1';
+    reg_led(7)  <= gpioIn(1);
+
+    bcd(15 downto 0)    <= bcd_int(0);
+    bcd(31 downto 16)   <= bcd_int(1);
+
+    -- Remember to uncomment this
+    -- It includes a new status bit that indicates when an experiment is happening
+    --status_reg(1) <= ready and not(status_reg(0)) and triggers(0);
+
+    -- M_reg_cmp is used when comparing with the counter
+    M_reg_cmp(31 downto 16) <= M_reg(1);
+    M_reg_cmp(15 downto 0) <=  M_reg(0);
+
+    gpio(2) <= MB_flag;		-- Indicates when Main Bang offset has been reached
+    gpio(8) <= MB_flag;
+    gpio(3) <= DIG_flag;		-- Indicates when Digitisation offset has been reached
+    gpio(9) <= DIG_flag;
+    gpio(4) <= PRI_flag;		-- Indicates when Next PRI offset has been reached
+    gpio(10)<= PRI_flag;
+    gpio(5) <= (MB_flag and DIG_flag and PRI_flag);
+
+    gpio(7) <= gpioIn(1);
+
+    -- gpioIn(0) <= sys_clk_100MHz;
+    -- gpioIn(1) <= '0';
+    gpio(6) <= '1';
+    gpio(11)<= '0';
+    -- gpio(12)		--	X band HPA
+    -- gpio(13)		-- L band HPA
+    -- gpio(14)		-- L band polarisation
+    -- gpio(15)		-- L band polarisation
+
+    --=====================================--
+    -- The actual TCU processes happen here
+    --=====================================--
+    tcu : process(sys_clk_100MHz_ext)
+        variable l_band_freq_var    : std_logic_vector (15 downto 0) := x"1405";
+        variable x_band_freq_var    : std_logic_vector (15 downto 0) := x"3421";
+    begin
+        if rising_edge(sys_clk_100MHz_ext) then
+            -- populate dataout from regbank based on Program Counter (PC)
+            dataout  <= reg_bank(PC) & reg_bank(PC+1) & reg_bank(PC+2) & reg_bank(PC+3) & reg_bank(PC+4) & reg_bank(PC+5);
+            MB       <= unsigned(reg_bank(PC));
+            DIG      <= unsigned(reg_bank(PC+1));
+            PRI      <= unsigned(reg_bank(PC+2)) & unsigned(reg_bank(PC+5));
+            --PRI(1) <= P(31 downto 16);
+            --PRI(0) <= P(15 downto 0);
+            pol_mode <= reg_bank(PC+4)(10 downto 8);
+        -- setup certain ports depending on the mode of operation
+        case pol_mode is
+            when "000" =>		--	L band Tx=V Rx=V
+                x_band_freq     <= x_band_freq_var;
+                l_band_freq     <= reg_bank(PC+3);
+                pol             <= x"0000";	--	set REx polarisation
+                gpio(14)        <= '0';			--	L band Rx switch
+                gpio(15)        <= '1';			--	L band Rx switch
+                l_band_amp_on   <= '1';
+                x_band_amp_on   <= '0';
+            when "001" => 		--	L band Tx=V Rx=H
+                x_band_freq     <= x_band_freq_var;
+                l_band_freq     <= reg_bank(PC+3);
+                pol             <= x"0000";
+                gpio(14)        <= '1';
+                gpio(15)        <= '0';
+                l_band_amp_on   <= '1';
+                x_band_amp_on   <= '0';
+            when "010" => 		--	L band Tx=H Rx=H
+                x_band_freq     <= x_band_freq_var;
+                l_band_freq     <= reg_bank(PC+3);
+                pol             <= x"0000";
+                gpio(14)        <= '1';
+                gpio(15)        <= '0';
+                l_band_amp_on   <= '1';
+                x_band_amp_on   <= '0';
+            when "011" => 		--	L band Tx=V Rx=V
+                x_band_freq     <= x_band_freq_var;
+                l_band_freq     <= reg_bank(PC+3);
+                pol             <= x"0000";
+                gpio(14)        <= '0';
+                gpio(15)        <= '1';
+                l_band_amp_on   <= '1';
+                x_band_amp_on   <= '0';
+            when "100" => 		--	X band Tx=V Rx=V,H
+                l_band_freq     <= l_band_freq_var;
+                x_band_freq     <= reg_bank(PC+3);
+                pol             <= x"0100";
+                gpio(14)        <= '0';
+                gpio(15)        <= '0';
+                l_band_amp_on   <= '0';
+                x_band_amp_on   <= '1';
+            when "101" => 		--	X band Tx=H Rx=V,H
+                l_band_freq     <= l_band_freq_var;
+                x_band_freq     <= reg_bank(PC+3);
+                pol             <= x"0100";
+                gpio(14)        <= '0';
+                gpio(15)        <= '0';
+                l_band_amp_on   <= '0';
+                x_band_amp_on   <= '1';
+            when others => null;
+        end case;
+
+        -----------------------------------------------------------------------
+        -- Time critical process
+        -----------------------------------------------------------------------
+        if(triggers(0) = '1' and gpioIn(0) = '1') then
+            ready <= '1';
+        elsif(triggers(0) = '0') then
+            ready <= '0';
+        end if;
+
+        -- The experiment commences when triggered by the ready signal above, as long as it isnt the end of the experiment and as long as it is still "soft on" (kept on by the triggers register).
+        if(ready = '1' and status_reg(0) = '0' and triggers(0) = '1') then
+
+            sys_rst_i <= '0';		-- turn ethernet on
+
+            if ((MB_flag and DIG_flag and PRI_flag) = '1') then
+                -- reset all counters at the end of Interval
+                MB_counter  <= (others => '0');
+                DIG_counter <= (others => '0');
+                PRI_counter <= (others => '0');
+                MB_flag     <= '0';
+                DIG_flag    <= '0';
+                PRI_flag    <= '0';
+                -- increments PC or resets PC to zero. enables stop register if it has completed the last instruction
+                if(PC = unsigned(N_reg(7 downto 0))*6) then
+                    PC  <= 0;
+                    if(M_counter = unsigned(M_reg_cmp)) then
+                        status_reg(0) <= '1';
+                    else
+                        M_counter <= M_counter+ 1;
+                    end if;
+                else
+                    PC <= PC + 6 ;
+                end if;
+                -- increments P if MB and D are active
+                elsif((MB_flag and DIG_flag) = '1') then
+                    if(PRI_counter = P) then
+                        PRI_flag <= '1';
+                    else
+                        PRI_counter <= PRI_counter + 1;
+                        PRI_flag <= '0';
+                    end if;
+                    -- turn amplifiers off
+                    gpio(13) <= '0';
+                    gpio(12) <= '0';
+                -- increments D if MB is active
+                elsif(MB_flag = '1') then
+                    if(DIG_counter = D) then
+                        DIG_flag <= '1';
+                    else
+                        DIG_counter <= DIG_counter + 1;
+                        DIG_flag <= '0';
+                    end if;
+                else
+                    if(MB_counter = MB) then
+                        MB_flag <= '1';
+                    else
+                        MB_flag <= '0';
+                        MB_counter <= MB_counter + 1;
+                        -- send Ethernet packet at the very start
+                        if(MB_counter <= 2) then
+                            udp_send_packet <= '1';
+                        else
+                            udp_send_packet <= '0';
+                        end if;
+                        -- turn on appropriate amplifier (X or L) depending on pol_mode
+                        gpio(13) <= l_band_amp_on;
+                        gpio(12) <= x_band_amp_on;
+                    end if;
+                end if;
+            --===========--
+            -- off state --
+            --===========--
+            elsif(triggers(0) = '0') then
+                PC              <= 0;
+                M_counter       <= (others => '0');
+                status_reg(0)   <= '0';
+                sys_rst_i       <= '0';				-- turn ethernet on (was off)
+                udp_send_packet <= '0';
+                --	set counters to zero
+                MB_counter       <= (others => '0');
+                DIG_counter        <= (others => '0');
+                PRI_counter        <= (others => '0');
+                -- turn amplifiers off
+                gpio(13)        <= '0';
+                gpio(12)        <= '0';
+                -- turn off MB, D and P signals
+                MB_flag           <= '0';
+                DIG_flag            <= '0';
+                PRI_flag            <= '0';
+            else
+                udp_send_packet <= '0';
+            end if;
+        end if;
+    end process tcu;
+
+    ---------------------------------------------------------------------------
+    -- UDP TRANSMISSION SECTION
+    ---------------------------------------------------------------------------
+    --udp_packet <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;
+    udp_tx : process(udp_send_packet, sys_clk_100mhz)
+        begin
+        if(rising_edge(sys_clk_100mhz)) then
+            if(udp_send_packet = '1' and udp_send_flag <= '0') then
+                udp_send_flag    <= '1';
+                udp_tx_pkt_vld_r <= '0';
+            elsif(udp_tx_rdy = '1' and udp_send_flag = '1') then
+                if(tx_delay_cnt = TX_DELAY) then
+                    tx_delay_cnt     <= 0;
+                    udp_tx_pkt_vld_r <= '1';    -- LAUNCH
+                    udp_tx_pkt_data  <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;	 --x"0d000000000004000300140534210000";
+                    udp_send_flag    <= '0';
+                else
+                    udp_tx_pkt_vld_r <= '0';
+                    tx_delay_cnt     <= tx_delay_cnt + 1;
+                end if;
+            else
+                udp_tx_pkt_vld_r <= '0';    -- ARM
+            end if;
+        end if;
+    end process udp_tx;
+
+    udp_tx_pkt_vld <= udp_tx_pkt_vld_r;
 end architecture;
