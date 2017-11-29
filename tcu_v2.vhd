@@ -81,22 +81,20 @@ architecture rtl of tcu_top is
     -- TODO: rename and change address of registers, using Harpoon framework
     --     NAME        BITS       ADDR
     -- +----------+----------+----------+
-    -- |VERSION   |    16    |0x08000000|
+    -- |VERSION   |    16    |0x08000000|  <-- TODO
     -- +--------------------------------+
-    -- |status    |    16    |          |
+    -- |status    |    16    |0x08000000|
     -- +--------------------------------+
-    -- |reg_led   |    16    |          |
+    -- |reg_led   |    16    |0x08800000|
     -- +--------------------------------+
-    -- |reg_fmc   |    16    |          |
+    -- |reg_fmc   |    16    |0x09000000|
     -- +--------------------------------+
-    -- |reg_pulses|  32x96   |          |
+    -- |reg_pulses|  32x96   |0x09800000|
     -- +--------------------------------+
-    -- |m         |    32    |          |
+    -- |m         |    32    |0x0A000000|
     -- +--------------------------------+
-    -- |n         |    16    |          |
+    -- |n         |    16    |0x0A800000|
     -- +--------------------------------+
-    -- |pri       |    32    |          |
-    -- +----------+---------------------+
 
     constant VERSION        : std_logic_vector(7 downto 0) := "00000010";       -- TODO: add VERSION register to symbol file to identify which TCU version is installed
     signal reg_bank         : ram_type := (others => "1111111111111111");       -- pulses reg, stores pulse parameters
