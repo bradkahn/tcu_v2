@@ -3,8 +3,6 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 use IEEE.NUMERIC_STD.ALL;
--- TODO:  remove this library and convert assoc signals to unsigned/integer
-use IEEE.STD_LOGIC_ARITH.ALL;  -- not a standard library
 
 library UNISIM;
 use UNISIM.VComponents.all;
@@ -118,19 +116,14 @@ architecture rtl of tcu_top is
 
     --signal N					 	integer range 0 to 32;
     -- TODO: convert the 32 bit verion of N to integer types like the other counters
-    signal M_counter        : std_logic_vector(31 downto 0) := (others => '0'); -- Number of repeats that have already ocurred
+    signal M_counter        : unsigned(31 downto 0) := x"00000000";             -- Number of repeats that have already ocurred
 
-    signal MB               : integer range 0 to 65535 := 0;                    -- Main bang offset extracted from pulses reg
-    signal MBcounter        : integer range 0 to 65535 := 0;                    -- Main bang counter compared to Main bang offset
-    signal D                : integer range 0 to 65535 := 0;                    -- Digitisation offset extracted from pulses reg
-    signal Dcounter         : integer range 0 to 65535 := 0;                    -- Digitisation counter compared to Digitisation offset
-    --signal P					 	integer range 0 to 65535 := 0;
-    --signal Pcounter		:	integer range 0 to 65535 := 0;
-    -- 32 bit versions of P and P counter
-    -- TODO: convert the 32 bit verions of P, Pcounter to integer types like the other counters
-    signal P                : std_logic_vector(31 downto 0) := (others => '0'); -- PRI offset extracted from pulses reg
-    signal Pcounter         : std_logic_vector(31 downto 0) := (others => '0'); -- PRI counter compared to PRI offset
-    signal one              : std_logic_vector(31 downto 0) := x"00000001";     -- Constant literal one (1)
+    signal MB               : unsigned(15 downto 0) := x"0000";                 -- Main bang offset extracted from pulses reg
+    signal MBcounter        : unsigned(15 downto 0) := x"0000";                 -- Main bang counter compared to Main bang offset
+    signal D                : unsigned(15 downto 0) := x"0000";                 -- Digitisation offset extracted from pulses reg
+    signal Dcounter         : unsigned(15 downto 0) := x"0000";                 -- Digitisation counter compared to Digitisation offset
+    signal P                : unsigned(31 downto 0) := x"00000000";             -- PRI offset extracted from pulses reg
+    signal Pcounter         : unsigned(31 downto 0) := x"00000000";             -- PRI counter compared to PRI offset
 
     signal triggers         : std_logic_vector(15 downto 0) := (others => '0'); -- triggers(0) 'soft on' / arming bit from register
     signal status_reg       : std_logic_vector(15 downto 0) := (others => '0'); -- status_reg(0) used to indicate that all pulse repeats for experiment are completed
@@ -139,8 +132,8 @@ architecture rtl of tcu_top is
     signal dataout          : std_logic_vector(95 downto 0);                    -- Contains all pulse parameters for current pulse
 
     -- Amplifiers and switches
-    signal l_band_amp_on        : std_logic;                                    -- gpio(13) <= l_band_amp_on;
-    signal x_band_amp_on        : std_logic;                                    -- gpio(12) <= x_band_amp_on;
+    signal l_band_amp_on    : std_logic;                                        -- gpio(13) <= l_band_amp_on;
+    signal x_band_amp_on    : std_logic;                                        -- gpio(12) <= x_band_amp_on;
 
     ---------------------------------------------------------------------------
     --	Ethernet Signal declaration section
@@ -443,23 +436,23 @@ begin --architecture RTL
                 --Check for read
                 --Write data on the output port of gpmc for the ARM to read
                 elsif (gpmc_n_oe = '0') then
-                    case conv_integer(reg_bank_address) is
+                    case to_integer(unsigned(reg_bank_address)) is
                         when 0 => gpmc_data_o <= status_reg;
                         when 1 => gpmc_data_o <= triggers;
                         when 2 => gpmc_data_o <= (others => '0');
-                        when 3 => gpmc_data_o <= reg_bank(conv_integer(reg_file_address));
-                        when 4 => gpmc_data_o <= M_reg(conv_integer(reg_file_address));
+                        when 3 => gpmc_data_o <= reg_bank(to_integer(unsigned(reg_file_address)));
+                        when 4 => gpmc_data_o <= M_reg(to_integer(unsigned(reg_file_address)));
                         when 5 => gpmc_data_o <= N_reg;
                         when others => gpmc_data_o <= (others => '0');
                 end case;
                 --Check for write
                 --Read data from the input port
                 elsif (gpmc_n_we = '0') then
-                    case conv_integer(reg_bank_address) is
+                    case to_integer(unsigned(reg_bank_address)) is
                         when 1 => triggers <= gpmc_data_i;
-                        when 2 => bcd_int(conv_integer(reg_file_address)) <= gpmc_data_i;
-                        when 3 => reg_bank(conv_integer(reg_file_address)) <= gpmc_data_i;
-                        when 4 => M_reg(conv_integer(reg_file_address)) <= gpmc_data_i;
+                        when 2 => bcd_int(to_integer(unsigned(reg_file_address))) <= gpmc_data_i;
+                        when 3 => reg_bank(to_integer(unsigned(reg_file_address))) <= gpmc_data_i;
+                        when 4 => M_reg(to_integer(unsigned(reg_file_address))) <= gpmc_data_i;
                         when 5 => N_reg <= gpmc_data_i;
                         when others => null;
                     end case;
@@ -527,9 +520,9 @@ begin --architecture RTL
         if rising_edge(sys_clk_100MHz_ext) then
             -- populate dataout from regbank based on Program Counter (PC)
             dataout  <= reg_bank(PC) & reg_bank(PC+1) & reg_bank(PC+2) & reg_bank(PC+3) & reg_bank(PC+4) & reg_bank(PC+5);
-            MB       <= conv_integer(reg_bank(PC));
-            D        <= conv_integer(reg_bank(PC+1));
-            P        <= reg_bank(PC+2) & reg_bank(PC+5);
+            MB       <= unsigned(reg_bank(PC));
+            D        <= unsigned(reg_bank(PC+1));
+            P        <= unsigned(reg_bank(PC+2)) & unsigned(reg_bank(PC+5));
             --PRI(1) <= P(31 downto 16);
             --PRI(0) <= P(15 downto 0);
             pol_mode <= reg_bank(PC+4)(10 downto 8);
@@ -602,17 +595,16 @@ begin --architecture RTL
 
             if ((MBsig and Dsig and Psig) = '1') then
                 -- reset all counters at the end of Interval
-                MBcounter <= 0;
-                Dcounter  <= 0;
-                --  Pcounter <= 0;
-                Pcounter  <= x"00000000";
+                MBcounter <= (others => '0');
+                Dcounter  <= (others => '0');
+                Pcounter  <= (others => '0');
                 MBsig     <= '0';
                 Dsig      <= '0';
                 Psig      <= '0';
                 -- increments PC or resets PC to zero. enables stop register if it has completed the last instruction
-                if(PC = conv_integer(N_reg(7 downto 0))*6) then
+                if(PC = unsigned(N_reg(7 downto 0))*6) then
                     PC  <= 0;
-                    if(M_counter = M_reg_cmp) then
+                    if(M_counter = unsigned(M_reg_cmp)) then
                         status_reg(0) <= '1';
                     else
                         M_counter <= M_counter+ 1;
@@ -625,7 +617,7 @@ begin --architecture RTL
                     if(Pcounter = P) then
                         Psig <= '1';
                     else
-                        Pcounter <= Pcounter + one;
+                        Pcounter <= Pcounter + 1;
                         Psig <= '0';
                     end if;
                     -- turn amplifiers off
@@ -666,9 +658,8 @@ begin --architecture RTL
                 sys_rst_i       <= '0';				-- turn ethernet on (was off)
                 udp_send_packet <= '0';
                 --	set counters to zero
-                MBcounter       <= 0;
-                Dcounter        <= 0;
-                --Pcounter <= 0;
+                MBcounter       <= (others => '0');
+                Dcounter        <= (others => '0');
                 Pcounter        <= (others => '0');
                 -- turn amplifiers off
                 gpio(13)        <= '0';
