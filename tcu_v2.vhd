@@ -1,7 +1,5 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
-
 use IEEE.NUMERIC_STD.ALL;
 
 library UNISIM;
@@ -54,7 +52,7 @@ port
 end tcu_top;
 
 -------------------------------------------------------------------------------
--- Architecture of rhino_proc_intrfc_top
+-- Architecture of tcu_top
 -------------------------------------------------------------------------------
 
 architecture rtl of tcu_top is
@@ -415,8 +413,6 @@ begin --architecture RTL
 
     led <= led_reg(7 downto 0);
 
-    -- Set other outputs low
-    --gpio    <= gpmc_clk_i_b & gpmc_n_cs(1) & gpmc_n_we & gpmc_n_oe & gpmc_a(4 downto 1) & gpmc_d(7 downto 0);
     gpmc_busy_0 <= '0';
     gpmc_busy_1 <= '0';
 
