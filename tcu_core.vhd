@@ -102,8 +102,8 @@ architecture rtl of tcu is
     constant VERSION_REG_END  : natural := 0;
     constant STATUS_REG_BASE  : natural := 1;
     constant STATUS_REG_END   : natural := 1;
-    constant CONTROL_REG_BASE     : natural := 2;
-    constant CONTROL_REG_END      : natural := 2;
+    constant CONTROL_REG_BASE : natural := 2;
+    constant CONTROL_REG_END  : natural := 2;
     constant FMC_REG_BASE     : natural := 3;
     constant FMC_REG_END      : natural := 4;
     constant PULSES_REG_BASE  : integer := 5;
@@ -155,33 +155,33 @@ architecture rtl of tcu is
     --	Ethernet Signal declaration section
     ---------------------------------------------------------------------------
 
-    signal sys_rst_i        : std_logic := '0';
-    signal send_packet      : std_logic := '0';
-    signal REX_status       : std_logic_vector(15 downto 0) := (others => '0');
+    signal sys_rst_i            : std_logic := '0';
+    signal send_packet          : std_logic := '0';
+    signal REX_status           : std_logic_vector(15 downto 0) := (others => '0');
     signal REX_status_confirmed : std_logic := '0';
 
     -- Transmit settings to REX = 00;
     -- Ask REX for status msg	 = 01;
     --	signal eth_msg_type	:	std_logic_vector(1 downto 0) := "00";
 
-    signal eth_in_len       : std_logic_vector(15 downto 0);
-    signal eth_in_type      : std_logic_vector(15 downto 0);
-    signal eth_in_status    : std_logic_vector(15 downto 0);
-    signal eth_in_addr      : std_logic_vector(15 downto 0);
-    signal eth_in_id        : std_logic_vector(15 downto 0);
-    signal eth_in_msg       : std_logic_vector(87 downto 0);
+    signal eth_in_len           : std_logic_vector(15 downto 0);
+    signal eth_in_type          : std_logic_vector(15 downto 0);
+    signal eth_in_status        : std_logic_vector(15 downto 0);
+    signal eth_in_addr          : std_logic_vector(15 downto 0);
+    signal eth_in_id            : std_logic_vector(15 downto 0);
+    signal eth_in_msg           : std_logic_vector(87 downto 0);
 
-    attribute S     : string;
-    attribute keep  : string;
+    attribute S                 : string;
+    attribute keep              : string;
 
-    attribute S of GIGE_RXD   : signal is "TRUE";
-    attribute S of GIGE_RX_DV : signal is "TRUE";
-    attribute S of GIGE_RX_ER : signal is "TRUE";
+    attribute S of GIGE_RXD     : signal is "TRUE";
+    attribute S of GIGE_RX_DV   : signal is "TRUE";
+    attribute S of GIGE_RX_ER   : signal is "TRUE";
 
     -- define constants
-    constant UDP_TX_DATA_BYTE_LENGTH    : integer := 16;		--not SET TO MINIMUM LENGTH
-    constant UDP_RX_DATA_BYTE_LENGTH    : integer := 37;
-    constant TX_DELAY                   : integer := 100;
+    constant UDP_TX_DATA_BYTE_LENGTH : integer := 16; --not SET TO MINIMUM LENGTH
+    constant UDP_RX_DATA_BYTE_LENGTH : integer := 37;
+    constant TX_DELAY                : integer := 100;
 
     -- system control
     signal clk_125mhz           : std_logic;
@@ -306,8 +306,7 @@ begin
         address_int := TO_INTEGER(UNSIGNED(ADR_I));
         if RISING_EDGE(CLK_I) then
             if RST_I = '1' then
-                -- reg_status  <= (OTHERS => (OTHERS => '0'));
-                reg_control     <= (OTHERS => (OTHERS => '0'));
+                reg_control <= (OTHERS => (OTHERS => '0'));
                 reg_fmc     <= (OTHERS => (OTHERS => '0'));
                 reg_M       <= (OTHERS => (OTHERS => '0'));
                 reg_N       <= (OTHERS => (OTHERS => '0'));
@@ -332,7 +331,7 @@ begin
                             dat_o_sig <= reg_status(address_int - STATUS_REG_BASE);
                         end if;
                     -- --------------------------------------------------------
-                    -- REG: "led" SIZE: 2 bytes PERMISSIONS: r/w
+                    -- REG: "control" SIZE: 2 bytes PERMISSIONS: r/w
                     -- --------------------------------------------------------
                     when CONTROL_REG_BASE to CONTROL_REG_END =>
                         if WE_I = '1' then
@@ -483,14 +482,11 @@ begin
 
 
     ---------------------------------------------------------------------------
-    -- Misc signal wiring
+    -- LED, GPIO signal wiring
     ---------------------------------------------------------------------------
 
     led <= reg_status(0)(7 downto 0);
 
-    ---------------------------------------------------------------------------
-    -- ?????????
-    ---------------------------------------------------------------------------
     --reg_control(0)
     --reg_control(1) <= when M_counter= M_reg
     --reg_control(2) <= MB_flag;
@@ -501,27 +497,27 @@ begin
     reg_status(0)(6)  <= '1';
     reg_status(0)(7)  <= gpioIn(1);
 
-    bcd(15 downto 0)    <= reg_fmc(0);
-    bcd(31 downto 16)   <= reg_fmc(1);
+    bcd(15 downto 0)  <= reg_fmc(0);
+    bcd(31 downto 16) <= reg_fmc(1);
 
     -- Remember to uncomment this
     -- It includes a new status bit that indicates when an experiment is happening
     --status_reg(1) <= ready and not(status_reg(0)) and triggers(0);
 
-    gpio(2) <= MB_flag;		-- Indicates when Main Bang offset has been reached
-    gpio(8) <= MB_flag;
-    gpio(3) <= DIG_flag;		-- Indicates when Digitisation offset has been reached
-    gpio(9) <= DIG_flag;
-    gpio(4) <= PRI_flag;		-- Indicates when Next PRI offset has been reached
-    gpio(10)<= PRI_flag;
-    gpio(5) <= (MB_flag and DIG_flag and PRI_flag);
+    gpio(2)     <= MB_flag;     -- Indicates when Main Bang offset has been reached
+    gpio(8)     <= MB_flag;
+    gpio(3)     <= DIG_flag;    -- Indicates when Digitisation offset has been reached
+    gpio(9)     <= DIG_flag;
+    gpio(4)     <= PRI_flag;    -- Indicates when Next PRI offset has been reached
+    gpio(10)    <= PRI_flag;
+    gpio(5)     <= (MB_flag and DIG_flag and PRI_flag);
 
-    gpio(7) <= gpioIn(1);
+    gpio(7)     <= gpioIn(1);
 
     -- gpioIn(0) <= sys_clk_100MHz;
     -- gpioIn(1) <= '0';
-    gpio(6) <= '1';
-    gpio(11)<= '0';
+    gpio(6)     <= '1';
+    gpio(11)    <= '0';
     -- gpio(12)		--	X band HPA
     -- gpio(13)		-- L band HPA
     -- gpio(14)		-- L band polarisation
