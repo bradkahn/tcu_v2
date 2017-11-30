@@ -74,13 +74,13 @@ architecture rtl of tcu is
     -- +--------------------------------+
     -- |reg_led   |    16    |0x08000004|
     -- +--------------------------------+
-    -- |reg_fmc   |    16    |0x08000006|
+    -- |reg_fmc   |    32    |0x08000006|
     -- +--------------------------------+
-    -- |reg_pulses|  32x96   |0x08000008|
+    -- |reg_pulses|  32x96   |0x0800000A|
     -- +--------------------------------+
-    -- |m         |    32    |0x08000188|
+    -- |m         |    32    |0x0800018A|
     -- +--------------------------------+
-    -- |n         |    16    |0x0800018A|
+    -- |n         |    16    |0x0800018E|
     -- +--------------------------------+
 
     -- register start and end addresses, based off their size
@@ -91,13 +91,13 @@ architecture rtl of tcu is
     constant LED_REG_BASE     : natural := 2;
     constant LED_REG_END      : natural := 2;
     constant FMC_REG_BASE     : natural := 3;
-    constant FMC_REG_END      : natural := 3;
-    constant PULSES_REG_BASE  : integer := 4;
-    constant PULSES_REG_END   : integer := 195;
-    constant M_REG_BASE       : natural := 196;
-    constant M_REG_END        : natural := 197;
-    constant N_REG_BASE       : natural := 198;
-    constant N_REG_END        : natural := 198;
+    constant FMC_REG_END      : natural := 4;
+    constant PULSES_REG_BASE  : integer := 5;
+    constant PULSES_REG_END   : integer := 196;
+    constant M_REG_BASE       : natural := 197;
+    constant M_REG_END        : natural := 198;
+    constant N_REG_BASE       : natural := 199;
+    constant N_REG_END        : natural := 199;
 
     type array_type is array (integer range <>) of std_logic_vector(15 downto 0);
 
