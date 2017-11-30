@@ -295,7 +295,7 @@ begin
         address_int := TO_INTEGER(UNSIGNED(ADR_I));
         if RISING_EDGE(CLK_I) then
             if RST_I = '1' then
-                reg_status  <= (OTHERS => (OTHERS => '0'));
+                -- reg_status  <= (OTHERS => (OTHERS => '0'));
                 reg_led     <= (OTHERS => (OTHERS => '0'));
                 reg_fmc     <= (OTHERS => (OTHERS => '0'));
                 reg_M       <= (OTHERS => (OTHERS => '0'));
@@ -310,6 +310,15 @@ begin
                             null; -- read only
                         else
                             dat_o_sig <= reg_version(address_int - VERSION_REG_BASE);
+                        end if;
+                    -- --------------------------------------------------------
+                    -- REG: "status" SIZE: 2 bytes PERMISSIONS: r
+                    -- --------------------------------------------------------
+                    when STATUS_REG_BASE to STATUS_REG_END =>
+                        if WE_I = '1' then
+                            null; -- read only
+                        else
+                            dat_o_sig <= reg_status(address_int - STATUS_REG_BASE);
                         end if;
                     -- --------------------------------------------------------
                     -- REG: "led" SIZE: 2 bytes PERMISSIONS: r/w
