@@ -75,24 +75,35 @@ architecture rtl of tcu is
     -- +--------------------------------+
     -- |status    |    16    |0x08000002|
     -- +--------------------------------+
-    -- |reg_led   |    16    |0x08000004|
+    -- |control   |    16    |0x08000004|
     -- +--------------------------------+
-    -- |reg_fmc   |    32    |0x08000006|
+    -- |fmc       |    32    |0x08000006|
     -- +--------------------------------+
-    -- |reg_pulses|  32x96   |0x0800000A|
+    -- |pulses    |  32x96   |0x0800000A|
     -- +--------------------------------+
     -- |m         |    32    |0x0800018A|
     -- +--------------------------------+
     -- |n         |    16    |0x0800018E|
     -- +--------------------------------+
 
+    -- status register:
+    --      bit 0:   pulse repeats for experiment completed
+    --      bit 3:   digitisation flag
+    --      bit 4:   pri flag
+    --      bit 5:   pulse completed
+    --      bit 6:   '1'
+    --      bit 7:   gpioIN(1) trigger from GPSDO
+
+    -- control register:
+    --      bit 0:   soft arm
+
     -- register start and end addresses, based off their size
     constant VERSION_REG_BASE : natural := 0;
     constant VERSION_REG_END  : natural := 0;
     constant STATUS_REG_BASE  : natural := 1;
     constant STATUS_REG_END   : natural := 1;
-    constant LED_REG_BASE     : natural := 2;
-    constant LED_REG_END      : natural := 2;
+    constant CONTROL_REG_BASE     : natural := 2;
+    constant CONTROL_REG_END      : natural := 2;
     constant FMC_REG_BASE     : natural := 3;
     constant FMC_REG_END      : natural := 4;
     constant PULSES_REG_BASE  : integer := 5;
@@ -105,8 +116,8 @@ architecture rtl of tcu is
     type array_type is array (integer range <>) of std_logic_vector(15 downto 0);
 
     SIGNAL reg_VERSION  : array_type(0 to (VERSION_REG_END - VERSION_REG_BASE)) := (0 => x"0002");
-    SIGNAL reg_status   : array_type(0 to (STATUS_REG_END - STATUS_REG_BASE))   := (others => (OTHERS => '0')); -- status_reg(0) used to indicate that all pulse repeats for experiment are completed
-    SIGNAL reg_led      : array_type(0 to (LED_REG_END - LED_REG_BASE))         := (others => (OTHERS => '0')); -- triggers(0) 'soft on' / arming bit from register
+    SIGNAL reg_status   : array_type(0 to (STATUS_REG_END - STATUS_REG_BASE))   := (others => (OTHERS => '0'));
+    SIGNAL reg_control  : array_type(0 to (CONTROL_REG_END - CONTROL_REG_BASE)) := (others => (OTHERS => '0'));
     SIGNAL reg_fmc      : array_type(0 to (FMC_REG_END - FMC_REG_BASE))         := (others => (OTHERS => '0'));
     SIGNAL reg_pulses   : array_type(0 to (PULSES_REG_END - PULSES_REG_BASE))   := (others => (OTHERS => '0'));
     SIGNAL reg_M        : array_type(0 to (M_REG_END - M_REG_BASE))             := (others => (OTHERS => '0'));
@@ -124,15 +135,15 @@ architecture rtl of tcu is
 
     signal M_counter    : unsigned(31 downto 0) := x"00000000"; -- Number of repeats that have already ocurred
 
-    signal MB           : unsigned(15 downto 0) := x"0000";     -- Main bang offset extracted from pulses reg
-    signal MB_counter   : unsigned(15 downto 0) := x"0000";     -- Main bang counter compared to Main bang offset
-    signal DIG          : unsigned(15 downto 0) := x"0000";     -- Digitisation offset extracted from pulses reg
-    signal DIG_counter  : unsigned(15 downto 0) := x"0000";     -- Digitisation counter compared to Digitisation offset
-    signal PRI          : unsigned(31 downto 0) := x"00000000"; -- PRI offset extracted from pulses reg
+    signal MB           : unsigned(15 downto 0) := x"0000";     -- current main bang offset extracted from pulses reg
+    signal MB_counter   : unsigned(15 downto 0) := x"0000";     -- main bang counter compared to main bang offset
+    signal DIG          : unsigned(15 downto 0) := x"0000";     -- current digitisation offset extracted from pulses reg
+    signal DIG_counter  : unsigned(15 downto 0) := x"0000";     -- digitisation counter compared to digitisation offset
+    signal PRI          : unsigned(31 downto 0) := x"00000000"; -- current PRI offset extracted from pulses reg
     signal PRI_counter  : unsigned(31 downto 0) := x"00000000"; -- PRI counter compared to PRI offset
 
-    signal PC           : integer range 0 to 181 := 0;          -- Program Counter keeps track of current pulse
-    signal dataout      : std_logic_vector(95 downto 0);        -- Contains all pulse parameters for current pulse
+    signal PC           : integer range 0 to 181 := 0;          -- program counter keeps track of current pulse
+    signal dataout      : std_logic_vector(95 downto 0);        -- contains all pulse parameters for current pulse
 
     -- Amplifiers and switches
     signal l_band_amp_on: std_logic;                            -- gpio(13) <= l_band_amp_on;
@@ -296,7 +307,7 @@ begin
         if RISING_EDGE(CLK_I) then
             if RST_I = '1' then
                 -- reg_status  <= (OTHERS => (OTHERS => '0'));
-                reg_led     <= (OTHERS => (OTHERS => '0'));
+                reg_control     <= (OTHERS => (OTHERS => '0'));
                 reg_fmc     <= (OTHERS => (OTHERS => '0'));
                 reg_M       <= (OTHERS => (OTHERS => '0'));
                 reg_N       <= (OTHERS => (OTHERS => '0'));
@@ -323,11 +334,11 @@ begin
                     -- --------------------------------------------------------
                     -- REG: "led" SIZE: 2 bytes PERMISSIONS: r/w
                     -- --------------------------------------------------------
-                    when LED_REG_BASE to LED_REG_END =>
+                    when CONTROL_REG_BASE to CONTROL_REG_END =>
                         if WE_I = '1' then
-                            reg_led(address_int - LED_REG_BASE) <= DAT_I;
+                            reg_control(address_int - CONTROL_REG_BASE) <= DAT_I;
                         else
-                            dat_o_sig <= reg_led(address_int - LED_REG_BASE);
+                            dat_o_sig <= reg_control(address_int - CONTROL_REG_BASE);
                         end if;
                     -- --------------------------------------------------------
                     -- REG: "fmc" SIZE: 2 bytes PERMISSIONS: r/w
@@ -374,7 +385,7 @@ begin
                 end case;
             else
                 reg_status  <= reg_status;
-                reg_led     <= reg_led;
+                reg_control     <= reg_control;
                 reg_fmc     <= reg_fmc;
                 reg_M       <= reg_M;
                 reg_N       <= reg_N;
@@ -475,20 +486,20 @@ begin
     -- Misc signal wiring
     ---------------------------------------------------------------------------
 
-    led <= reg_led(0)(7 downto 0);
+    led <= reg_status(0)(7 downto 0);
 
     ---------------------------------------------------------------------------
     -- ?????????
     ---------------------------------------------------------------------------
-    --reg_led(0)
-    --reg_led(1) <= when M_counter= M_reg
-    --reg_led(2) <= MB_flag;
-    reg_led(0)(3)  <= DIG_flag;
-    reg_led(0)(4)  <= PRI_flag;
-    reg_led(0)(5)  <= (MB_flag and DIG_flag and PRI_flag);
-    --reg_led(6) <= when M_counter= M_reg
-    reg_led(0)(6)  <= '1';
-    reg_led(0)(7)  <= gpioIn(1);
+    --reg_control(0)
+    --reg_control(1) <= when M_counter= M_reg
+    --reg_control(2) <= MB_flag;
+    reg_status(0)(3)  <= DIG_flag;
+    reg_status(0)(4)  <= PRI_flag;
+    reg_status(0)(5)  <= (MB_flag and DIG_flag and PRI_flag);
+    --reg_control(6) <= when M_counter= M_reg
+    reg_status(0)(6)  <= '1';
+    reg_status(0)(7)  <= gpioIn(1);
 
     bcd(15 downto 0)    <= reg_fmc(0);
     bcd(31 downto 16)   <= reg_fmc(1);
@@ -588,14 +599,14 @@ begin
         -----------------------------------------------------------------------
         -- Time critical process
         -----------------------------------------------------------------------
-        if(reg_led(0)(0) = '1' and gpioIn(0) = '1') then
+        if(reg_control(0)(0) = '1' and gpioIn(0) = '1') then
             ready_flag <= '1';
-        elsif(reg_led(0)(0) = '0') then
+        elsif(reg_control(0)(0) = '0') then
             ready_flag <= '0';
         end if;
 
         -- The experiment commences when triggered by the ready signal above, as long as it isnt the end of the experiment and as long as it is still "soft on" (kept on by the triggers register).
-        if(ready_flag = '1' and reg_status(0)(0) = '0' and reg_led(0)(0) = '1') then
+        if(ready_flag = '1' and reg_status(0)(0) = '0' and reg_control(0)(0) = '1') then
 
             sys_rst_i <= '0';		-- turn ethernet on
 
@@ -657,7 +668,7 @@ begin
             --===========--
             -- off state --
             --===========--
-            elsif(reg_led(0)(0) = '0') then
+            elsif(reg_control(0)(0) = '0') then
                 PC              <= 0;
                 M_counter       <= (others => '0');
                 reg_status(0)(0)<= '0';
