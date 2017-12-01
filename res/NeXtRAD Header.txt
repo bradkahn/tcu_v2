@@ -79,7 +79,7 @@ TgtLocationLat = -34.18746707319625;
 TgtLocationLon = 18.428049091016874;
 TgtLocationHt = 0.0235;
 
-
+NUM_TRANSFERS = 5000;       % check with DANE!
 
 % Pulse Parameters
 
