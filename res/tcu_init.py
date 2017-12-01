@@ -27,6 +27,8 @@ pulses = list()         # [{pulse1}, {pulse2}, {pulse3}]
 
 pulse_num = 0
 
+next_pulse_index = 0
+
 for line in header_lines:
     if line.find('NUM_TRANSFERS') > -1:
         print("num-transfers found:", line[:-1])
@@ -34,35 +36,40 @@ for line in header_lines:
         num_transfers = eval(val[2][:-1])
     elif line.find('[pulse') > -1:
         print("pulse header found:", line[:-1])
-        pulse_num = eval(line[-3])
-        print("pulse number is: " + str(pulse_num))
+        line_list = line.split()
+        val = line_list[0]
+        val = val.replace('[pulse', '')
+        val = val.replace(']', '')
+        pulse_num = eval(val)
+        print("pulse number is: " + str(val))
         pulses.append(dict())
-        pulses[pulse_num-1]['pulse_number'] = pulse_num
-    if pulse_num > 0:
+        pulses[next_pulse_index]['pulse_number'] = pulse_num
+        next_pulse_index += 1
+    if next_pulse_index > 0:
         if line.find('MBoffset') > -1:
             val = line.split()
             print('\tMBoffset for pulse{} is {}'.format(pulse_num, val[2]))
-            pulses[pulse_num-1]['mb_offset'] = eval(val[2][:-1])
+            pulses[next_pulse_index-1]['mb_offset'] = eval(val[2][:-1])
         elif line.find('DIGoffset') > -1:
             val = line.split()
             print('\tDIGoffset for pulse{} is {}'.format(pulse_num, val[2]))
-            pulses[pulse_num-1]['dig_offset'] = eval(val[2][:-1])
+            pulses[next_pulse_index-1]['dig_offset'] = eval(val[2][:-1])
         elif line.find('PRIoffset') > -1:
             val = line.split()
             print('\tPRIoffset for pulse{} is {}'.format(pulse_num, val[2]))
-            pulses[pulse_num-1]['pri_offset'] = eval(val[2][:-1])
+            pulses[next_pulse_index-1]['pri_offset'] = eval(val[2][:-1])
         elif line.find('Frequency') > -1:
             val = line.split()
             print('\tFrequency for pulse{} is {}'.format(pulse_num, val[2]))
-            pulses[pulse_num-1]['frequency'] = eval(val[2][:-1])
+            pulses[next_pulse_index-1]['frequency'] = eval(val[2][:-1])
         elif line.find('TxPol') > -1:
             val = line.split()
             print('\tTxPol for pulse{} is {}'.format(pulse_num, val[2]))
-            pulses[pulse_num-1]['tx_pol'] = val[2][:-1]
+            pulses[next_pulse_index-1]['tx_pol'] = val[2][:-1]
         elif line.find('RxPol') > -1:
             val = line.split()
             print('\tRxPol for pulse{} is {}'.format(pulse_num, val[2]))
-            pulses[pulse_num-1]['rx_pol'] = val[2][:-1]
+            pulses[next_pulse_index-1]['rx_pol'] = val[2][:-1]
     else:
         pass
 

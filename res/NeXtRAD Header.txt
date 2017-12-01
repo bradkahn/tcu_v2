@@ -86,7 +86,7 @@ NUM_TRANSFERS = 5000;       % check with DANE!
 NumberOfPulses = 1;
 
 % Pulse 1 parameters
-[pulse1]
+[pulse1] % annoying inline comment
 
 MBoffset  = 10000;			% offsets are in us
 DIGoffset = 10000;
