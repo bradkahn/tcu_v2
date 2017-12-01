@@ -23,8 +23,6 @@ pulses = list()         # [{pulse1}, {pulse2}, {pulse3}]
 
 # pulse dictionary format -> {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx, "frequency": xxx, 'tx_pol': xxx, 'rx_pol': xxx} # noqa
 
-# NOTE: assume the first pulse is [pulse1]
-
 pulse_num = 0
 
 next_pulse_index = 0
