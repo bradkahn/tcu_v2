@@ -7,7 +7,7 @@
 
 -- +------------------------------------------------------------------------------------------------------------+
 -- |                                                        +---------------------+                             |
--- |                                                        |     *todo*          |                             |
+-- |                                                        |                     |                             |
 -- |                                                        | chpscpe ICON & ILAs |                             |
 -- |                                                        |                     |                             |
 -- |                                                        +---------------------+                             |
@@ -159,6 +159,25 @@ architecture structural of tcu_top is
         );
     END COMPONENT;
 
+    component chipscope_icon
+    PORT(
+        CONTROL0 : INOUT STD_LOGIC_VECTOR(35 DOWNTO 0)
+        );
+
+    end component;
+
+    signal s_control0 : std_logic_vector(35 downto 0) := (others => '0');
+
+    component chipscope_ila_wishbone
+    PORT(
+        CONTROL : INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+        CLK : IN STD_LOGIC;
+        DATA : IN STD_LOGIC_VECTOR(52 DOWNTO 0);
+        TRIG0 : IN STD_LOGIC_VECTOR(0 TO 0)
+        );
+
+    end component;
+
     -- ------------------------------------------------------------------------
     -- SIGNAL DECLARATIONS
     -- ------------------------------------------------------------------------
@@ -170,8 +189,10 @@ architecture structural of tcu_top is
     signal s_dat_ms     : std_logic_vector(15 downto 0) := (others => '0');
     signal s_dat_sm     : std_logic_vector(15 downto 0) := (others => '0');
     signal s_we         : std_logic := '0';
-    signal s_sel        : std_logic := '0';
+    signal s_sel        : std_logic_vector(0 downto 0) := "0"; -- changed to std_logic vector to work with chipscope
     signal s_clk_100MHz : std_logic := '0';
+    signal s_clk_400MHz : std_logic := '0';
+    signal s_debug_port : std_logic_vector(52 downto 0) := (others => '0');
 
 begin
 
@@ -189,10 +210,10 @@ begin
         gpmc_n_adv_ale => gpmc_n_adv_ale,
         sys_clk_P => sys_clk_P,
         sys_clk_N => sys_clk_N,
-        CLK_400MHz => open,
+        CLK_400MHz => s_clk_400MHz,
         CLK_100MHz => s_clk_100MHz,
         gpmc_clk => open,
-        debug_port => open,
+        debug_port => s_debug_port,
         CLK => s_clk,
         RST => s_rst,
         ACK_I => s_ack,
@@ -200,7 +221,7 @@ begin
         DAT_I => s_dat_sm,
         DAT_O => s_dat_ms,
         WE_O => s_we,
-        tcu_sel => s_sel
+        tcu_sel => s_sel(0)
     );
 
     Inst_tcu: tcu PORT MAP(
@@ -227,11 +248,24 @@ begin
         THISISALWAYSON => open,
         CLK_I => s_clk,
         RST_I => s_rst,
-        STB_I => s_sel,
+        STB_I => s_sel(0),
         WE_I => s_we,
         DAT_I => s_dat_ms,
         ADR_I => s_adr,
         ACK_O => s_ack,
         DAT_O => s_dat_sm
+    );
+
+    Inst_chipscope_icon : chipscope_icon
+    port map (
+        CONTROL0 => s_control0
+    );
+
+    Inst_chipscope_ila_wishbone : chipscope_ila_wishbone
+    port map(
+        CONTROL => s_control0,
+        CLK => s_clk_400MHz,
+        DATA => s_debug_port,
+        TRIG0 => s_sel
     );
 end structural;
