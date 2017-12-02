@@ -41,7 +41,7 @@ PORT (
 	-- ------------------------------------------------------------------------
 	-- DEBUG PORTS
 	-- ------------------------------------------------------------------------
-	debug_port      : OUT   STD_LOGIC_VECTOR((52 + WB_NUMBER_OF_SLAVES) - 1 DOWNTO 0);
+	debug_port      : OUT   STD_LOGIC_VECTOR((68 + WB_NUMBER_OF_SLAVES) - 1 DOWNTO 0);
 
 	-- ------------------------------------------------------------------------
 	-- WISHBONE SYSCON PORTS
@@ -288,7 +288,7 @@ BEGIN
 
 	RST		<= wb_rst_sig;
 	--    wb_clk_en <='1';
-	
+
 	-- TODO: use BUFGCE to implement this:
 	-- BUFGCE: Global Clock Buffer with Clock Enable
 	--         Spartan-6
@@ -346,6 +346,6 @@ BEGIN
 	gpmc_d <= gpmc_data_o when (gpmc_n_oe = '0') else (others => 'Z');
 	gpmc_data_i <= gpmc_d;
 	gpmc_clk <= gpmc_clk_i_b;
-	debug_port <= wb_clk_sig & wb_rst_sig & we_o_sig & dat_o_sig & wb_write_req & wb_write & wb_write_end & wb_read_req & wb_read & wb_read_end & slave_select_sig & wb_stb_o_sig & adr_o_sig(25 downto 0);
+	debug_port <=  DAT_I & (wb_clk_sig and wb_clk_en) & wb_rst_sig & we_o_sig & dat_o_sig & wb_write_req & wb_write & wb_write_end & wb_read_req & wb_read & wb_read_end & slave_select_sig & wb_stb_o_sig & adr_o_sig(25 downto 0);
 	--debug_port <= (others => '0');
 END behavioral;

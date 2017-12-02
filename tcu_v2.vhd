@@ -115,7 +115,7 @@ architecture structural of tcu_top is
         CLK_400MHz : OUT std_logic;
         CLK_100MHz : OUT std_logic;
         gpmc_clk : OUT std_logic;
-        debug_port : OUT std_logic_vector(52 downto 0);
+        debug_port : OUT std_logic_vector(68 downto 0);
         CLK : OUT std_logic;
         RST : OUT std_logic;
         ADR_O : OUT std_logic_vector(7 downto 0);
@@ -172,8 +172,8 @@ architecture structural of tcu_top is
     PORT(
         CONTROL : INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
         CLK : IN STD_LOGIC;
-        DATA : IN STD_LOGIC_VECTOR(52 DOWNTO 0);
-        TRIG0 : IN STD_LOGIC_VECTOR(0 TO 0)
+        DATA : IN STD_LOGIC_VECTOR(68 DOWNTO 0);
+        TRIG0 : IN STD_LOGIC_VECTOR(0 TO 2)
         );
 
     end component;
@@ -192,7 +192,7 @@ architecture structural of tcu_top is
     signal s_sel        : std_logic_vector(0 downto 0) := "0"; -- changed to std_logic vector to work with chipscope
     signal s_clk_100MHz : std_logic := '0';
     signal s_clk_400MHz : std_logic := '0';
-    signal s_debug_port : std_logic_vector(52 downto 0) := (others => '0');
+    signal s_debug_port : std_logic_vector(68 downto 0) := (others => '0');
 
 begin
 
@@ -266,6 +266,6 @@ begin
         CONTROL => s_control0,
         CLK => s_clk_400MHz,
         DATA => s_debug_port,
-        TRIG0 => s_sel
+        TRIG0 => s_sel & s_debug_port(30) & s_debug_port(33)
     );
 end structural;
