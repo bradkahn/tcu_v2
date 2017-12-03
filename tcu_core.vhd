@@ -50,6 +50,11 @@ PORT (
     THISISALWAYSON  : out   std_logic;
 
     -- ------------------------------------------------------------------------
+    -- DEBUG PORTS
+    -- ------------------------------------------------------------------------
+    debug_port : out std_logic_vector(127 downto 0); -- all registers except pulses (which are in BRAM)
+
+    -- ------------------------------------------------------------------------
     -- WISHBONE PORTS - DO NOT MODIFY
     -- ------------------------------------------------------------------------
     CLK_I           : IN    STD_LOGIC;
@@ -384,7 +389,7 @@ begin
                 end case;
             else
                 reg_status  <= reg_status;
-                reg_control     <= reg_control;
+                reg_control <= reg_control;
                 reg_fmc     <= reg_fmc;
                 reg_M       <= reg_M;
                 reg_N       <= reg_N;
@@ -714,4 +719,9 @@ begin
     end process udp_tx;
 
     udp_tx_pkt_vld <= udp_tx_pkt_vld_r;
+
+    -- ------------------------------------------------------------------------
+    -- driving debug port with registers
+    -- ------------------------------------------------------------------------
+    debug_port <= reg_VERSION(0) & reg_status(0) & reg_control(0) & reg_fmc(0) & reg_fmc(1) & reg_M(0) & reg_M(1) & reg_N(0);
 end architecture;

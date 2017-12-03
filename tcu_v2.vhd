@@ -154,28 +154,51 @@ architecture structural of tcu_top is
         GIGE_TX_EN : OUT std_logic;
         GIGE_TX_ER : OUT std_logic;
         THISISALWAYSON : OUT std_logic;
+        debug_port : out std_logic_vector(127 downto 0);
         ACK_O : OUT std_logic;
         DAT_O : OUT std_logic_vector(15 downto 0)
         );
     END COMPONENT;
 
-    component chipscope_icon
+    -- ------------------------------------------------------------------------
+    -- CHIPSCOPE COMPONENT DECLARATIONS
+    -- ------------------------------------------------------------------------
+
+    COMPONENT chipscope_icon
     PORT(
-        CONTROL0 : INOUT STD_LOGIC_VECTOR(35 DOWNTO 0)
-        );
+        CONTROL0 : INOUT std_logic_vector(35 downto 0);   -- ila WB
+        CONTROL1 : INOUT std_logic_vector(35 downto 0);   -- ila GPMC
+        CONTROL2 : INOUT std_logic_vector(35 downto 0)    -- vio tcu regs
+    );
+    END COMPONENT;
 
-    end component;
-
-    signal s_control0 : std_logic_vector(35 downto 0) := (others => '0');
+    signal s_control0 : std_logic_vector(35 downto 0) := (others => '0');   -- ila WB
+    signal s_control1 : std_logic_vector(35 downto 0) := (others => '0');   -- ila GPMC
+    signal s_control2 : std_logic_vector(35 downto 0) := (others => '0');   -- vio tcu regs
 
     component chipscope_ila_wishbone
     PORT(
         CONTROL : INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
-        CLK : IN STD_LOGIC;
-        DATA : IN STD_LOGIC_VECTOR(68 DOWNTO 0);
-        TRIG0 : IN STD_LOGIC_VECTOR(0 TO 2)
+        CLK     : IN STD_LOGIC;
+        DATA    : IN STD_LOGIC_VECTOR(68 DOWNTO 0);
+        TRIG0   : IN STD_LOGIC_VECTOR(0 TO 2)
         );
 
+    end component;
+
+    COMPONENT chipscope_ila_gpmc
+    PORT(
+        CLK     : IN std_logic;
+        TRIG0   : IN std_logic_vector(30 downto 0);
+        CONTROL : INOUT std_logic_vector(35 downto 0)
+        );
+    END COMPONENT;
+
+    component chipscope_vio_tcu_regs
+    PORT(
+        CONTROL     : INOUT STD_LOGIC_VECTOR(35 DOWNTO 0);
+        ASYNC_IN    : IN STD_LOGIC_VECTOR(127 DOWNTO 0)
+        );
     end component;
 
     -- ------------------------------------------------------------------------
@@ -193,6 +216,8 @@ architecture structural of tcu_top is
     signal s_clk_100MHz : std_logic := '0';
     signal s_clk_400MHz : std_logic := '0';
     signal s_debug_port : std_logic_vector(68 downto 0) := (others => '0');
+    signal s_debug_tcu  : std_logic_vector(127 downto 0) := (others => '0');
+    signal s_gpmc_clk   : std_logic := '0';
 
 begin
 
@@ -200,7 +225,8 @@ begin
     -- COMPONENT INSTANTIATION
     -- ------------------------------------------------------------------------
 
-    Inst_gpmc_wb: gpmc_wb PORT MAP(
+    Inst_gpmc_wb: gpmc_wb
+    PORT MAP(
         gpmc_a => gpmc_a,
         gpmc_d => gpmc_d,
         gpmc_clk_i => gpmc_clk_i,
@@ -212,7 +238,7 @@ begin
         sys_clk_N => sys_clk_N,
         CLK_400MHz => s_clk_400MHz,
         CLK_100MHz => s_clk_100MHz,
-        gpmc_clk => open,
+        gpmc_clk => s_gpmc_clk,
         debug_port => s_debug_port,
         CLK => s_clk,
         RST => s_rst,
@@ -224,7 +250,8 @@ begin
         tcu_sel => s_sel(0)
     );
 
-    Inst_tcu: tcu PORT MAP(
+    Inst_tcu: tcu
+    PORT MAP(
         gpio => gpio,
         gpioIn => gpioIn,
         led => led,
@@ -246,6 +273,7 @@ begin
         GIGE_TX_EN => GIGE_TX_EN,
         GIGE_TX_ER => GIGE_TX_ER,
         THISISALWAYSON => open,
+        debug_port => s_debug_tcu,
         CLK_I => s_clk,
         RST_I => s_rst,
         STB_I => s_sel(0),
@@ -256,10 +284,12 @@ begin
         DAT_O => s_dat_sm
     );
 
-    Inst_chipscope_icon : chipscope_icon
-    port map (
-        CONTROL0 => s_control0
-    );
+	Inst_chipscope_icon: chipscope_icon
+    PORT MAP(
+		CONTROL0 => s_control0,
+		CONTROL1 => s_control1,
+		CONTROL2 => s_control2
+	);
 
     Inst_chipscope_ila_wishbone : chipscope_ila_wishbone
     port map(
@@ -267,5 +297,18 @@ begin
         CLK => s_clk_400MHz,
         DATA => s_debug_port,
         TRIG0 => s_sel & s_debug_port(30) & s_debug_port(33)
+    );
+
+    Inst_chipscope_ila_gpmc: chipscope_ila_gpmc
+    PORT MAP(
+        CONTROL => s_control1,
+        CLK     => s_clk_400MHz,
+        TRIG0   => s_gpmc_clk & gpmc_n_cs(0) & gpmc_n_we & gpmc_n_oe & gpmc_n_adv_ale & gpmc_a(10 downto 1) & gpmc_d(15 downto 0)
+    );
+
+    your_instance_name : chipscope_vio_tcu_regs
+    port map(
+        CONTROL   => s_control2,
+        ASYNC_IN  => s_debug_tcu
     );
 end structural;
