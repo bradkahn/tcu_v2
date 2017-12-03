@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Sun Dec  3 07:26:38 2017
+# Date: Sun Dec  3 09:09:13 2017
 #
 ##############################################################
 #
@@ -31,7 +31,7 @@ SET implementationfiletype = Ngc
 SET package = fgg676
 SET removerpms = false
 SET simulationfiles = Behavioral
-SET speedgrade = -3
+SET speedgrade = -2
 SET verilogsim = false
 SET vhdlsim = true
 # END Project Options
@@ -56,4 +56,4 @@ CSET synchronous_output_port_width=8
 MISC pkg_timestamp=2013-10-13T14:13:48Z
 # END Extra information
 GENERATE
-# CRC: c7fa77bb
+# CRC: 42b48513
