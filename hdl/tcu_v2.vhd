@@ -306,7 +306,7 @@ begin
         TRIG0   => s_gpmc_clk & gpmc_n_cs(0) & gpmc_n_we & gpmc_n_oe & gpmc_n_adv_ale & gpmc_a(10 downto 1) & gpmc_d(15 downto 0)
     );
 
-    your_instance_name : chipscope_vio_tcu_regs
+    Inst_chipscope_vio_tcu_regs : chipscope_vio_tcu_regs
     port map(
         CONTROL   => s_control2,
         ASYNC_IN  => s_debug_tcu

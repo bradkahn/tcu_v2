@@ -1,5 +1,5 @@
 BOF_FILE=tcu_v2.bof
-SYM_FILE=../tcu_registers.sym
+SYM_FILE=tcu_registers.sym
 BIN_FILE=tcu_top.bin
 
 tcu:
