@@ -112,13 +112,21 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
     -- constant N_REG_BASE      :   std_logic_vector(25 downto 0) := (25 downto 22 => "0101", others => '0');
     -- constant PRI_REG_BASE    :   std_logic_vector(25 downto 0) := (25 downto 22 => "1100", others => '0');
 
-    constant STATUS_REG_BASE :   std_logic_vector(25 downto 0) := "0000" & "0000000000000000000000";
-    constant LED_REG_BASE    :   std_logic_vector(25 downto 0) := "0001" & "0000000000000000000000";
-    constant REG_FMC_BASE    :   std_logic_vector(25 downto 0) := "0010" & "0000000000000000000000";
-    constant PULSES_REG_BASE :   std_logic_vector(25 downto 0) := "0011" & "0000000000000000000000";
-    constant M_REG_BASE      :   std_logic_vector(25 downto 0) := "0100" & "0000000000000000000000";
-    constant N_REG_BASE      :   std_logic_vector(25 downto 0) := "0101" & "0000000000000000000000";
-    constant PRI_REG_BASE    :   std_logic_vector(25 downto 0) := "0110" & "0000000000000000000000";
+    -- constant STATUS_REG_BASE :   std_logic_vector(25 downto 0) := "0000" & "0000000000000000000000";
+    -- constant LED_REG_BASE    :   std_logic_vector(25 downto 0) := "0001" & "0000000000000000000000";
+    -- constant REG_FMC_BASE    :   std_logic_vector(25 downto 0) := "0010" & "0000000000000000000000";
+    -- constant PULSES_REG_BASE :   std_logic_vector(25 downto 0) := "0011" & "0000000000000000000000";
+    -- constant M_REG_BASE      :   std_logic_vector(25 downto 0) := "0100" & "0000000000000000000000";
+    -- constant N_REG_BASE      :   std_logic_vector(25 downto 0) := "0101" & "0000000000000000000000";
+    -- constant PRI_REG_BASE    :   std_logic_vector(25 downto 0) := "0110" & "0000000000000000000000";
+
+    -- constant STATUS_REG_BASE :   std_logic_vector(25 downto 0) := "0000" & "0000000000000000000000";
+    -- constant LED_REG_BASE    :   std_logic_vector(25 downto 0) := "0001" & "0000000000000000000000";
+    -- constant REG_FMC_BASE    :   std_logic_vector(25 downto 0) := "0010" & "0000000000000000000000";
+    -- constant PULSES_REG_BASE :   std_logic_vector(25 downto 0) := "0011" & "0000000000000000000000";
+    -- constant M_REG_BASE      :   std_logic_vector(25 downto 0) := "0100" & "0000000000000000000000";
+    -- constant N_REG_BASE      :   std_logic_vector(25 downto 0) := "0101" & "0000000000000000000000";
+    -- constant PRI_REG_BASE    :   std_logic_vector(25 downto 0) := "0110" & "0000000000000000000000";
 
 BEGIN
 
@@ -412,15 +420,15 @@ BEGIN
     begin
 
         -- insert stimulus here
-        wait for 100 ns;
+        wait for 250 ns;
 
-        -- status      3 0x08000000 0x02    <-
-        -- reg_led     3 0x08800000 0x02    <-
-        -- reg_fmc     3 0x09000000 0x02    <- for BCD to REx (alternative to ethernet)
-        -- reg_pulses  3 0x09800000 0x180   <- pulse parameters for n pulses
-        -- m           3 0x0A000000 0x04    <- # of times all pulses will be cycled through
-        -- n           3 0x0A800000 0x02    <- # of pulses
-        -- pri         1 0x0B000000 0x04    <- debug register
+        -- version     3 0x08000000 0x02
+        -- status      1 0x08000002 0x02
+        -- control     3 0x08000004 0x02
+        -- fmc         3 0x08000006 0x04
+        -- pulses      3 0x0800000A 0x180
+        -- m           3 0x0800018A 0x04
+        -- n           3 0x0800018E 0x02
 
         -- Set up a signal that triggers every 1 ms (1Khz), has a main bang and
         -- digitisation offset of 500ns, a band frequency of 1300 MHz and
@@ -429,21 +437,21 @@ BEGIN
         -- NB: values echoed in are little endian
 
         -- echo -e -n "\x01\x00" > /proc/671/hw/ioreg/n
-        register_write(address => N_REG_BASE, data=>x"0001");
+        register_write(address => "00000000000000000000000000", data=>x"0001");
         -- echo -e -n "\x00\x0b\x00\x00" > /proc/671/hw/ioreg/m
-        register_write(address => M_REG_BASE, data=>x"0b00");
-        register_write(address => (M_REG_BASE(25 downto 1) & "1"), data=>x"0000");
+        register_write(address => "00000000000000000000000010", data=>x"0b00");
+        register_write(address => "00000000000000000000000011", data=>x"0000");
         -- echo -e -n "\x32\x00\x32\x00\x01\x00\x14\x05\x01\x00\x3b\x86" > /proc/671/hw/ioreg/reg_pulses
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & "0000"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & "0001"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & "0010"), data=>x"0001");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & "0011"), data=>x"0514");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & "0100"), data=>x"0001");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & "0101"), data=>x"863b");
-        -- echo -e -n "\x00\x00" > /proc/671/hw/ioreg/reg_led
-        register_write(address => LED_REG_BASE, data=>x"0000");
-        -- echo -e -n "\x01\x00" > /proc/671/hw/ioreg/reg_led
-        register_write(address => LED_REG_BASE, data=>x"0001");
+        -- register_write(address => (PULSES_REG_BASE(25 downto 4) & "0000"), data=>x"0032");
+        -- register_write(address => (PULSES_REG_BASE(25 downto 4) & "0001"), data=>x"0032");
+        -- register_write(address => (PULSES_REG_BASE(25 downto 4) & "0010"), data=>x"0001");
+        -- register_write(address => (PULSES_REG_BASE(25 downto 4) & "0011"), data=>x"0514");
+        -- register_write(address => (PULSES_REG_BASE(25 downto 4) & "0100"), data=>x"0001");
+        -- register_write(address => (PULSES_REG_BASE(25 downto 4) & "0101"), data=>x"863b");
+        -- -- echo -e -n "\x00\x00" > /proc/671/hw/ioreg/reg_led
+        -- register_write(address => LED_REG_BASE, data=>x"0000");
+        -- -- echo -e -n "\x01\x00" > /proc/671/hw/ioreg/reg_led
+        -- register_write(address => LED_REG_BASE, data=>x"0001");
 
         wait for 100ns;
         -- FIRE!
