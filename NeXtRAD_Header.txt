@@ -113,3 +113,5 @@ NumberOfPulses = 1;
 MBoffset = 10000;
 DIGoffset = 10000;
 PRIoffset = 10000;
+TxPol     = V;
+RxPol     = H;
