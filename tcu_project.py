@@ -61,9 +61,9 @@ def parse_header():
     # Brad Kahn
     # 01/12/2017
 
-    # -----------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EXTRACT PARAMETERS FROM HEADER FILE
-    # -----------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     header_file = open(HEADER_PATH + HEADER_NAME, 'r')
     header_lines = header_file.readlines()
@@ -72,13 +72,6 @@ def parse_header():
     global num_pulses
     global num_repeats
     global pulses
-
-    num_transfers = int()   # used to calculate M
-    num_pulses = int()      # N
-    num_repeats = int()     # M
-    pulses = list()         # [{pulse1}, {pulse2}, {pulse3}]
-
-    # # pulse dictionary format -> {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx, "frequency": xxx, 'tx_pol': xxx, 'rx_pol': xxx} # noqa
 
     pulse_num = 0
 
@@ -138,9 +131,9 @@ def parse_header():
 
         logging.info('{} unique pulses found'.format(num_pulses))
 
-    # -----------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # VERIFY PARAMETERS
-    # -----------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     if pulse_num == 0:
         logger.error('no [pulseX] where found in header')
@@ -171,10 +164,13 @@ def parse_header():
 # -----------------------------------------------------------------------------
 # core instantiation
 # -----------------------------------------------------------------------------
+
 core_tcu = harpoon.IPCore('tcu_core', 'Timing control unit')
+
 # -----------------------------------------------------------------------------
 # registers for core_tcu instantiation
 # -----------------------------------------------------------------------------
+
 harpoon.Register('version', 'version number of this iteration of tcu gateware',
                  2, 1, core_tcu)
 harpoon.Register('status',
@@ -209,10 +205,10 @@ if __name__ == '__main__':
     parse_header()
 
     logger.debug('initializing rhino connection, IP address: ' + RHINO_ADDRESS)
-    # fpga_con = borph.RHINO(address=RHINO_ADDRESS,
-    #                        username='root',
-    #                        password='rhino',
-    #                        login_timeout=30)
+    fpga_con = borph.RHINO(address=RHINO_ADDRESS,
+                           username='root',
+                           password='rhino',
+                           login_timeout=30)
     logger.debug('attempting to connect...')
     logger.info('attempting to connect...')
     # fpga_con.connect()
@@ -223,3 +219,11 @@ if __name__ == '__main__':
     # core_tcu.write_reg('pulses', pulses)
     # core_tcu.write_reg('m', num_repeats)
     # core_tcu.write_reg('n', num_pulses)
+
+    # -------------------------------------------------------------------------
+    # verify registers have correct values
+    # -------------------------------------------------------------------------
+
+    # -------------------------------------------------------------------------
+    # arm the TCU
+    # -------------------------------------------------------------------------
