@@ -110,8 +110,9 @@ NumberOfPulses = 1;
 % Pulse 1 parameters
 [pulse1]
 
-MBoffset = 10000;
+MBoffset  = 10000;  % us
 DIGoffset = 10000;
 PRIoffset = 10000;
+Frequency = 8500;   % MHz
 TxPol     = V;
 RxPol     = H;
