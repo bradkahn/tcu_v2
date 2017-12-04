@@ -32,35 +32,6 @@ def print_welcome():
     print("NeXtRAD TCU v2.0")
     print("")
 
-
-core_tcu = harpoon.IPCore('tcu_core', 'Timing control unit')
-harpoon.Register('version', 'version number of this iteration of tcu gateware',
-                 2, 1, core_tcu)
-harpoon.Register('status',
-                 'status flags:\n'
-                 'bit 0: pulse repeats for experiment completed\n'
-                 'bit 3: digitisation flag\n'
-                 'bit 4: pri flag, bit 5: pulse completed\n'
-                 'bit 6: \'1\'\n'
-                 'bit 7: gpioIN(1) trigger from GPSDO',
-                 2, 1, core_tcu)
-harpoon.Register('control', 'reg-description',
-                 2, 3, core_tcu)
-harpoon.Register('fmc', 'reg-description',
-                 4, 3, core_tcu)
-harpoon.Register('pulses', 'reg-description',
-                 180, 3, core_tcu)
-harpoon.Register('m', 'Number of repeats for each pulse in an experiment',
-                 4, 3, core_tcu)
-harpoon.Register('n', 'Number of pulses',
-                 2, 3, core_tcu)
-
-
-project = harpoon.Project('tcu_project',
-                          'project to communicate with the RHINO-TCU',
-                          [core_tcu])
-
-
 def parse_header():
     # tcu_init.py
     # startup script for TCU
@@ -99,8 +70,9 @@ def parse_header():
             print("number of pulses found:", line[:-1])
             val = line.split()
             num_pulses = eval(val[2][:-1])
-
+            print("")
         elif line.find('[pulse') > -1:
+            print()
             print("pulse header found:", line[:-1])
             line_list = line.split()
             val = line_list[0]
@@ -161,28 +133,64 @@ def parse_header():
                             str(pulse['pulse_number']))
 
     num_pulses = pulse_num
+    print()
     print('number of pulses found (n) = ' + str(num_pulses))
     # division operators: '/' for float, '//' integer
     num_repeats = num_transfers // num_pulses
-    print('calculated number of repeats (m) = ' + str(num_repeats))
+    print()
+    print('calculated number of repeats m = ' + str(num_repeats) +
+          ' [m = NUM_TRANSFERS / n]')
 
-    # -----------------------------------------------------------------------------
-    # SEND PARAMETERS TO TCU
-    # -----------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------
+# core instantiation
+# -----------------------------------------------------------------------------
+core_tcu = harpoon.IPCore('tcu_core', 'Timing control unit')
+# -----------------------------------------------------------------------------
+# registers for core_tcu instantiation
+# -----------------------------------------------------------------------------
+harpoon.Register('version', 'version number of this iteration of tcu gateware',
+                 2, 1, core_tcu)
+harpoon.Register('status',
+                 'status flags:\n'
+                 'bit 0: pulse repeats for experiment completed\n'
+                 'bit 3: digitisation flag\n'
+                 'bit 4: pri flag, bit 5: pulse completed\n'
+                 'bit 6: \'1\'\n'
+                 'bit 7: gpioIN(1) trigger from GPSDO',
+                 2, 1, core_tcu)
+harpoon.Register('control', 'reg-description',
+                 2, 3, core_tcu)
+harpoon.Register('fmc', 'reg-description',
+                 4, 3, core_tcu)
+harpoon.Register('pulses', 'reg-description',
+                 180, 3, core_tcu)
+harpoon.Register('m', 'Number of repeats for each pulse in an experiment',
+                 4, 3, core_tcu)
+harpoon.Register('n', 'Number of pulses',
+                 2, 3, core_tcu)
+# -----------------------------------------------------------------------------
+# Project instantiation
+# -----------------------------------------------------------------------------
+project = harpoon.Project('tcu_project',
+                          'project to communicate with the RHINO-TCU',
+                          [core_tcu])
 
 if __name__ == '__main__':
     print_welcome()
 
     parse_header()
 
-    # fpga_con = borph.RHINO(address=RHINO_ADDRESS,
-    #                        username='root',
-    #                        password='rhino',
-    #                        login_timeout=30)
-    #
-    # project.connect()
-    #
+    fpga_con = borph.RHINO(address=RHINO_ADDRESS,
+                           username='root',
+                           password='rhino',
+                           login_timeout=30)
+
+    # fpga_con.connect()
+
+    # -------------------------------------------------------------------------
+    # SEND PARAMETERS TO TCU
+    # -------------------------------------------------------------------------
     # core_tcu.write_reg('pulses', pulses)
     # core_tcu.write_reg('m', num_repeats)
     # core_tcu.write_reg('n', num_pulses)
