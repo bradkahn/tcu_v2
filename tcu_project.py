@@ -26,14 +26,17 @@ from harpoon.boardsupport import borph
 # TODO: find out where header file will live on node laptop
 HEADER_PATH = "/home/brad/tcu_v2/"  # <-- this needs to change
 HEADER_NAME = "NeXtRAD_Header.txt"
-RHINO_ADDRESS = '192.168.0.2'
+TCU_ADDRESS = '192.168.0.2'
+NUM_PULSE_PARAMS = 7                # see pulse dictionary format
 
-num_transfers = int()   # used to calculate M
-num_pulses = int()      # N
-num_repeats = int()     # M
-pulses = list()         # [{pulse1}, {pulse2}, {pulse3}]
+num_transfers = int()               # used to calculate M
+num_pulses = int()                  # N
+num_repeats = int()                 # M
+pulses = list()                     # [{pulse1}, {pulse2}, {pulse3}]
 
-# pulse dictionary format -> {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx, "frequency": xxx, 'tx_pol': xxx, 'rx_pol': xxx} # noqa
+# pulse dictionary format, 7 parameters per pulse:
+# {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx,
+# "frequency": xxx, 'tx_pol': xxx, 'rx_pol': xxx}
 
 # -----------------------------------------------------------------------------
 # Logging stuff
@@ -58,6 +61,7 @@ fh.setFormatter(formatter)
 # add the handlers to logger
 logging.getLogger().addHandler(fh)
 logging.getLogger().addHandler(ch)
+
 
 def print_logo():
     print(harpoon.LOGO)
@@ -84,10 +88,10 @@ def parse_header():
         header_file = open(HEADER_PATH + HEADER_NAME, 'r')
     except Exception as e:
         logger.error('could not find file "{}" in path: {}'.format(HEADER_NAME, HEADER_PATH))
-        raise FileNotFoundError
         sys.exit(64)
 
     header_lines = header_file.readlines()
+    header_file.close()
 
     global num_transfers
     global num_pulses
@@ -99,15 +103,16 @@ def parse_header():
     next_pulse_index = 0
 
     for line in header_lines:
-        if line.find('NUM_TRANSFERS') > -1:
+        line = line.strip()
+        if line.startswith('NUM_TRANSFERS'):
             logger.debug("num-transfers found:" + line[:-1])
             val = line.split()
             num_transfers = eval(val[2][:-1])
-        elif line.find('NumberOfPulses') > -1:
+        elif line.startswith('NumberOfPulses'):
             logger.debug("number of pulses found:" + line[:-1])
             val = line.split()
             num_pulses = eval(val[2][:-1])
-        elif line.find('[pulse') > -1:
+        elif line.startswith('[pulse'):
             logger.debug("pulse header found:" + line[:-1])
             line_list = line.split()
             val = line_list[0]
@@ -119,27 +124,27 @@ def parse_header():
             pulses[next_pulse_index]['pulse_number'] = pulse_num
             next_pulse_index += 1
         if next_pulse_index > 0:
-            if line.find('MBoffset') > -1:
+            if line.startswith('MBoffset'):
                 val = line.split()
                 logger.debug('MBoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['mb_offset'] = eval(val[2][:-1])
-            elif line.find('DIGoffset') > -1:
+            elif line.startswith('DIGoffset'):
                 val = line.split()
                 logger.debug('DIGoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['dig_offset'] = eval(val[2][:-1])
-            elif line.find('PRIoffset') > -1:
+            elif line.startswith('PRIoffset'):
                 val = line.split()
                 logger.debug('PRIoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['pri_offset'] = eval(val[2][:-1])
-            elif line.find('Frequency') > -1:
+            elif line.startswith('Frequency'):
                 val = line.split()
                 logger.debug('Frequency for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['frequency'] = eval(val[2][:-1])
-            elif line.find('TxPol') > -1:
+            elif line.startswith('TxPol'):
                 val = line.split()
                 logger.debug('TxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['tx_pol'] = val[2][:-1]
-            elif line.find('RxPol') > -1:
+            elif line.startswith('RxPol'):
                 val = line.split()
                 logger.debug('RxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['rx_pol'] = val[2][:-1]
@@ -158,21 +163,17 @@ def parse_header():
 
     if pulse_num == 0:
         logger.error('no [pulseX] where found in header')
-        raise Exception('no [pulseX] where found in header')
         sys.exit(65)
     if num_transfers == 0:
         logger.error('no NUM_TRANSFERS found in header, needed for "m"')
-        raise Exception('no NUM_TRANSFERS found in header, needed for "m"')
         sys.exit(65)
     for pulse in pulses:
         # simple check if the number of parameters matches the expected length,
         # len(["pulse_number","mb_offset","dig_offset","pri_offset","frequency","tx_pol","rx_pol"])
         # could take this further and check for each parameter individually
-        if len(pulse) != 7:
+        if len(pulse) != NUM_PULSE_PARAMS:
             logger.error('missing pulse parameter(s) for pulse ' +
                          str(pulse['pulse_number']))
-            raise Exception('missing pulse parameter(s) for pulse ' +
-                            str(pulse['pulse_number']))
             sys.exit(65)
 
     num_pulses = pulse_num
@@ -228,18 +229,20 @@ if __name__ == '__main__':
     logger.info('parsing header file: ' + HEADER_PATH + HEADER_NAME)
     parse_header()
 
-    logger.debug('initializing rhino connection, IP address: ' + RHINO_ADDRESS)
-    fpga_con = borph.RHINO(address=RHINO_ADDRESS,
+    logger.debug('initializing rhino connection, IP address: ' + TCU_ADDRESS)
+    fpga_con = borph.RHINO(address=TCU_ADDRESS,
                            username='root',
                            password='rhino',
                            login_timeout=30)
     logger.debug('attempting to connect...')
     logger.info('attempting to connect...')
-    # try:
-    #     fpga_con.connect()
-    # except Exception as e:
-    #     raise('failed to connect to rhino')
-    #     sys.exit(66)
+    try:
+        fpga_con.connect()
+    except Exception as e:
+        logger.error('failed to connect to rhino')
+        sys.exit(66)
+
+    logger.debug('connection successful!')
 
     # -------------------------------------------------------------------------
     # SEND PARAMETERS TO TCU
