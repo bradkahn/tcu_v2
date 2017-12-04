@@ -15,8 +15,8 @@
 # user codes: '0', '64 - 113' http://www.tldp.org/LDP/abs/html/exitcodes.html
 # ----------------------------------------------------------------------------
 
-import sys  # exit codes
-from time import localtime, strftime
+import sys
+import time
 import logging
 
 import harpoon
@@ -45,10 +45,10 @@ pulses = list()                     # [{pulse1}, {pulse2}, {pulse3}]
 logger = logging.getLogger('tcu_project_logger')
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
-time_struct = localtime()
-time = strftime("%H:%M:%S", time_struct)
-date = strftime("%d-%m-%Y", time_struct)
-fh = logging.FileHandler('tcu_experiment_' + date + '_' + time + '.log')
+time_struct = time.localtime()
+time_str = time.strftime("%H:%M:%S", time_struct)
+date_str = time.strftime("%d-%m-%Y", time_struct)
+fh = logging.FileHandler('tcu_experiment_' + date_str + '_' + time_str + '.log')
 fh.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 ch = logging.StreamHandler()
