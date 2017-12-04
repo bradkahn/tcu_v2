@@ -5,6 +5,14 @@
 # 04/12/2017
 # Brad Kahn
 
+# ----------------------------------------------------------------------------
+# EXIT CODES:
+# 0 : all good, tcu is armed and waiting
+# 1 : headerfile not found
+# 2 : expected parameter missing from headerfile
+# ----------------------------------------------------------------------------
+
+import sys  # exit codes
 from time import localtime, strftime
 import logging
 
@@ -74,6 +82,7 @@ def parse_header():
     except Exception as e:
         logger.error('could not find file "{}" in path: {}'.format(HEADER_NAME, HEADER_PATH))
         raise FileNotFoundError
+        sys.exit(1)
 
     header_lines = header_file.readlines()
 
@@ -147,9 +156,11 @@ def parse_header():
     if pulse_num == 0:
         logger.error('no [pulseX] where found in header')
         raise Exception('no [pulseX] where found in header')
+        sys.exit(2)
     if num_transfers == 0:
         logger.error('no NUM_TRANSFERS found in header, needed for "m"')
         raise Exception('no NUM_TRANSFERS found in header, needed for "m"')
+        sys.exit(2)
     for pulse in pulses:
         # simple check if the number of parameters matches the expected length,
         # len(["pulse_number","mb_offset","dig_offset","pri_offset","frequency","tx_pol","rx_pol"])
@@ -159,6 +170,7 @@ def parse_header():
                          str(pulse['pulse_number']))
             raise Exception('missing pulse parameter(s) for pulse ' +
                             str(pulse['pulse_number']))
+            sys.exit(2)
 
     num_pulses = pulse_num
     logger.debug('number of pulses found (n) = ' + str(num_pulses))
@@ -220,7 +232,11 @@ if __name__ == '__main__':
                            login_timeout=30)
     logger.debug('attempting to connect...')
     logger.info('attempting to connect...')
-    # fpga_con.connect()
+    # try:
+    #     fpga_con.connect()
+    # except Exception as e:
+    #     raise('failed to connect to rhino')
+    #     sys.exit(3)
 
     # -------------------------------------------------------------------------
     # SEND PARAMETERS TO TCU
@@ -236,3 +252,6 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
     # arm the TCU
     # -------------------------------------------------------------------------
+
+    # TODO: PROVIDE A RETURN CODE
+    sys.exit(0)
