@@ -11,6 +11,23 @@ import logging
 import harpoon
 from harpoon.boardsupport import borph
 
+
+# TODO: find out where header file will live on node laptop
+HEADER_PATH = "/home/brad/tcu_v2/"  # <-- this needs to change
+HEADER_NAME = "NeXtRAD_Header.txt"
+RHINO_ADDRESS = '192.168.0.2'
+
+num_transfers = int()   # used to calculate M
+num_pulses = int()      # N
+num_repeats = int()     # M
+pulses = list()         # [{pulse1}, {pulse2}, {pulse3}]
+
+# pulse dictionary format -> {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx, "frequency": xxx, 'tx_pol': xxx, 'rx_pol': xxx} # noqa
+
+# -----------------------------------------------------------------------------
+# Logging stuff
+# -----------------------------------------------------------------------------
+
 logger = logging.getLogger('tcu_project_logger')
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
@@ -30,19 +47,6 @@ fh.setFormatter(formatter)
 # add the handlers to logger
 logging.getLogger().addHandler(fh)
 logging.getLogger().addHandler(ch)
-
-# TODO: find out where header file will live on node laptop
-HEADER_PATH = "/home/brad/tcu_v2/"
-HEADER_NAME = "NeXtRAD Header.txt"
-RHINO_ADDRESS = '192.168.0.2'
-
-num_transfers = int()   # used to calculate M
-num_pulses = int()      # N
-num_repeats = int()     # M
-pulses = list()         # [{pulse1}, {pulse2}, {pulse3}]
-
-# pulse dictionary format -> {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx, "frequency": xxx, 'tx_pol': xxx, 'rx_pol': xxx} # noqa
-
 
 def print_logo():
     print(harpoon.LOGO)
@@ -65,7 +69,12 @@ def parse_header():
     # EXTRACT PARAMETERS FROM HEADER FILE
     # -------------------------------------------------------------------------
 
-    header_file = open(HEADER_PATH + HEADER_NAME, 'r')
+    try:
+        header_file = open(HEADER_PATH + HEADER_NAME, 'r')
+    except Exception as e:
+        logger.error('could not find file "{}" in path: {}'.format(HEADER_NAME, HEADER_PATH))
+        raise FileNotFoundError
+
     header_lines = header_file.readlines()
 
     global num_transfers
