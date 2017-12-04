@@ -6,7 +6,7 @@
 # 01/12/2017
 
 # TODO: find out where header file will live on node laptop
-HEADER_PATH = "/home/brad/tcu_v2/res/"
+HEADER_PATH = "/home/brad/tcu_v2/"
 HEADER_NAME = "NeXtRAD Header.txt"
 
 # -----------------------------------------------------------------------------
@@ -84,8 +84,15 @@ if num_transfers == 0:
 for pulse in pulses:
     # simple check if the number of parameters matches the expected number,
     # could take this further and check for each parameter individually
-    if len(pulse) != len(["pulse_number", "mb_offset", "dig_offset", "pri_offset", "frequency", "tx_pol", "'rx_pol'"]):
-        raise Exception('missing pulse parameter(s) for pulse ' + str(pulse['pulse_number']))
+    if len(pulse) != len(["pulse_number",
+                          "mb_offset"
+                          "dig_offset",
+                          "pri_offset",
+                          "frequency",
+                          "tx_pol",
+                          "'rx_pol'"]):
+        raise Exception('missing pulse parameter(s) for pulse ' +
+                        str(pulse['pulse_number']))
 
 num_pulses = pulse_num
 print('number of pulses found (n) = ' + str(num_pulses))
@@ -96,3 +103,7 @@ print('calculated number of repeats (m) = ' + str(num_repeats))
 # -----------------------------------------------------------------------------
 # SEND PARAMETERS TO TCU
 # -----------------------------------------------------------------------------
+
+# TODO: launch tcu_project.py in *script* mode
+#       perform register writes
+#       wait for trigger...
