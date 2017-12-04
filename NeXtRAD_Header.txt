@@ -1,0 +1,115 @@
+-
+% Time Stamp
+
+TimeStamp = 2017-06-27 13:30:00;
+
+% Calibration Settings
+
+AdcDcOffset = 0;
+AdcPreDelay = 1;
+AdcTriggerSource = 'External';
+AdcTriggerLevel = 2176;
+AdcPreTriggerSample = 0;
+PriPredelay = 1;
+DdsPredelay = 1;
+Rx1SwitchDelay = 1;
+Rx1SwitchPredelay = 1;
+Rx1Switchenable = True;
+Rx2SwitchDelay = 1;
+Rx2SwitchPredelay = 1;
+Rx2Switchenable = True;
+Rx3SwitchDelay = 1;
+Rx3SwitchPredelay = 1;
+Rx3Switchenable = True;
+
+
+
+% Export parameters
+
+% Time that experiment starts. Keep format as yyyy-MM-dd hh:mm:ss !!!
+%StartTime = 2017-06-27 16:55:00;
+StartTime = 2017-06-27 17:53:00;
+
+% Time that experiment ends. Only used for Audio/Visual recordings.  Keep format as yyyy-MM-dd hh:mm:ss!!!
+%EndTime = 2017-06-27 14:30:30;
+EndTime = 2017-06-27 17:53:30;
+
+FirstPulse = 1;
+LastPulse = 200;
+PulseStep = 1;
+NumOfPulses = 200;
+FirstSample = 0;
+LastSample = 2047;
+SampleStep = 1;
+NumOfSamplesPerPulse = 2048;
+
+
+
+% Radar Settings
+
+Power = 400;
+F0 = 8500;
+PRF = 1;
+PulseLength = 0.6;
+Waveform = 'Up-Chirp';
+
+
+
+% Geometry Settings
+
+TxLocationLat = -34.1891;
+TxLocationLon = 18.3665;
+TxLocationHt = 52.76;
+Rx1LocationLat = -3.1891;
+Rx1LocationLon = 18.3665;
+Rx1LocationHt = 52.76;
+Rx2LocationLat = -34.1891;
+Rx2LocationLon = 18.3665;
+Rx2LocationHt = 52.76;
+Rx3LocationLat = -34.1891;
+Rx3LocationLon = 18.3665;
+Rx3LocationHt = 52.76;
+
+
+
+% Polarisation
+
+TxPol = 'S45';
+Rx1Pol = 'V H ALT';
+Rx2Pol = 'V H ALT';
+Rx3Pol = 'V H ALT';
+
+
+
+% Target Settings
+
+TgtLocationLat = -34.1874;
+TgtLocationLon = 18.4280;
+TgtLocationHt = 0.0235;
+
+
+% Pulse Parameters
+
+% choose waveform to use:
+%    0.5us = 1
+%    1.0us = 2
+%    3.0us = 3
+%    5.0us = 4
+%   10.0us = 5
+%   15.0us = 6
+%   20.0us = 7
+WAVEFORM = 5;
+NUM_TRANSFERS = 10000;
+
+DAC_DELAY = 5400; % this will delay ADC samples by DAC_DELAY/2.
+
+% Pulse Parameters
+
+NumberOfPulses = 1;
+
+% Pulse 1 parameters
+[pulse1]
+
+MBoffset = 10000;
+DIGoffset = 10000;
+PRIoffset = 10000;
