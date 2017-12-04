@@ -114,5 +114,5 @@ MBoffset  = 10000;  % offsets in us
 DIGoffset = 10000;
 PRIoffset = 10000;
 Frequency = 8500;   % frequency in MHz
-TxPol     = V;
-RxPol     = H;
+TxPol     = V;      % NAME CLASH, SEE ABOVE
+RxPol     = H;      % NAME CLASH, SEE ABOVE
