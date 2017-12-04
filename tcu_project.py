@@ -5,9 +5,31 @@
 # 04/12/2017
 # Brad Kahn
 
+from time import localtime, strftime
+import logging
+
 import harpoon
 from harpoon.boardsupport import borph
 
+logger = logging.getLogger('tcu_project_logger')
+logger.setLevel(logging.DEBUG)
+# create file handler which logs even debug messages
+time_struct = localtime()
+time = strftime("%H:%M:%S", time_struct)
+date = strftime("%d-%m-%Y", time_struct)
+fh = logging.FileHandler('tcu_experiment_' + date + '_' + time + '.log')
+fh.setLevel(logging.DEBUG)
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter2 = logging.Formatter('[%(levelname)s] %(message)s')
+ch.setFormatter(formatter2)
+fh.setFormatter(formatter)
+# add the handlers to logger
+logging.getLogger().addHandler(fh)
+logging.getLogger().addHandler(ch)
 
 # TODO: find out where header file will live on node laptop
 HEADER_PATH = "/home/brad/tcu_v2/"
@@ -31,6 +53,7 @@ def print_welcome():
     print("")
     print("NeXtRAD TCU v2.0")
     print("")
+
 
 def parse_header():
     # tcu_init.py
@@ -63,50 +86,48 @@ def parse_header():
 
     for line in header_lines:
         if line.find('NUM_TRANSFERS') > -1:
-            print("num-transfers found:", line[:-1])
+            logger.debug("num-transfers found:" + line[:-1])
             val = line.split()
             num_transfers = eval(val[2][:-1])
         elif line.find('NumberOfPulses') > -1:
-            print("number of pulses found:", line[:-1])
+            logger.debug("number of pulses found:" + line[:-1])
             val = line.split()
             num_pulses = eval(val[2][:-1])
-            print("")
         elif line.find('[pulse') > -1:
-            print()
-            print("pulse header found:", line[:-1])
+            logger.debug("pulse header found:" + line[:-1])
             line_list = line.split()
             val = line_list[0]
             val = val.replace('[pulse', '')
             val = val.replace(']', '')
             pulse_num = eval(val)
-            print("pulse number is: " + str(val))
+            logger.debug("pulse number is: " + str(val))
             pulses.append(dict())
             pulses[next_pulse_index]['pulse_number'] = pulse_num
             next_pulse_index += 1
         if next_pulse_index > 0:
             if line.find('MBoffset') > -1:
                 val = line.split()
-                print('\tMBoffset for pulse{} is {}'.format(pulse_num, val[2]))
+                logger.debug('MBoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['mb_offset'] = eval(val[2][:-1])
             elif line.find('DIGoffset') > -1:
                 val = line.split()
-                print('\tDIGoffset for pulse{} is {}'.format(pulse_num, val[2]))
+                logger.debug('DIGoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['dig_offset'] = eval(val[2][:-1])
             elif line.find('PRIoffset') > -1:
                 val = line.split()
-                print('\tPRIoffset for pulse{} is {}'.format(pulse_num, val[2]))
+                logger.debug('PRIoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['pri_offset'] = eval(val[2][:-1])
             elif line.find('Frequency') > -1:
                 val = line.split()
-                print('\tFrequency for pulse{} is {}'.format(pulse_num, val[2]))
+                logger.debug('Frequency for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['frequency'] = eval(val[2][:-1])
             elif line.find('TxPol') > -1:
                 val = line.split()
-                print('\tTxPol for pulse{} is {}'.format(pulse_num, val[2]))
+                logger.debug('TxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['tx_pol'] = val[2][:-1]
             elif line.find('RxPol') > -1:
                 val = line.split()
-                print('\tRxPol for pulse{} is {}'.format(pulse_num, val[2]))
+                logger.debug('RxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['rx_pol'] = val[2][:-1]
         else:
             pass
@@ -115,31 +136,36 @@ def parse_header():
         if num_pulses == 0:
             num_pulses = len(pulses)
 
+        logging.info('{} unique pulses found'.format(num_pulses))
+
     # -----------------------------------------------------------------------------
     # VERIFY PARAMETERS
     # -----------------------------------------------------------------------------
 
     if pulse_num == 0:
+        logger.error('no [pulseX] where found in header')
         raise Exception('no [pulseX] where found in header')
-
     if num_transfers == 0:
+        logger.error('no NUM_TRANSFERS found in header, needed for "m"')
         raise Exception('no NUM_TRANSFERS found in header, needed for "m"')
     for pulse in pulses:
         # simple check if the number of parameters matches the expected length,
         # len(["pulse_number","mb_offset","dig_offset","pri_offset","frequency","tx_pol","rx_pol"])
         # could take this further and check for each parameter individually
         if len(pulse) != 7:
+            logger.error('missing pulse parameter(s) for pulse ' +
+                         str(pulse['pulse_number']))
             raise Exception('missing pulse parameter(s) for pulse ' +
                             str(pulse['pulse_number']))
 
     num_pulses = pulse_num
-    print()
-    print('number of pulses found (n) = ' + str(num_pulses))
+    logger.debug('number of pulses found (n) = ' + str(num_pulses))
     # division operators: '/' for float, '//' integer
     num_repeats = num_transfers // num_pulses
-    print()
-    print('calculated number of repeats m = ' + str(num_repeats) +
-          ' [m = NUM_TRANSFERS / n]')
+    logger.debug('calculated number of repeats m = ' + str(num_repeats) +
+                 ' [m = NUM_TRANSFERS / n]')
+
+    logging.info('header parsing complete')
 
 
 # -----------------------------------------------------------------------------
@@ -179,13 +205,16 @@ project = harpoon.Project('tcu_project',
 if __name__ == '__main__':
     print_welcome()
 
+    logger.info('parsing header file: ' + HEADER_PATH + HEADER_NAME)
     parse_header()
 
-    fpga_con = borph.RHINO(address=RHINO_ADDRESS,
-                           username='root',
-                           password='rhino',
-                           login_timeout=30)
-
+    logger.debug('initializing rhino connection, IP address: ' + RHINO_ADDRESS)
+    # fpga_con = borph.RHINO(address=RHINO_ADDRESS,
+    #                        username='root',
+    #                        password='rhino',
+    #                        login_timeout=30)
+    logger.debug('attempting to connect...')
+    logger.info('attempting to connect...')
     # fpga_con.connect()
 
     # -------------------------------------------------------------------------
