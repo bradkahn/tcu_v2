@@ -102,8 +102,7 @@ architecture structural of tcu_top is
     component clk_wiz_v3_6_tcu_system_clocks
     port
      (-- Clock in ports
-      SYS_CLK_IN_P         : in     std_logic;
-      SYS_CLK_IN_N         : in     std_logic;
+      SYS_CLK_IN           : in     std_logic;
       -- Clock out ports
       CLK_OUT_400MHz          : out    std_logic;
       CLK_OUT_200MHz          : out    std_logic;
@@ -226,6 +225,7 @@ architecture structural of tcu_top is
     signal s_dat_sm     : std_logic_vector(15 downto 0) := (others => '0');
     signal s_we         : std_logic := '0';
     signal s_sel        : std_logic_vector(0 downto 0) := "0"; -- changed to std_logic vector to work with chipscope
+    signal s_clk_100MHz_in : std_logic := '0';
     signal s_clk_100MHz : std_logic := '0';
     signal s_clk_200MHz : std_logic := '0';
     signal s_clk_wb     : std_logic := '0';
@@ -243,11 +243,20 @@ begin
     -- GLOBAL CLOCK COMPONENT INSTANTIATION
     -- ------------------------------------------------------------------------
 
+    IBUFGDS_inst : IBUFGDS
+    generic map (
+       IBUF_LOW_PWR => FALSE, -- Low power (TRUE) vs. performance (FALSE) setting for referenced I/O standards
+       IOSTANDARD => "DEFAULT")
+    port map (
+       O => s_clk_100MHz_in,  -- Clock buffer output
+       I => sys_clk_P,  -- Diff_p clock buffer input
+       IB => sys_clk_N -- Diff_n clock buffer input
+    );
+
     global_clock_manager : clk_wiz_v3_6_tcu_system_clocks
       port map
        (-- Clock in ports
-        SYS_CLK_IN_P            => sys_clk_P,
-        SYS_CLK_IN_N            => sys_clk_N,
+        SYS_CLK_IN              => s_clk_100MHz_in,
         -- Clock out ports
         CLK_OUT_400MHz          => s_clk_400MHz,
         CLK_OUT_200MHz          => s_clk_200MHz,
