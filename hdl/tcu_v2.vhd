@@ -100,18 +100,26 @@ architecture structural of tcu_top is
     -- GLOBAL CLOCK COMPONENT DECLARATION
     -- ------------------------------------------------------------------------
     component clk_wiz_v3_6_tcu_system_clocks
-    port
-     (-- Clock in ports
-      SYS_CLK_IN           : in     std_logic;
-      -- Clock out ports
-      CLK_OUT_400MHz          : out    std_logic;
-      CLK_OUT_200MHz          : out    std_logic;
-      CLK_OUT_200MHz_TCU_CE       : in     std_logic;
-      CLK_OUT_200MHz_TCU          : out    std_logic;
-      CLK_OUT_100MHz          : out    std_logic
+    port(
+          SYS_CLK_IN_P         : in     std_logic;
+          SYS_CLK_IN_N         : in     std_logic;
+
+          -- CLK_OUT_400MHz          : out    std_logic;
+          CLK_OUT_200MHz          : out    std_logic;
+          CLK_OUT_200MHz_TCU_CE       : in     std_logic;
+          CLK_OUT_200MHz_TCU          : out    std_logic;
+          CLK_OUT_100MHz          : out    std_logic
      );
     end component;
 
+    component clk_wiz_v3_6_400MHz
+    port
+     (-- Clock in ports
+      CLK_IN_100MHz           : in     std_logic;
+      -- Clock out ports
+      CLK_OUT_400MHz          : out    std_logic
+     );
+    end component;
     -- ------------------------------------------------------------------------
     -- MAIN COMPONENT DECLARATIONS
     -- ------------------------------------------------------------------------
@@ -128,8 +136,8 @@ architecture structural of tcu_top is
 		ACK_I          : IN std_logic;
 		DAT_I          : IN std_logic_vector(15 downto 0);
 		gpmc_d         : INOUT std_logic_vector(15 downto 0);
-		debug_port     : OUT std_logic_vector(68 downto 0);
-		CLK            : OUT std_logic;
+		debug_port     : OUT std_logic_vector(67 downto 0);
+		CLK_EN         : OUT std_logic;
 		RST            : OUT std_logic;
 		ADR_O          : OUT std_logic_vector(7 downto 0);
 		DAT_O          : OUT std_logic_vector(15 downto 0);
@@ -229,9 +237,9 @@ architecture structural of tcu_top is
     signal s_clk_100MHz : std_logic := '0';
     signal s_clk_200MHz : std_logic := '0';
     signal s_clk_wb     : std_logic := '0';
-    -- signal s_clk_wb_en  : std_logic := '0';
+    signal s_clk_wb_en  : std_logic := '0';
     signal s_clk_400MHz : std_logic := '0';
-    signal s_debug_port : std_logic_vector(68 downto 0) := (others => '0');
+    signal s_debug_port : std_logic_vector(67 downto 0) := (others => '0');
     signal s_debug_tcu  : std_logic_vector(127 downto 0) := (others => '0');
     signal s_gpmc_clk   : std_logic := '0';
 
@@ -243,27 +251,23 @@ begin
     -- GLOBAL CLOCK COMPONENT INSTANTIATION
     -- ------------------------------------------------------------------------
 
-    IBUFGDS_inst : IBUFGDS
-    generic map (
-       IBUF_LOW_PWR => FALSE, -- Low power (TRUE) vs. performance (FALSE) setting for referenced I/O standards
-       IOSTANDARD => "DEFAULT")
-    port map (
-       O => s_clk_100MHz_in,  -- Clock buffer output
-       I => sys_clk_P,  -- Diff_p clock buffer input
-       IB => sys_clk_N -- Diff_n clock buffer input
-    );
-
     global_clock_manager : clk_wiz_v3_6_tcu_system_clocks
-      port map
-       (-- Clock in ports
-        SYS_CLK_IN              => s_clk_100MHz_in,
-        -- Clock out ports
-        CLK_OUT_400MHz          => s_clk_400MHz,
-        CLK_OUT_200MHz          => s_clk_200MHz,
-        CLK_OUT_200MHz_TCU_CE   => '0',
-        CLK_OUT_200MHz_TCU      => open,
-        CLK_OUT_100MHz          => s_clk_100MHz);
+        port map(
+            SYS_CLK_IN_P => sys_clk_P,
+            SYS_CLK_IN_N => sys_clk_N,
+            -- CLK_OUT_400MHz => s_clk_400MHz,
+            CLK_OUT_200MHz => s_clk_200MHz,
+            CLK_OUT_200MHz_TCU_CE => s_clk_wb_en,
+            CLK_OUT_200MHz_TCU => s_clk_wb,
+            CLK_OUT_100MHz => s_clk_100MHz
+        );
 
+    chipscope_clock_manager : clk_wiz_v3_6_400MHz
+    port map
+    (-- Clock in ports
+    CLK_IN_100MHz => s_clk_100MHz,
+    -- Clock out ports
+    CLK_OUT_400MHz => s_clk_400MHz);
     -- ------------------------------------------------------------------------
     -- MAIN COMPONENT INSTANTIATION
     -- ------------------------------------------------------------------------
@@ -278,7 +282,7 @@ begin
         gpmc_n_oe => gpmc_n_oe,
         gpmc_n_adv_ale => gpmc_n_adv_ale,
         CLK_200MHz => s_clk_200MHz,
-        CLK  => s_clk_wb,
+        CLK_EN  => s_clk_wb_en,
         debug_port => s_debug_port,
         RST => s_rst,
         ACK_I => s_ack,
@@ -338,7 +342,7 @@ begin
     port map(
         CONTROL => s_control0,
         CLK => s_clk_400MHz,
-        DATA => s_debug_port,
+        DATA => s_clk_wb & s_debug_port,
         TRIG0 => s_sel & s_debug_port(30) & s_debug_port(33)
     );
 
@@ -346,6 +350,7 @@ begin
     PORT MAP(
         CONTROL => s_control1,
         CLK     => s_clk_400MHz,
+        -- TODO: GPMC CLOCK ISNT BEING DRIVEN!
         TRIG0   => s_gpmc_clk & gpmc_n_cs(0) & gpmc_n_we & gpmc_n_oe & gpmc_n_adv_ale & gpmc_a(10 downto 1) & gpmc_d(15 downto 0)
     );
 
