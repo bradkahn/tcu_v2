@@ -37,12 +37,12 @@ PORT (
     -- ------------------------------------------------------------------------
     -- DEBUG PORTS
     -- ------------------------------------------------------------------------
-    debug_port      : OUT   STD_LOGIC_VECTOR((68 + WB_NUMBER_OF_SLAVES) - 1 DOWNTO 0);
+    debug_port      : OUT   STD_LOGIC_VECTOR((67 + WB_NUMBER_OF_SLAVES) - 1 DOWNTO 0);
 
     -- ------------------------------------------------------------------------
     -- WISHBONE SYSCON PORTS
     -- ------------------------------------------------------------------------
-    CLK       : OUT   STD_LOGIC; -- feeds to clock wiz
+    CLK_EN          : OUT   STD_LOGIC; -- feeds to clock wiz
     RST             : OUT   STD_LOGIC;
 
     -- ------------------------------------------------------------------------
@@ -232,7 +232,8 @@ BEGIN
     end process;
 
     RST       <= wb_rst_sig;
-    CLK <= CLK_200MHz when wb_clk_en = '1' else '0';
+    -- CLK <= CLK_200MHz when wb_clk_en = '1' else '0';
+    CLK_EN  <=  wb_clk_en;
 
     WE_O 	<= we_o_sig;
     DAT_O <= dat_o_sig;
@@ -274,6 +275,6 @@ BEGIN
 
     gpmc_d <= gpmc_data_o when (gpmc_n_oe = '0') else (others => 'Z');
     gpmc_data_i <= gpmc_d;
-    debug_port <=  DAT_I & (CLK_200MHz and wb_clk_en) & wb_rst_sig & we_o_sig & dat_o_sig & wb_write_req & wb_write & wb_write_end & wb_read_req & wb_read & wb_read_end & slave_select_sig & wb_stb_o_sig & adr_o_sig(25 downto 0);
+    debug_port <=  DAT_I & wb_rst_sig & we_o_sig & dat_o_sig & wb_write_req & wb_write & wb_write_end & wb_read_req & wb_read & wb_read_end & slave_select_sig & wb_stb_o_sig & adr_o_sig(25 downto 0);
     --debug_port <= (others => '0');
 END behavioral;
