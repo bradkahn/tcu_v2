@@ -109,7 +109,8 @@ ARCHITECTURE behavioral OF gpmc_wb IS
 -- ----------------------------------------------------------------------------
 
 TYPE state_type IS (IDLE_STATE, WB_WRITE_STATE, WB_READ_STATE);
-SIGNAL state : state_type := IDLE_STATE; -- Initialize state to IDLE_STATE
+SIGNAL state, next_state : state_type := IDLE_STATE;
+signal cycle_counter : unsigned (2 downto 0) := "000";
 
 
 BEGIN
@@ -171,79 +172,91 @@ BEGIN
 -- WISHBONE FSM
 -- ----------------------------------------------------------------------------
 
-    process(CLK_200MHz)
-    variable cycle_counter : unsigned (2 downto 0) := "000";
+    -- infer state register
+    state_register : process(CLK_200MHz)
     begin
-        if rising_edge ( CLK_200MHz ) then
-            case( state ) is
-                -- TODO: Make use of the ACK_I signal
+        if rising_edge(CLK_200MHz) then
+            state <= next_state;
+        end if;
+    end process state_register;
+
+    -- synchronous section
+    synchronous : process(CLK_200MHz)
+    begin
+        if rising_edge(CLK_200MHz) then
+            case(state) is
                 when IDLE_STATE =>
-                    wb_clk_en <= '0';
-                    cycle_counter := "000";
+                    cycle_counter <= "000";
                     if wb_write = '1' then
-                    	state <= WB_WRITE_STATE;
+                        next_state <= WB_WRITE_STATE;
                     elsif wb_read = '1' then
-                    	state <= WB_READ_STATE;
+                        next_state <= WB_READ_STATE;
                     else
-                    	state <= IDLE_STATE;
+                        next_state <= IDLE_STATE;
                     end if;
-                    dat_o_sig       <= (others => 'Z');
-                    wb_stb_o_sig    <= '0';
-                    we_o_sig        <= '0';
-                    if wb_write_req = '0' then
-                    	wb_write_end   <= '0';
-                    end if;
-                    if wb_read_req = '0' then
-                    	wb_read_end	   <= '0';
-                    end if;
-
                 when WB_WRITE_STATE =>
-                    wb_clk_en       <= '1';
-                    dat_o_sig       <= gpmc_data_i;
-                    wb_stb_o_sig    <= '1';
-                    we_o_sig        <= '1';
-                    if cycle_counter < 2 then
-                    	state <= WB_WRITE_STATE;
+                    if cycle_counter < 1 then
+                        next_state <= WB_WRITE_STATE;
                     else
-                    	state <= IDLE_STATE;
-                    	wb_write_end   <= '1';
+                        next_state <= IDLE_STATE;
                     end if;
-                    	cycle_counter  := cycle_counter + 1;
-
+                    cycle_counter  <= cycle_counter + 1;
                 when WB_READ_STATE =>
-                    wb_clk_en       <= '1';
-                    gpmc_data_o     <= dat_i_sig;
-                    wb_stb_o_sig    <= '1';
-                    we_o_sig        <= '0';
-                    if cycle_counter < 2 then
-                    	state  <= WB_READ_STATE;
+                    if cycle_counter < 1 then
+                        next_state <= WB_WRITE_STATE;
                     else
-                    	state  <= IDLE_STATE;
-                    	wb_read_end <= '1';
+                        next_state <= IDLE_STATE;
                     end if;
-                    	cycle_counter := cycle_counter + 1;
-
+                    cycle_counter  <= cycle_counter + 1;
                 when others =>
-                    wb_clk_en <= '0';
-                    state <= IDLE_STATE;
-
+                    next_state <= IDLE_STATE;
+                    cycle_counter <= "000";
             end case;
         end if;
-    end process;
+    end process synchronous;
 
-    RST       <= wb_rst_sig;
-    -- CLK <= CLK_200MHz when wb_clk_en = '1' else '0';
-    CLK_EN  <=  wb_clk_en;
+    -- combinational section
 
-    WE_O 	<= we_o_sig;
-    DAT_O <= dat_o_sig;
-    ADR_O <= reg_adr_o_sig(WB_ADDRESS_BUS_WIDTH - 1 downto 0);
-    dat_i_sig <= DAT_I;
+    dat_o_sig   <= gpmc_data_i;
+    gpmc_data_o <= dat_i_sig;
+
+    wb_write_end    <= '1' when state = WB_WRITE_STATE and cycle_counter >= 3 else '0';
+    wb_read_end     <= '1' when state = WB_READ_STATE  and cycle_counter >= 3 else '0';
+
+    combinational : process(state)
+    begin
+        case(state) is
+            when IDLE_STATE =>
+                wb_clk_en       <= '0';
+                wb_stb_o_sig    <= '0';
+                we_o_sig        <= '0';
+            when WB_WRITE_STATE =>
+                wb_clk_en       <= '1';
+                wb_stb_o_sig    <= '1';
+                we_o_sig        <= '1';
+            when WB_READ_STATE =>
+                wb_clk_en       <= '1';
+                wb_stb_o_sig    <= '1';
+                we_o_sig        <= '0';
+            when others =>
+                wb_clk_en       <= '0';
+                wb_stb_o_sig    <= '0';
+                we_o_sig        <= '0';
+        end case;
+    end process combinational;
+
+    RST         <= wb_rst_sig;
+    CLK_EN      <=  wb_clk_en;
+
+    WE_O        <= we_o_sig;
+    DAT_O       <= dat_o_sig;
+    ADR_O       <= reg_adr_o_sig(WB_ADDRESS_BUS_WIDTH - 1 downto 0);
+    dat_i_sig   <= DAT_I;
     -- These signals are used to ensure that a WB write/read occurs only once.
     -- The _req lines are driven in the slower GPMC 'FSM', while the _end lines
     -- are driven in the faster WB 'FSM'
-    wb_write	<= wb_write_req	and (not wb_write_end);
-    wb_read		<= wb_read_req 	and (not wb_read_end);
+    wb_write    <= wb_write_req	and (not wb_write_end);
+    wb_read     <= wb_read_req 	and (not wb_read_end);
 
 -- ----------------------------------------------------------------------------
 -- SLAVE SELECT DECODING
