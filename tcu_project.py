@@ -186,6 +186,38 @@ def parse_header():
     logging.info('header parsing complete')
 
 
+def int_to_hex_str(num, endian='l'):
+    """ returns a hexidecimal string in format given an integer
+        endianess:
+            default is LITTLE endian
+            for big endian, pass char 'b' as an argument
+    """
+    hex_num = hex(num)
+    hex_num = hex_num.replace('0x', '')
+    num_zeros_to_pad = 0
+    if len(hex_num) % 4 != 0:
+        num_zeros_to_pad = 4 - len(hex_num) % 4
+    hex_num = '0'*num_zeros_to_pad + hex_num
+    num_bytes = len(hex_num)//2
+    num_words = num_bytes//2
+    byte_list = list()
+    index = 0
+    for count in range(num_words):
+        byte_upper = hex_num[index: (index)+2]
+        byte_lower = hex_num[index+2: (index)+4]
+        if endian == 'b':
+            byte_list.append([byte_upper, byte_lower])
+        else:
+            byte_list.append([byte_lower, byte_upper])
+        index += 4
+    # rev_byte_list = reversed(byte_list)
+    hex_str = str()
+    # for word in rev_byte_list:
+    for word in byte_list:
+        hex_str += '\\x' + word[0] + '\\x' + word[1]
+    return hex_str
+
+
 # -----------------------------------------------------------------------------
 # core instantiation
 # -----------------------------------------------------------------------------
@@ -229,6 +261,9 @@ if __name__ == '__main__':
     logger.info('parsing header file: ' + HEADER_PATH + HEADER_NAME)
     parse_header()
 
+    # -------------------------------------------------------------------------
+    # CONNECT TO RHINO
+    # -------------------------------------------------------------------------
     logger.debug('initializing rhino connection, IP address: ' + TCU_ADDRESS)
     fpga_con = borph.RHINO(address=TCU_ADDRESS,
                            username='root',
@@ -245,11 +280,66 @@ if __name__ == '__main__':
     logger.debug('connection successful!')
 
     # -------------------------------------------------------------------------
+    # CONFIGURE RHINO WITH TCU PROJECT
+    # -------------------------------------------------------------------------
+    # TODO: this assumes that there is no other .bof running on the RHINO
+    #       scan for any .bof running on
+    if fpga_con._pid == '':
+        # check for any prexisting running .bof
+        logger.debug('checking for any prexisting running .bof executables')
+        existing_bof_proc = fpga_con._action("ps -o pid,args | grep [.]bof | while read c1 c2; do echo $c1; done")
+        existing_bof_proc = (existing_bof_proc.decode('utf8').split("\r\n"))[1]
+
+        if existing_bof_proc != '':
+            logger.warning('existing .bof was found running on the RHINO...')
+            logger.warning('assuming it is a the same TCU project...')
+            fpga_con._pid = existing_bof_proc
+        else:
+            logger.debug('no existing running .bof found, launching TCU.bof')
+            fpga_con.launch_bof('TCU.bof')
+
+    # -------------------------------------------------------------------------
     # SEND PARAMETERS TO TCU
     # -------------------------------------------------------------------------
-    # core_tcu.write_reg('pulses', pulses)
-    # core_tcu.write_reg('m', num_repeats)
-    # core_tcu.write_reg('n', num_pulses)
+    # TODO: implement framework functionality:
+    #       core_tcu.write_reg('pulses', pulses)
+    #       core_tcu.write_reg('m', num_repeats)
+    #       core_tcu.write_reg('n', num_pulses)
+
+    # stitch together all the pulse parameters into one long string
+    # pulses = list()                     # [{pulse1}, {pulse2}, {pulse3}]
+    # {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx,
+    # "frequency": xxx, 'tx_pol': xxx, 'rx_pol': xxx}
+
+    pulse_param_str = str()
+    # TODO: better way to check PRIoffset size
+    for pulse in pulses:
+        pulse_param_str += int_to_hex_str(pulse['mb_offset'])
+        pulse_param_str += int_to_hex_str(pulse['dig_offset'])
+        if len(int_to_hex_str(pulse['pri_offset'])) > 8:
+            pulse_param_str += int_to_hex_str(pulse['pri_offset'])[0:8]
+        else:
+            pulse_param_str += '\\x00\\x00'
+        print(int_to_hex_str(pulse['pri_offset'])[0:8])
+        pulse_param_str += int_to_hex_str(pulse['frequency'], 'b')  # big endian
+        # pulse_param_str += int_to_hex_str() # TODO: mode!!!
+        pulse_param_str += '\\x01\\x00'  # just for testing...
+        if len(int_to_hex_str(pulse['pri_offset'])) > 8:
+            pulse_param_str += int_to_hex_str(pulse['pri_offset'])[8:]
+        else:
+            pulse_param_str += int_to_hex_str(pulse['pri_offset'])[0:8]
+        print(int_to_hex_str(pulse['pri_offset'])[8:])
+    logger.debug('PULSE STRING:')
+    logger.debug('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(pulse_param_str, fpga_con._pid, 'reg_pulses'))
+    fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(pulse_param_str, fpga_con._pid, 'reg_pulses'))
+
+    num_repeats_str = int_to_hex_str(num_repeats)
+    logger.debug('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_repeats_str, fpga_con._pid, 'm'))
+    fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_repeats_str, fpga_con._pid, 'm'))
+
+    num_pulses_str = int_to_hex_str(num_pulses)
+    logger.debug('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_pulses_str, fpga_con._pid, 'n'))
+    fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_pulses_str, fpga_con._pid, 'n'))
 
     # -------------------------------------------------------------------------
     # verify registers have correct values
@@ -261,6 +351,9 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
     # arm the TCU
     # -------------------------------------------------------------------------
+    logger.debug('arming the TCU')
+    fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(int_to_hex_str(0), fpga_con._pid, 'reg_led'))
+    fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(int_to_hex_str(1), fpga_con._pid, 'reg_led'))
+    logger.debug('TCU armed')
 
-    # TODO: PROVIDE A RETURN CODE
     sys.exit(0)
