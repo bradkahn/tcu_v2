@@ -54,8 +54,9 @@ from harpoon.boardsupport import borph
 # TODO: find out where header file will live on node laptop
 HEADER_PATH = "/home/brad/tcu_v2/"  # <-- this needs to change
 HEADER_NAME = "NeXtRAD_Header2.txt"
-TCU_ADDRESS = '192.168.0.2'
+TCU_ADDRESS = '192.168.1.16'
 NUM_PULSE_PARAMS = 6                # see pulse dictionary format
+BOF_EXE = 'TCU_1.bof'               # .bof must already be in /opt/rhinofs/
 
 num_transfers = int()               # used to calculate M
 num_pulses = int()                  # N
@@ -330,7 +331,7 @@ if __name__ == '__main__':
             fpga_con._pid = existing_bof_proc
         else:
             logger.debug('no existing running .bof found, launching TCU.bof')
-            fpga_con.launch_bof('TCU.bof')
+            fpga_con.launch_bof(BOF_EXE)
 
     # -------------------------------------------------------------------------
     # SEND PARAMETERS TO TCU
@@ -378,6 +379,20 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
     # verify registers have correct values
     # -------------------------------------------------------------------------
+    logger.debug('verifying tcu registers')
+
+    logger.debug('reading reg_pulses...')
+    reg_pulses_rcv = fpga_con._action('od -x -An /proc/{}/hw/ioreg/{}'.format(fpga_con._pid, 'reg_pulses'))
+    logger.debug('reg_pulses:' + reg_pulses_rcv.decode('utf-8'))
+
+    logger.debug('reading n...')
+    reg_pulses_rcv = fpga_con._action('od -x -An /proc/{}/hw/ioreg/{}'.format(fpga_con._pid, 'n'))
+    logger.debug('n:' + reg_pulses_rcv.decode('utf-8'))
+
+    logger.debug('reading m...')
+    reg_pulses_rcv = fpga_con._action('od -x -An /proc/{}/hw/ioreg/{}'.format(fpga_con._pid, 'm'))
+    logger.debug('m:' + reg_pulses_rcv.decode('utf-8'))
+
 
     # if regs dont match:
     # sys.exit(67)
@@ -389,5 +404,8 @@ if __name__ == '__main__':
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(int_to_hex_str(0), fpga_con._pid, 'reg_led'))
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(int_to_hex_str(1), fpga_con._pid, 'reg_led'))
     logger.debug('TCU armed')
+
+    fpga_con._action('exit')
+    logger.debug('ssh connection closed')
 
     sys.exit(0)
