@@ -405,7 +405,7 @@ if __name__ == '__main__':
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(int_to_hex_str(1), fpga_con._pid, 'reg_led'))
     logger.debug('TCU armed')
 
-    fpga_con._action('exit')
+    fpga_con.disconnect()
     logger.debug('ssh connection closed')
 
     sys.exit(0)
