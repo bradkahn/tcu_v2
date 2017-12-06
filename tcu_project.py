@@ -5,6 +5,34 @@
 # 04/12/2017
 # Brad Kahn
 
+
+# ----------------------------------------------------------------------------
+# EXPECTED HEADER FILE FORMAT
+# ----------------------------------------------------------------------------
+#   NumberOfPulses = 5;
+#   NUM_TRANSFERS = 10000;
+#
+#   % Pulse 0 parameters
+#   [pulse0]
+#   % offsets are in us
+#   MBoffset  = 50000;
+#   DIGoffset = 60000;
+#   PRIoffset = 70000;
+#   % in mHz
+#   Frequency = 1300;
+#   % Either (V)ertical or (H)orizontal	and band
+#   Mode = 0;
+#
+#   % Pulse 1 parameters
+#   [pulse1]
+#   MBoffset  = 50000;
+#   DIGoffset = 60000;
+#   PRIoffset = 70000;
+#   Frequency = 1300;
+#   Mode = 1;
+#
+#   ... up to [pulse31]
+
 # ----------------------------------------------------------------------------
 # EXIT CODES:
 # 0     : all good, tcu is armed and waiting
@@ -25,9 +53,9 @@ from harpoon.boardsupport import borph
 
 # TODO: find out where header file will live on node laptop
 HEADER_PATH = "/home/brad/tcu_v2/"  # <-- this needs to change
-HEADER_NAME = "NeXtRAD_Header.txt"
+HEADER_NAME = "NeXtRAD_Header2.txt"
 TCU_ADDRESS = '192.168.0.2'
-NUM_PULSE_PARAMS = 7                # see pulse dictionary format
+NUM_PULSE_PARAMS = 6                # see pulse dictionary format
 
 num_transfers = int()               # used to calculate M
 num_pulses = int()                  # N
@@ -36,7 +64,7 @@ pulses = list()                     # [{pulse1}, {pulse2}, {pulse3}]
 
 # pulse dictionary format, 7 parameters per pulse:
 # {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx,
-# "frequency": xxx, 'tx_pol': xxx, 'rx_pol': xxx}
+# "frequency": xxx, 'mode':x}
 
 # -----------------------------------------------------------------------------
 # Logging stuff
@@ -83,6 +111,8 @@ def parse_header():
     # -------------------------------------------------------------------------
     # EXTRACT PARAMETERS FROM HEADER FILE
     # -------------------------------------------------------------------------
+
+    # NOTE: all params need end with a semicolon
 
     try:
         header_file = open(HEADER_PATH + HEADER_NAME, 'r')
@@ -140,14 +170,18 @@ def parse_header():
                 val = line.split()
                 logger.debug('Frequency for [pulse{}] is {}'.format(pulse_num, val[2]))
                 pulses[next_pulse_index-1]['frequency'] = eval(val[2][:-1])
-            elif line.startswith('TxPol'):
+            elif line.startswith('Mode'):
                 val = line.split()
-                logger.debug('TxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
-                pulses[next_pulse_index-1]['tx_pol'] = val[2][:-1]
-            elif line.startswith('RxPol'):
-                val = line.split()
-                logger.debug('RxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
-                pulses[next_pulse_index-1]['rx_pol'] = val[2][:-1]
+                logger.debug('Mode for [pulse{}] is {}'.format(pulse_num, val[2]))
+                pulses[next_pulse_index-1]['mode'] = eval(val[2][:-1])
+            # elif line.startswith('TxPol'):
+            #     val = line.split()
+            #     logger.debug('TxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
+            #     pulses[next_pulse_index-1]['tx_pol'] = val[2][:-1]
+            # elif line.startswith('RxPol'):
+            #     val = line.split()
+            #     logger.debug('RxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
+            #     pulses[next_pulse_index-1]['rx_pol'] = val[2][:-1]
         else:
             pass
 
@@ -322,13 +356,13 @@ if __name__ == '__main__':
             pulse_param_str += '\\x00\\x00'
         print(int_to_hex_str(pulse['pri_offset'])[0:8])
         pulse_param_str += int_to_hex_str(pulse['frequency'], 'b')  # big endian
-        # pulse_param_str += int_to_hex_str() # TODO: mode!!!
-        pulse_param_str += '\\x01\\x00'  # just for testing...
+        pulse_param_str += int_to_hex_str(pulse['mode']) # pulse_param_str += '\\x01\\x00'  # just for testing...
         if len(int_to_hex_str(pulse['pri_offset'])) > 8:
             pulse_param_str += int_to_hex_str(pulse['pri_offset'])[8:]
         else:
             pulse_param_str += int_to_hex_str(pulse['pri_offset'])[0:8]
         print(int_to_hex_str(pulse['pri_offset'])[8:])
+
     logger.debug('PULSE STRING:')
     logger.debug('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(pulse_param_str, fpga_con._pid, 'reg_pulses'))
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(pulse_param_str, fpga_con._pid, 'reg_pulses'))
