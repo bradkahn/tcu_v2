@@ -385,83 +385,30 @@ if __name__ == '__main__':
 
     # *************************************************************************
     array = reg_pulses_rcv.decode('utf-8').split("\r\n")
-
-
-    # if self.DEBUG > 2:
-    #     print_debug("show_pulses", "...here's the split data:")
-
-    # for index, line in enumerate(array):
-    #     if self.DEBUG > 2:
-    #         print_debug("array["+str(index)+"]", line)
-    #         print("")
-
-    # if self.DEBUG > 2:
-    #     print_debug("show_pulses", "extracting the pulse info:")
-
     array = array[1:-2:]  # extract only the data
-
-    # if self.DEBUG > 2:
-    #     print_debug("show_pulses", "...here's the pulse data:")
-
-    # for index, line in enumerate(array):
-    #     if self.DEBUG > 2:
-    #         print_debug("array["+str(index)+"]", line)
-    #         print("")
-
-    # if self.DEBUG > 2:
-    #     print_debug("show_pulses", "stripping leading whitespaces...:")
-
     for i in range(len(array)):
         array[i] = array[i].lstrip()
 
-    # if self.DEBUG > 2:
-    #     print_debug("show_pulses", "...here's the pulse data sans leading whitespaces:")
-
-    # for index, line in enumerate(array):
-    #     print_debug("array["+str(index)+"]", line)
-    #     print("")
-
-    # if self.DEBUG > 2:
-    #     print_debug("show_pulses", "splitting up pulses info into 16bit chunks...:")
-
+    # "splitting up pulses info into 16bit chunks...:")
     read_data_array = list()
     for i in range(len(array)):
         line_in_array = array[i].split(" ")
         for word in line_in_array:
             read_data_array.append(word)
 
-
-    # if self.DEBUG > 2:
-    #     print_debug("show_pulses", "...here's the 16bit chunks:")
-
-    # if self.DEBUG > 2:
-    #     for index, chunk in enumerate(read_data_array):
-    #         print_debug("read_data_array["+str(index)+"]", chunk)
-
     num_of_words = len(read_data_array)
     number_of_valid_pulses = num_of_words // 6
 
-    # if self.DEBUG > 2:
-    #     print_debug ("project","NUMBER OF PULSES FOUND: " + str(number_of_valid_pulses))
-
-    # table = PrettyTable(["PULSE [#]", "MB [ns]", "DO [ns]", "FREQ [MHz]", "PRI [ns]", "MODE"])
-
-    # if num_pulses > number_of_valid_pulses:
-    #         print_error ("show_tcu_params()","Error: number of pulses mismatch")
-    # for pulse_number in range(number_of_valid_pulses):
-    print('{}\t{}\t{}\t{}\t{}\t\t{}'.format("Pulse #", "MB", "DO", "FREQ", "PRI", "MODE"))
+    logger.debug('{}\t{}\t{}\t{}\t{}\t\t{}'.format("Pulse #", "MB", "DO", "FREQ", "PRI", "MODE"))
     for pulse_number in range(num_pulses):
 
         mb = read_data_array[((pulse_number*6)+0)]
-        # mb = mb[2:4] + mb[0:2]
-        #print ("RAW MB: " + mb)
         mb = eval("0x"+ mb)
         # mb = mb*10
        # print ("MB\t"+str(mb))
         # table.add_row(["main bang",str(mb*10) + " ns"])
 
         do = read_data_array[((pulse_number*6)+1)]
-        # do = do[2:4] + do[0:2]
         do = eval("0x"+ do)
         # do = do*10
        # print ("DO\t"+str(do))
@@ -474,11 +421,8 @@ if __name__ == '__main__':
        # print ("Freq\t"+str(freq))
         # table.add_row(["frequency",str(freq) + " MHz"])
 
-
         pri_upper = read_data_array[((pulse_number*6)+2)]
-        # pri_upper = pri_upper[2:4] + pri_upper [0:2]
         pri_lower = read_data_array[((pulse_number*6)+5)]
-        # pri_lower = pri_lower[2:4] + pri_lower[0:2]
         pri = eval("0x"+pri_upper+pri_lower)
        # print ("PRI\t"+str(pri))
         #pri = (pri - mb - do)*10 ??????/
@@ -486,13 +430,11 @@ if __name__ == '__main__':
         # table.add_row(["PRI",str(pri)+ " ns"])
 
         mode = read_data_array[((pulse_number*6)+4)]
-        #mode = mode[2:4] + mode[0:2]
-        # mode = mode[0:2]
         mode = eval("0x"+ mode)
-      #  print ("Mode\t"+str(mode))
+        #  print ("Mode\t"+str(mode))
         # table.add_row(["mode",str(mode)])
 
-        print('{}\t{}\t{}\t{}\t{}\t\t{}'.format(str(pulse_number+1), str(mb), str(do), str(freq), str(pri), str(mode)))
+        logger.debug('{}\t{}\t{}\t{}\t{}\t\t{}'.format(str(pulse_number+1), str(mb), str(do), str(freq), str(pri), str(mode)))
         # table.add_row([str(pulse_number+1), str(mb), str(do), str(freq), str(pri), str(mode)])
     # *************************************************************************
 
