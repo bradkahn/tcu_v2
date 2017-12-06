@@ -52,6 +52,7 @@ from harpoon.boardsupport import borph
 
 
 # TODO: find out where header file will live on node laptop
+# TODO: pass command line args for these values! (have default values)
 HEADER_PATH = "/home/brad/tcu_v2/"  # <-- this needs to change
 HEADER_NAME = "NeXtRAD_Header2.txt"
 TCU_ADDRESS = '192.168.1.16'
