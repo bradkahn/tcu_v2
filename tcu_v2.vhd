@@ -124,7 +124,8 @@ architecture rtl of tcu_top is
     signal triggers         : std_logic_vector(15 downto 0) := (others => '0'); -- triggers(0) 'soft on' / arming bit from register
     signal status_reg       : std_logic_vector(15 downto 0) := (others => '0'); -- status_reg(0) used to indicate that all pulse repeats for experiment are completed
 
-    signal PC               : integer range 0 to 255 := 0;                      -- Program Counter keeps track of current pulse
+    --signal PC               : integer range 0 to 255 := 0;                      -- Program Counter keeps track of current pulse
+    signal PC               : unsigned(7 downto 0)  := x"00";                      -- Program Counter keeps track of current pulse
     signal dataout          : std_logic_vector(95 downto 0);                    -- Contains all pulse parameters for current pulse
 
     -- Amplifiers and switches
@@ -510,21 +511,23 @@ begin --architecture RTL
     tcu : process(sys_clk_100MHz_ext)
         variable l_band_freq_var    : std_logic_vector (15 downto 0) := x"1405";
         variable x_band_freq_var    : std_logic_vector (15 downto 0) := x"3421";
+        variable pulse_index        : integer range 0 to 255         := 0;
     begin
+        pulse_index := to_integer(unsigned(pc));
         if rising_edge(sys_clk_100MHz_ext) then
             -- populate dataout from regbank based on Program Counter (PC)
-            dataout  <= reg_bank(PC) & reg_bank(PC+1) & reg_bank(PC+2) & reg_bank(PC+3) & reg_bank(PC+4) & reg_bank(PC+5);
-            MB       <= unsigned(reg_bank(PC));
-            D        <= unsigned(reg_bank(PC+1));
-            P        <= unsigned(reg_bank(PC+2)) & unsigned(reg_bank(PC+5));
+            dataout  <= reg_bank(pulse_index) & reg_bank(pulse_index+1) & reg_bank(pulse_index+2) & reg_bank(pulse_index+3) & reg_bank(pulse_index+4) & reg_bank(pulse_index+5);
+            MB       <= unsigned(reg_bank(pulse_index));
+            D        <= unsigned(reg_bank(pulse_index+1));
+            P        <= unsigned(reg_bank(pulse_index+2)) & unsigned(reg_bank(pulse_index+5));
             --PRI(1) <= P(31 downto 16);
             --PRI(0) <= P(15 downto 0);
-            pol_mode <= reg_bank(PC+4)(10 downto 8);
+            pol_mode <= reg_bank(pulse_index+4)(10 downto 8);
         -- setup certain ports depending on the mode of operation
         case pol_mode is
             when "000" =>		--	L band Tx=V Rx=V
                 x_band_freq     <= x_band_freq_var;
-                l_band_freq     <= reg_bank(PC+3);
+                l_band_freq     <= reg_bank(pulse_index+3);
                 pol             <= x"0000";	--	set REx polarisation
                 gpio(14)        <= '0';			--	L band Rx switch
                 gpio(15)        <= '1';			--	L band Rx switch
@@ -532,7 +535,7 @@ begin --architecture RTL
                 x_band_amp_on   <= '0';
             when "001" => 		--	L band Tx=V Rx=H
                 x_band_freq     <= x_band_freq_var;
-                l_band_freq     <= reg_bank(PC+3);
+                l_band_freq     <= reg_bank(pulse_index+3);
                 pol             <= x"0000";
                 gpio(14)        <= '1';
                 gpio(15)        <= '0';
@@ -540,7 +543,7 @@ begin --architecture RTL
                 x_band_amp_on   <= '0';
             when "010" => 		--	L band Tx=H Rx=H
                 x_band_freq     <= x_band_freq_var;
-                l_band_freq     <= reg_bank(PC+3);
+                l_band_freq     <= reg_bank(pulse_index+3);
                 pol             <= x"0000";
                 gpio(14)        <= '1';
                 gpio(15)        <= '0';
@@ -548,7 +551,7 @@ begin --architecture RTL
                 x_band_amp_on   <= '0';
             when "011" => 		--	L band Tx=V Rx=V
                 x_band_freq     <= x_band_freq_var;
-                l_band_freq     <= reg_bank(PC+3);
+                l_band_freq     <= reg_bank(pulse_index+3);
                 pol             <= x"0000";
                 gpio(14)        <= '0';
                 gpio(15)        <= '1';
@@ -556,7 +559,7 @@ begin --architecture RTL
                 x_band_amp_on   <= '0';
             when "100" => 		--	X band Tx=V Rx=V,H
                 l_band_freq     <= l_band_freq_var;
-                x_band_freq     <= reg_bank(PC+3);
+                x_band_freq     <= reg_bank(pulse_index+3);
                 pol             <= x"0100";
                 gpio(14)        <= '0';
                 gpio(15)        <= '0';
@@ -564,7 +567,7 @@ begin --architecture RTL
                 x_band_amp_on   <= '1';
             when "101" => 		--	X band Tx=H Rx=V,H
                 l_band_freq     <= l_band_freq_var;
-                x_band_freq     <= reg_bank(PC+3);
+                x_band_freq     <= reg_bank(pulse_index+3);
                 pol             <= x"0100";
                 gpio(14)        <= '0';
                 gpio(15)        <= '0';
@@ -597,56 +600,56 @@ begin --architecture RTL
                 Psig      <= '0';
                 -- increments PC or resets PC to zero. enables stop register if it has completed the last instruction
                 if(PC = unsigned(N_reg(7 downto 0))*6) then
-                    PC  <= 0;
+                    PC  <= x"00";
                     if(M_counter = unsigned(M_reg_cmp)) then
                         status_reg(0) <= '1';
                     else
                         M_counter <= M_counter+ 1;
                     end if;
                 else
-                    PC <= PC + 6 ;
+                    PC <= PC + x"06" ;
                 end if;
-                -- increments P if MB and D are active
-                elsif((MBsig and Dsig) = '1') then
-                    if(Pcounter = P) then
-                        Psig <= '1';
-                    else
-                        Pcounter <= Pcounter + 1;
-                        Psig <= '0';
-                    end if;
-                    -- turn amplifiers off
-                    gpio(13) <= '0';
-                    gpio(12) <= '0';
-                -- increments D if MB is active
-                elsif(MBsig = '1') then
-                    if(Dcounter = D) then
-                        Dsig <= '1';
-                    else
-                        Dcounter <= Dcounter + 1;
-                        Dsig <= '0';
-                    end if;
+            -- increments P if MB and D are active
+            elsif((MBsig and Dsig) = '1') then
+                if(Pcounter = P) then
+                    Psig <= '1';
                 else
-                    if(MBcounter = MB) then
-                        MBsig <= '1';
-                    else
-                        MBsig <= '0';
-                        MBcounter <= MBcounter + 1;
-                        -- send Ethernet packet at the very start
-                        if(MBcounter <= 2) then
-                            udp_send_packet <= '1';
-                        else
-                            udp_send_packet <= '0';
-                        end if;
-                        -- turn on appropriate amplifier (X or L) depending on pol_mode
-                        gpio(13) <= l_band_amp_on;
-                        gpio(12) <= x_band_amp_on;
-                    end if;
+                    Pcounter <= Pcounter + 1;
+                    Psig <= '0';
                 end if;
+                -- turn amplifiers off
+                gpio(13) <= '0';
+                gpio(12) <= '0';
+            -- increments D if MB is active
+            elsif(MBsig = '1') then
+                if(Dcounter = D) then
+                    Dsig <= '1';
+                else
+                    Dcounter <= Dcounter + 1;
+                    Dsig <= '0';
+                end if;
+            else
+                if(MBcounter = MB) then
+                    MBsig <= '1';
+                else
+                    MBsig <= '0';
+                    MBcounter <= MBcounter + 1;
+                    -- send Ethernet packet at the very start
+                    if(MBcounter <= 2) then
+                        udp_send_packet <= '1';
+                    else
+                        udp_send_packet <= '0';
+                    end if;
+                    -- turn on appropriate amplifier (X or L) depending on pol_mode
+                    gpio(13) <= l_band_amp_on;
+                    gpio(12) <= x_band_amp_on;
+                end if;
+            end if;
             --===========--
             -- off state --
             --===========--
             elsif(triggers(0) = '0') then
-                PC              <= 0;
+                PC              <= x"00";
                 M_counter       <= (others => '0');
                 status_reg(0)   <= '0';
                 sys_rst_i       <= '0';				-- turn ethernet on (was off)
