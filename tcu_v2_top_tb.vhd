@@ -433,13 +433,20 @@ BEGIN
         -- echo -e -n "\x00\x0b\x00\x00" > /proc/671/hw/ioreg/m
         register_write(address => M_REG_BASE, data=>x"0b00");
         register_write(address => (M_REG_BASE(25 downto 1) & "1"), data=>x"0000");
-        -- echo -e -n "\x32\x00\x32\x00\x01\x00\x14\x05\x01\x00\x3b\x86" > /proc/671/hw/ioreg/reg_pulses
+        -- pulse 0
         register_write(address => (PULSES_REG_BASE(25 downto 4) & "0000"), data=>x"0032");
         register_write(address => (PULSES_REG_BASE(25 downto 4) & "0001"), data=>x"0032");
         register_write(address => (PULSES_REG_BASE(25 downto 4) & "0010"), data=>x"0001");
         register_write(address => (PULSES_REG_BASE(25 downto 4) & "0011"), data=>x"0514");
         register_write(address => (PULSES_REG_BASE(25 downto 4) & "0100"), data=>x"0001");
         register_write(address => (PULSES_REG_BASE(25 downto 4) & "0101"), data=>x"863b");
+        -- pulse 1
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & "0110"), data=>x"0032");
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & "0111"), data=>x"0032");
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & "1000"), data=>x"0001");
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & "1001"), data=>x"0514");
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & "1010"), data=>x"0001");
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & "1011"), data=>x"863b");
         -- echo -e -n "\x00\x00" > /proc/671/hw/ioreg/reg_led
         register_write(address => LED_REG_BASE, data=>x"0000");
         -- echo -e -n "\x01\x00" > /proc/671/hw/ioreg/reg_led
