@@ -16,9 +16,6 @@ port
     gpmc_n_we       : in    std_logic;
     gpmc_n_oe       : in    std_logic;
     gpmc_n_adv_ale  : in    std_logic;
-    gpmc_n_wp       : in    std_logic;
-    gpmc_busy_0     : out   std_logic;
-    gpmc_busy_1     : out   std_logic;
 
     -- GPIO, LED and CLOCK pins
     gpio            : out   std_logic_vector(15 downto 2);
@@ -211,6 +208,42 @@ architecture rtl of tcu_top is
     signal x_band_freq          : std_logic_vector(15 downto 0) := x"3421";
     signal pol                  : std_logic_vector(15 downto 0) := x"0000";
     signal pol_mode             : std_logic_vector(2 downto 0);
+
+    type state_type is (IDLE, ARMED, PRE_PULSE, MAIN_BANG, DIGITIZE, DONE, FAULT);
+    signal state        : state_type := IDLE;
+    signal next_state   : state_type := IDLE;
+
+    alias soft_arm      : std_logic is triggers(0); -- from internal TCU register
+    alias trigger       : std_logic is gpioIn(0);   -- from GPSDO
+
+    alias pri_heartbeat : std_logic is gpio(2);     -- to Pentek
+
+    alias x_amp_switch  : std_logic is gpio(12);    -- to HPAs
+    alias l_amp_switch  : std_logic is gpio(13);
+
+    alias x_pol_tx      : std_logic is gpio(10);     -- to polarisation switches
+    alias l_pol_tx      : std_logic is gpio(11);
+    alias l_pol_rx      : std_logic_vector(1 downto 0) is gpio(15 downto 14);
+
+    -- TODO: CHECK HOW X BAND POLARISATION TX SWITCH IS WIRED UP AND CHANGE THESE ACCORDINGLY
+    constant X_POL_TX_HORIZONTAL : std_logic := '0';
+    constant X_POL_TX_VERTICAL   : std_logic := '1';
+
+    -- TODO: CHECK HOW L BAND POLARISATION TX SWITCH IS WIRED UP AND CHANGE THESE ACCORDINGLY
+    constant L_POL_TX_HORIZONTAL : std_logic := '0';
+    constant L_POL_TX_VERTICAL   : std_logic := '1';
+
+    -- TODO: CHECK HOW L BAND POLARISATION RX SWITCH IS WIRED UP AND CHANGE THESE ACCORDINGLY
+    -- see page 3: https://www.minicircuits.com/pdfs/ZX80-DR230+.pdf
+    constant L_POL_RX_DISABLE    : std_logic_vector(1 downto 0) := "00";
+    constant L_POL_RX_HORIZONTAL : std_logic_vector(1 downto 0) := "01";
+    constant L_POL_RX_VERTICAL   : std_logic_vector(1 downto 0) := "10";
+
+    -- change these depending on the logic level interface to the amps
+    constant X_AMP_ON   : std_logic := '1';
+    constant X_AMP_OFF  : std_logic := '0';
+    constant L_AMP_ON   : std_logic := '1';
+    constant L_AMP_OFF  : std_logic := '0';
 
     ---------------------------------------------------------------------------
     --	Ethernet Component declaration section
@@ -412,9 +445,6 @@ begin --architecture RTL
 
     led <= led_reg(7 downto 0);
 
-    gpmc_busy_0 <= '0';
-    gpmc_busy_1 <= '0';
-
     --=====================================--
     -- GPMC interface
     --=====================================--
@@ -463,55 +493,67 @@ begin --architecture RTL
     gpmc_data_i <= gpmc_d;
 
     ---------------------------------------------------------------------------
-    -- ?????????
-    ---------------------------------------------------------------------------
-    --led_reg(0)
-    --led_reg(1) <= when M_counter= M_reg
-    --led_reg(2) <= MBsig;
-    led_reg(3)  <= Dsig;
-    led_reg(4)  <= Psig;
-    led_reg(5)  <= (MBsig and Dsig and Psig);
-    --led_reg(6) <= when M_counter= M_reg
-    led_reg(6)  <= '1';
-    led_reg(7)  <= gpioIn(1);
-
+    -- -- ?????????
+    -- ---------------------------------------------------------------------------
+    -- --led_reg(0)
+    -- --led_reg(1) <= when M_counter= M_reg
+    -- --led_reg(2) <= MBsig;
+    -- led_reg(3)  <= Dsig;
+    -- led_reg(4)  <= Psig;
+    -- led_reg(5)  <= (MBsig and Dsig and Psig);
+    -- --led_reg(6) <= when M_counter= M_reg
+    -- led_reg(6)  <= '1';
+    -- led_reg(7)  <= gpioIn(1);
+    --
     bcd(15 downto 0)    <= bcd_int(0);
     bcd(31 downto 16)   <= bcd_int(1);
-
-    -- Remember to uncomment this
-    -- It includes a new status bit that indicates when an experiment is happening
-    --status_reg(1) <= ready and not(status_reg(0)) and triggers(0);
-
-    -- M_reg_cmp is used when comparing with the counter
+    --
+    -- -- Remember to uncomment this
+    -- -- It includes a new status bit that indicates when an experiment is happening
+    -- --status_reg(1) <= ready and not(status_reg(0)) and triggers(0);
+    --
+    -- -- M_reg_cmp is used when comparing with the counter
     M_reg_cmp(31 downto 16) <= M_reg(1);
     M_reg_cmp(15 downto 0) <=  M_reg(0);
-
-    gpio(2) <= MBsig;		-- Indicates when Main Bang offset has been reached
-    gpio(8) <= MBsig;
-    gpio(3) <= Dsig;		-- Indicates when Digitisation offset has been reached
-    gpio(9) <= Dsig;
-    gpio(4) <= Psig;		-- Indicates when Next PRI offset has been reached
-    gpio(10)<= Psig;
-    gpio(5) <= (MBsig and Dsig and Psig);
-
-    gpio(7) <= gpioIn(1);
-
-    -- gpioIn(0) <= sys_clk_100MHz;
-    -- gpioIn(1) <= '0';
+    --
+    -- gpio(2) <= MBsig;		-- Indicates when Main Bang offset has been reached
+    -- gpio(8) <= MBsig;
+    -- gpio(3) <= Dsig;		-- Indicates when Digitisation offset has been reached
+    -- gpio(9) <= Dsig;
+    -- gpio(4) <= Psig;		-- Indicates when Next PRI offset has been reached
+    -- gpio(10)<= Psig;
+    -- gpio(5) <= (MBsig and Dsig and Psig);
+    --
+    -- gpio(7) <= gpioIn(1);
+    --
+    -- -- gpioIn(0) <= sys_clk_100MHz;
+    -- -- gpioIn(1) <= '0';
     gpio(6) <= '1';
     gpio(11)<= '0';
-    -- gpio(12)		--	X band HPA
-    -- gpio(13)		-- L band HPA
-    -- gpio(14)		-- L band polarisation
-    -- gpio(15)		-- L band polarisation
+    -- -- gpio(12)		--	X band HPA
+    -- -- gpio(13)		-- L band HPA
+    -- -- gpio(14)		-- L band polarisation
+    -- -- gpio(15)		-- L band polarisation
 
-    --=====================================--
-    -- The actual TCU processes happen here
-    --=====================================--
-    tcu : process(sys_clk_100MHz_ext)
-        variable l_band_freq_var    : std_logic_vector (15 downto 0) := x"1405";
-        variable x_band_freq_var    : std_logic_vector (15 downto 0) := x"3421";
-        variable pulse_index        : integer range 0 to 255         := 0;
+    ------------------------------------------------------------------------------
+    --  TCU STATE MACHINE
+    -------------------------------------------------------------------------------
+
+    -- TODO:
+    --      send PRF pulse to pentek
+    --      send UDP packet to rex
+
+    -- infer state register
+    state_register : process(sys_clk_100MHz_ext)
+    begin
+        if rising_edge(sys_clk_100MHz_ext) then
+            state <= next_state;
+        end if;
+    end process state_register;
+
+    -- synchronous section
+    synchronous : process(sys_clk_100MHz_ext)
+    variable pulse_index : integer range 0 to 255 := 0;
     begin
         pulse_index := to_integer(unsigned(pc));
         if rising_edge(sys_clk_100MHz_ext) then
@@ -523,153 +565,122 @@ begin --architecture RTL
             --PRI(1) <= P(31 downto 16);
             --PRI(0) <= P(15 downto 0);
             pol_mode <= reg_bank(pulse_index+4)(10 downto 8);
-        -- setup certain ports depending on the mode of operation
-        case pol_mode is
-            when "000" =>		--	L band Tx=V Rx=V
-                x_band_freq     <= x_band_freq_var;
-                l_band_freq     <= reg_bank(pulse_index+3);
-                pol             <= x"0000";	--	set REx polarisation
-                gpio(14)        <= '0';			--	L band Rx switch
-                gpio(15)        <= '1';			--	L band Rx switch
-                l_band_amp_on   <= '1';
-                x_band_amp_on   <= '0';
-            when "001" => 		--	L band Tx=V Rx=H
-                x_band_freq     <= x_band_freq_var;
-                l_band_freq     <= reg_bank(pulse_index+3);
-                pol             <= x"0000";
-                gpio(14)        <= '1';
-                gpio(15)        <= '0';
-                l_band_amp_on   <= '1';
-                x_band_amp_on   <= '0';
-            when "010" => 		--	L band Tx=H Rx=H
-                x_band_freq     <= x_band_freq_var;
-                l_band_freq     <= reg_bank(pulse_index+3);
-                pol             <= x"0000";
-                gpio(14)        <= '1';
-                gpio(15)        <= '0';
-                l_band_amp_on   <= '1';
-                x_band_amp_on   <= '0';
-            when "011" => 		--	L band Tx=V Rx=V
-                x_band_freq     <= x_band_freq_var;
-                l_band_freq     <= reg_bank(pulse_index+3);
-                pol             <= x"0000";
-                gpio(14)        <= '0';
-                gpio(15)        <= '1';
-                l_band_amp_on   <= '1';
-                x_band_amp_on   <= '0';
-            when "100" => 		--	X band Tx=V Rx=V,H
-                l_band_freq     <= l_band_freq_var;
-                x_band_freq     <= reg_bank(pulse_index+3);
-                pol             <= x"0100";
-                gpio(14)        <= '0';
-                gpio(15)        <= '0';
-                l_band_amp_on   <= '0';
-                x_band_amp_on   <= '1';
-            when "101" => 		--	X band Tx=H Rx=V,H
-                l_band_freq     <= l_band_freq_var;
-                x_band_freq     <= reg_bank(pulse_index+3);
-                pol             <= x"0100";
-                gpio(14)        <= '0';
-                gpio(15)        <= '0';
-                l_band_amp_on   <= '0';
-                x_band_amp_on   <= '1';
-            when others => null;
-        end case;
 
-        -----------------------------------------------------------------------
-        -- Time critical process
-        -----------------------------------------------------------------------
-        if(triggers(0) = '1' and gpioIn(0) = '1') then
-            ready <= '1';
-        elsif(triggers(0) = '0') then
-            ready <= '0';
-        end if;
-
-        -- The experiment commences when triggered by the ready signal above, as long as it isnt the end of the experiment and as long as it is still "soft on" (kept on by the triggers register).
-        if(ready = '1' and status_reg(0) = '0' and triggers(0) = '1') then
-
-            sys_rst_i <= '0';		-- turn ethernet on
-
-            if ((MBsig and Dsig and Psig) = '1') then
-                -- reset all counters at the end of Interval
-                MBcounter <= (others => '0');
-                Dcounter  <= (others => '0');
-                Pcounter  <= (others => '0');
-                MBsig     <= '0';
-                Dsig      <= '0';
-                Psig      <= '0';
-                -- increments PC or resets PC to zero. enables stop register if it has completed the last instruction
-                if(PC = unsigned(N_reg(7 downto 0))*6) then
-                    PC  <= x"00";
-                    if(M_counter = unsigned(M_reg_cmp)) then
-                        status_reg(0) <= '1';
+            case(state) is
+                when IDLE =>
+                    if soft_arm = '1' then
+                        next_state <= ARMED;
                     else
-                        M_counter <= M_counter+ 1;
+                        next_state <= IDLE;
                     end if;
-                else
-                    PC <= PC + x"06" ;
-                end if;
-            -- increments P if MB and D are active
-            elsif((MBsig and Dsig) = '1') then
-                if(Pcounter = P) then
-                    Psig <= '1';
-                else
-                    Pcounter <= Pcounter + 1;
-                    Psig <= '0';
-                end if;
-                -- turn amplifiers off
-                gpio(13) <= '0';
-                gpio(12) <= '0';
-            -- increments D if MB is active
-            elsif(MBsig = '1') then
-                if(Dcounter = D) then
-                    Dsig <= '1';
-                else
-                    Dcounter <= Dcounter + 1;
-                    Dsig <= '0';
-                end if;
-            else
-                if(MBcounter = MB) then
-                    MBsig <= '1';
-                else
-                    MBsig <= '0';
-                    MBcounter <= MBcounter + 1;
-                    -- send Ethernet packet at the very start
-                    if(MBcounter <= 2) then
-                        udp_send_packet <= '1';
+
+                when ARMED =>
+                    if trigger = '1' then
+                        next_state <= PRE_PULSE;
+                    elsif soft_arm = '0' then
+                        next_state <= IDLE;
                     else
-                        udp_send_packet <= '0';
+                        next_state <= ARMED;
                     end if;
-                    -- turn on appropriate amplifier (X or L) depending on pol_mode
-                    gpio(13) <= l_band_amp_on;
-                    gpio(12) <= x_band_amp_on;
-                end if;
-            end if;
-            --===========--
-            -- off state --
-            --===========--
-            elsif(triggers(0) = '0') then
-                PC              <= x"00";
-                M_counter       <= (others => '0');
-                status_reg(0)   <= '0';
-                sys_rst_i       <= '0';				-- turn ethernet on (was off)
-                udp_send_packet <= '0';
-                --	set counters to zero
-                MBcounter       <= (others => '0');
-                Dcounter        <= (others => '0');
-                Pcounter        <= (others => '0');
-                -- turn amplifiers off
-                gpio(13)        <= '0';
-                gpio(12)        <= '0';
-                -- turn off MB, D and P signals
-                MBsig           <= '0';
-                Dsig            <= '0';
-                Psig            <= '0';
-            else
-                udp_send_packet <= '0';
-            end if;
+
+                when PRE_PULSE =>
+                    -- MBCounter is incrementing
+                    -- compare MBCounter and MB
+                    if MBcounter = MB then
+                        next_state <= MAIN_BANG;
+                    elsif MBcounter < MB then
+                        next_state <= PRE_PULSE;
+                        MBcounter <= MBcounter + 1;
+                    else
+                        next_state <= FAULT;
+                    end if;
+
+                when MAIN_BANG =>
+                    -- Dcounter is incrementing
+                    -- compare Dcounter tp D
+                    if Dcounter = D then
+                        next_state <= DIGITIZE;
+                    elsif Dcounter < D then
+                        next_state <= MAIN_BANG;
+                        Dcounter <= Dcounter + 1;
+                    else
+                        next_state <= FAULT;
+                    end if;
+
+                when DIGITIZE =>
+                    -- Pcounter is incrementing
+                    -- compare Pcounter to P
+                    if Pcounter = P then
+                        if PC = unsigned(N_reg(7 downto 0))*6 then
+                            if M_counter = unsigned(M_reg_cmp) then
+                                next_state <= DONE;
+                            elsif M_counter < unsigned(M_reg_cmp) then
+                                next_state <= DIGITIZE;
+                                M_counter <= M_counter + 1;
+                            else
+                                next_state <= FAULT;
+                            end if;
+                        elsif PC < unsigned(N_reg(7 downto 0))*6 then
+                            next_state <= DIGITIZE;
+                            PC <= PC + x"06";
+                        else
+                            next_state <= FAULT;
+                        end if;
+                    elsif Pcounter < P then
+                        next_state <= DIGITIZE;
+                        Pcounter <= Pcounter + 1;
+                    else
+                        next_state <= FAULT;
+                    end if;
+
+                when DONE =>
+                    next_state <= DONE;
+
+                when FAULT =>
+                    next_state <= FAULT;
+
+                when others =>
+                    next_state <= FAULT;
+            end case;
         end if;
-    end process tcu;
+    end process synchronous;
+
+        --       POLARISATION MODES
+        -- +------+-----+-------+-------+
+        -- | Mode |Band | TxPol | RxPol |
+        -- +----------------------------+
+        -- | 000  |  L  |   V   |   V   |
+        -- | 001  |  L  |   V   |   H   |
+        -- | 010  |  L  |   H   |   V   |
+        -- | 011  |  L  |   H   |   H   |
+        -- | 100  |  X  |   H   |  V,H  |
+        -- | 101  |  X  |   V   |  V,H  |
+        -- +------+-----+-------+-------+
+
+    polarisation_modes : process(pol_mode)
+    begin
+        -- Note: these expressions are only sypported in vhdl 2008
+        -- x_pol_tx <= X_POL_TX_HORIZONTAL when pol_mode(0) = '0' else X_POL_TX_VERTICAL;
+        -- l_pol_tx <= L_POL_TX_HORIZONTAL when pol_mode(1) = '1' else L_POL_TX_VERTICAL;
+        -- l_pol_rx <= L_POL_RX_HORIZONTAL when pol_mode(2) = '0' else L_POL_RX_VERTICAL;
+        if pol_mode(0) = '0' then
+            x_pol_tx <= X_POL_TX_HORIZONTAL;
+        else
+            x_pol_tx <= X_POL_TX_VERTICAL;
+        end if;
+    end process;
+
+    combinational : process(state)
+    begin
+        -- TODO:    FACTOR IN DELAY OF AMP SWITCH OFF (PW - 2.5us)
+        --          could account for this by adjusting MBoffset and PRIoffset!
+
+        -- Note: these expressions are only sypported in vhdl 2008
+        -- x_amp_switch <= X_AMP_ON when (state = PRE_PULSE or state = MAIN_BANG) and pol_mode(2) = '1' else X_AMP_OFF;
+        -- l_amp_switch <= L_AMP_ON when (state = PRE_PULSE or state = MAIN_BANG) and pol_mode(2) = '0' else L_AMP_OFF;
+        --
+        -- pri_heartbeat <= '1' when (state = MAIN_BANG) else '0';
+    end process combinational;
 
     ---------------------------------------------------------------------------
     -- UDP TRANSMISSION SECTION

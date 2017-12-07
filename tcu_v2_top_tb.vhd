@@ -17,9 +17,6 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
          gpmc_n_we      : IN    std_logic;
          gpmc_n_oe      : IN    std_logic;
          gpmc_n_adv_ale : IN    std_logic;
-         gpmc_n_wp      : IN    std_logic;
-         gpmc_busy_0    : OUT   std_logic;
-         gpmc_busy_1    : OUT   std_logic;
          gpio           : OUT   std_logic_vector(15 downto 2);
          gpioIn         : IN    std_logic_vector(1 downto 0);
          led            : OUT   std_logic_vector(7 downto 0);
@@ -52,7 +49,6 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
     signal gpmc_n_we      : std_logic := '0';
     signal gpmc_n_oe      : std_logic := '0';
     signal gpmc_n_adv_ale : std_logic := '0';
-    signal gpmc_n_wp      : std_logic := '0';
     signal gpioIn         : std_logic_vector(1 downto 0) := (others => '0');
     signal sys_clk_P      : std_logic := '0';
     signal sys_clk_N      : std_logic := '0';
@@ -71,8 +67,6 @@ ARCHITECTURE behavior OF tcu_v2_top_tb IS
     signal GIGE_MDIO      : std_logic;
 
     	--Outputs
-    signal gpmc_busy_0    : std_logic;
-    signal gpmc_busy_1    : std_logic;
     signal gpio           : std_logic_vector(15 downto 2);
     signal led            : std_logic_vector(7 downto 0);
     signal bcd            : std_logic_vector(31 downto 0);
@@ -131,9 +125,6 @@ BEGIN
         gpmc_n_we     => gpmc_n_we,
         gpmc_n_oe     => gpmc_n_oe,
         gpmc_n_adv_ale=> gpmc_n_adv_ale,
-        gpmc_n_wp     => gpmc_n_wp,
-        gpmc_busy_0   => gpmc_busy_0,
-        gpmc_busy_1   => gpmc_busy_1,
         gpio          => gpio,
         gpioIn        => gpioIn,
         led           => led,
@@ -410,9 +401,9 @@ BEGIN
         end register_read;
 
     begin
-
         -- insert stimulus here
         wait for 100 ns;
+
 
         -- status      3 0x08000000 0x02    <-
         -- reg_led     3 0x08800000 0x02    <-
@@ -452,9 +443,12 @@ BEGIN
         -- echo -e -n "\x01\x00" > /proc/671/hw/ioreg/reg_led
         register_write(address => LED_REG_BASE, data=>x"0001");
 
+
         wait for 100ns;
+
         -- FIRE!
         gpioIn  <= "01";
+
 
         wait;
     end process;

@@ -22,7 +22,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="34" />
+   <WVObjectSize size="29" />
    <wvobject fp_name="/tcu_v2_top_tb/uut/sys_clk_p" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">sys_clk_p</obj_property>
       <obj_property name="ObjectShortName">sys_clk_p</obj_property>
@@ -69,18 +69,6 @@
       <wvobject fp_name="/tcu_v2_top_tb/uut/gpmc_n_adv_ale" type="logic" db_ref_id="1">
          <obj_property name="ElementShortName">gpmc_n_adv_ale</obj_property>
          <obj_property name="ObjectShortName">gpmc_n_adv_ale</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tcu_v2_top_tb/uut/gpmc_n_wp" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">gpmc_n_wp</obj_property>
-         <obj_property name="ObjectShortName">gpmc_n_wp</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tcu_v2_top_tb/uut/gpmc_busy_0" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">gpmc_busy_0</obj_property>
-         <obj_property name="ObjectShortName">gpmc_busy_0</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tcu_v2_top_tb/uut/gpmc_busy_1" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">gpmc_busy_1</obj_property>
-         <obj_property name="ObjectShortName">gpmc_busy_1</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="divider576" type="divider">
@@ -526,88 +514,110 @@
       <obj_property name="BkColor">128 128 255</obj_property>
       <obj_property name="TextColor">230 230 230</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/gpioin[0]" type="logic" db_ref_id="1">
+   <wvobject fp_name="group192" type="group">
+      <obj_property name="label">New Group</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">[0]</obj_property>
-      <obj_property name="ObjectShortName">gpioin[0]</obj_property>
-      <obj_property name="label">GPSDO_TRIG_IN</obj_property>
-   </wvobject>
-   <wvobject fp_name="vbus599" type="vbus" db_ref_id="1">
-      <obj_property name="label">LX_RX_POL_SWITCH</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
-      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[15]" type="logic" db_ref_id="1">
+      <wvobject fp_name="group600" type="group">
+         <obj_property name="label">duplicated_sigs</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <obj_property name="ElementShortName">[15]</obj_property>
-         <obj_property name="ObjectShortName">gpio[15]</obj_property>
-         <obj_property name="label">L_RX_SWITCH_1</obj_property>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[10]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[10]</obj_property>
+            <obj_property name="ObjectShortName">gpio[10]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[9]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[9]</obj_property>
+            <obj_property name="ObjectShortName">gpio[9]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[8]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[8]</obj_property>
+            <obj_property name="ObjectShortName">gpio[8]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[7]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[7]</obj_property>
+            <obj_property name="ObjectShortName">gpio[7]</obj_property>
+         </wvobject>
       </wvobject>
-      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[14]" type="logic" db_ref_id="1">
+      <wvobject fp_name="/tcu_v2_top_tb/uut/gpioin[0]" type="logic" db_ref_id="1">
          <obj_property name="DisplayName">label</obj_property>
-         <obj_property name="ElementShortName">[14]</obj_property>
-         <obj_property name="ObjectShortName">gpio[14]</obj_property>
-         <obj_property name="label">L_RX_SWITCH_0</obj_property>
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">gpioin[0]</obj_property>
+         <obj_property name="label">GPSDO_TRIG_IN</obj_property>
+      </wvobject>
+      <wvobject fp_name="vbus599" type="vbus" db_ref_id="1">
+         <obj_property name="label">LX_RX_POL_SWITCH</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[15]" type="logic" db_ref_id="1">
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="ElementShortName">[15]</obj_property>
+            <obj_property name="ObjectShortName">gpio[15]</obj_property>
+            <obj_property name="label">L_RX_SWITCH_1</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[14]" type="logic" db_ref_id="1">
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="ElementShortName">[14]</obj_property>
+            <obj_property name="ObjectShortName">gpio[14]</obj_property>
+            <obj_property name="label">L_RX_SWITCH_0</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[13]" type="logic" db_ref_id="1">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[13]</obj_property>
+         <obj_property name="ObjectShortName">gpio[13]</obj_property>
+         <obj_property name="label">L_BAND_AMP</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[12]" type="logic" db_ref_id="1">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[12]</obj_property>
+         <obj_property name="ObjectShortName">gpio[12]</obj_property>
+         <obj_property name="label">X_BAND_AMP</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[5]" type="logic" db_ref_id="1">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">gpio[5]</obj_property>
+         <obj_property name="label">PULSE_END</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[4]" type="logic" db_ref_id="1">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[4]</obj_property>
+         <obj_property name="ObjectShortName">gpio[4]</obj_property>
+         <obj_property name="label">PRI_OFFSET_REACHED</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[3]" type="logic" db_ref_id="1">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">gpio[3]</obj_property>
+         <obj_property name="label">DIG_END</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[6]" type="logic" db_ref_id="1">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">gpio[6]</obj_property>
+         <obj_property name="label">HIGH</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[11]" type="logic" db_ref_id="1">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[11]</obj_property>
+         <obj_property name="ObjectShortName">gpio[11]</obj_property>
+         <obj_property name="label">LOW</obj_property>
       </wvobject>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[13]" type="logic" db_ref_id="1">
+   <wvobject fp_name="divider170" type="divider">
+      <obj_property name="label">New Divider</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">[13]</obj_property>
-      <obj_property name="ObjectShortName">gpio[13]</obj_property>
-      <obj_property name="label">L_BAND_AMP</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[12]" type="logic" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">[12]</obj_property>
-      <obj_property name="ObjectShortName">gpio[12]</obj_property>
-      <obj_property name="label">X_BAND_AMP</obj_property>
+   <wvobject fp_name="/tcu_v2_top_tb/gpioin" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">gpioin[1:0]</obj_property>
+      <obj_property name="ObjectShortName">gpioin[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[5]" type="logic" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">[5]</obj_property>
-      <obj_property name="ObjectShortName">gpio[5]</obj_property>
-      <obj_property name="label">PULSE_END</obj_property>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[4]" type="logic" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">[4]</obj_property>
-      <obj_property name="ObjectShortName">gpio[4]</obj_property>
-      <obj_property name="label">PRI_OFFSET_REACHED</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[3]" type="logic" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">[3]</obj_property>
-      <obj_property name="ObjectShortName">gpio[3]</obj_property>
-      <obj_property name="label">DIG_END</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[6]" type="logic" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">[6]</obj_property>
-      <obj_property name="ObjectShortName">gpio[6]</obj_property>
-      <obj_property name="label">HIGH</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[11]" type="logic" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">[11]</obj_property>
-      <obj_property name="ObjectShortName">gpio[11]</obj_property>
-      <obj_property name="label">LOW</obj_property>
-   </wvobject>
-   <wvobject fp_name="group600" type="group">
-      <obj_property name="label">duplicated_sigs</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
-      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[10]" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">[10]</obj_property>
-         <obj_property name="ObjectShortName">gpio[10]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[9]" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">[9]</obj_property>
-         <obj_property name="ObjectShortName">gpio[9]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[8]" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">[8]</obj_property>
-         <obj_property name="ObjectShortName">gpio[8]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tcu_v2_top_tb/uut/gpio[7]" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">[7]</obj_property>
-         <obj_property name="ObjectShortName">gpio[7]</obj_property>
-      </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/next_state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">next_state</obj_property>
+      <obj_property name="ObjectShortName">next_state</obj_property>
    </wvobject>
 </wave_config>
