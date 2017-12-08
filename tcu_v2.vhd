@@ -583,6 +583,19 @@ begin --architecture RTL
                             state <= PRE_PULSE;
                             MBcounter <= MBcounter + 1;
                         end if;
+                        if MBcounter > 0 then   -- needed this to remove the 10ns lag between pointing to the next pulse and getting the new pol_mode.
+                                                -- doesnt affect system as the amps need to be on just before MB
+                            if pol_mode = "100" or pol_mode = "101" then
+                                x_amp_switch <= X_AMP_ON;
+                                l_amp_switch <= L_AMP_OFF;
+                            elsif pol_mode = "000" or pol_mode = "001" or pol_mode = "010" or pol_mode = "011" then
+                                l_amp_switch <= L_AMP_ON;
+                                x_amp_switch <= X_AMP_OFF;
+                            else
+                                x_amp_switch <= X_AMP_OFF;
+                                l_amp_switch <= L_AMP_OFF;
+                            end if;
+                        end if;
                     else
                         state <= DONE;
                         -- turn off amps
@@ -600,7 +613,8 @@ begin --architecture RTL
 
                 when DIGITIZE =>
                     -- turn off amps
-
+                    x_amp_switch <= X_AMP_OFF;
+                    l_amp_switch <= L_AMP_OFF;
 
                     if PRIcounter >= PRIoffset then
 
@@ -624,16 +638,49 @@ begin --architecture RTL
 
                 when DONE =>
                     state <= DONE;
-
+                    x_amp_switch <= X_AMP_OFF;
+                    l_amp_switch <= L_AMP_OFF;
 
                 when others =>
                     -- turn off amps
+                    x_amp_switch <= X_AMP_OFF;
+                    l_amp_switch <= L_AMP_OFF;
                     state <= IDLE;
             end case;
 
 
         end if;
     end process;
+
+    -- amp_switching : process(state, pol_mode)
+    -- begin
+    --     case(state) is
+    --
+    --         when PRE_PULSE =>
+    --         if MBcounter >= 1 then
+    --             if pol_mode(2) = '1' then
+    --                 x_amp_switch <= X_AMP_ON;
+    --                 l_amp_switch <= L_AMP_OFF;
+    --             else
+    --                 x_amp_switch <= X_AMP_OFF;
+    --                 l_amp_switch <= L_AMP_ON;
+    --             end if;
+    --         end if;
+    --         when MAIN_BANG =>
+    --         if MBcounter >= 1 then
+    --             if pol_mode(2) = '1' then
+    --                 x_amp_switch <= X_AMP_ON;
+    --                 l_amp_switch <= L_AMP_OFF;
+    --             else
+    --                 x_amp_switch <= X_AMP_OFF;
+    --                 l_amp_switch <= L_AMP_ON;
+    --             end if;
+    --         end if;
+    --         when others =>
+    --             x_amp_switch <= X_AMP_OFF;
+    --             l_amp_switch <= L_AMP_OFF;
+    --     end case;
+    -- end process amp_switching;
 
     soft_arm    <= triggers(0); -- from internal TCU register
     -- GPIO SIGNAL <--> PORT CONNECTIONS
