@@ -22,7 +22,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="37" />
+   <WVObjectSize size="38" />
    <wvobject fp_name="/tcu_v2_top_tb/uut/sys_clk_p" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">sys_clk_p</obj_property>
       <obj_property name="ObjectShortName">sys_clk_p</obj_property>
@@ -1594,6 +1594,10 @@
       <obj_property name="BkColor">128 128 255</obj_property>
       <obj_property name="TextColor">230 230 230</obj_property>
    </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/n_reg" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">n_reg[15:0]</obj_property>
+      <obj_property name="ObjectShortName">n_reg[15:0]</obj_property>
+   </wvobject>
    <wvobject fp_name="/tcu_v2_top_tb/uut/pulse_index" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">pulse_index[7:0]</obj_property>
       <obj_property name="ObjectShortName">pulse_index[7:0]</obj_property>
@@ -1753,10 +1757,6 @@
       <obj_property name="ElementShortName">state</obj_property>
       <obj_property name="ObjectShortName">state</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/next_state" type="other" db_ref_id="1">
-      <obj_property name="ElementShortName">next_state</obj_property>
-      <obj_property name="ObjectShortName">next_state</obj_property>
-   </wvobject>
    <wvobject fp_name="/tcu_v2_top_tb/uut/x_amp_switch" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">x_amp_switch</obj_property>
       <obj_property name="ObjectShortName">x_amp_switch</obj_property>
@@ -1772,6 +1772,10 @@
    <wvobject fp_name="/tcu_v2_top_tb/uut/l_pol_tx" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">l_pol_tx</obj_property>
       <obj_property name="ObjectShortName">l_pol_tx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/x_pol_tx" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">x_pol_tx</obj_property>
+      <obj_property name="ObjectShortName">x_pol_tx</obj_property>
    </wvobject>
    <wvobject fp_name="/tcu_v2_top_tb/uut/pri_heartbeat" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">pri_heartbeat</obj_property>
