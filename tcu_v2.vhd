@@ -542,10 +542,12 @@ begin --architecture RTL
     -- single synchronous process implementation
 
     tcu_fsm : process(sys_clk_100MHz_ext)
+    -- tcu_fsm : process(sys_clk_100MHz)
         variable pulse_index_int : integer range 0 to 255 := 0;
     begin
         pulse_index_int := to_integer(unsigned(pulse_index));
         if rising_edge(sys_clk_100MHz_ext) then
+        -- if rising_edge(sys_clk_100MHz) then
 
             -- populate dataout from regbank based on Program Counter (pulse_index)
             dataout  <= reg_bank(pulse_index_int) & reg_bank(pulse_index_int+1) & reg_bank(pulse_index_int+2) & reg_bank(pulse_index_int+3) & reg_bank(pulse_index_int+4) & reg_bank(pulse_index_int+5);
@@ -633,6 +635,7 @@ begin --architecture RTL
 
 
                 when MAIN_BANG =>
+                    pri_heartbeat <= '1';
                     if DIGcounter>= DIGoffset then
                         state <= DIGITIZE;
                         DIGcounter <= x"0000";
@@ -645,7 +648,7 @@ begin --architecture RTL
                     -- turn off amps
                     x_amp_switch <= X_AMP_OFF;
                     l_amp_switch <= L_AMP_OFF;
-
+                    pri_heartbeat <= '0';
                     if PRIcounter >= PRIoffset then
 
                         pulse_index <= pulse_index + 6;
@@ -683,21 +686,30 @@ begin --architecture RTL
     end process;
 
     soft_arm    <= triggers(0); -- from internal TCU register
+    led_reg(0)  <= trigger;
+    led_reg(1)  <= pri_heartbeat;
+    led_reg(2)  <= x_amp_switch;
+    led_reg(3)  <= l_amp_switch;
+    led_reg(4)  <= '1' when state = ARMED else '0';
+    led_reg(5)  <= '1' when state = PRE_PULSE else '0';
+    -- led_reg(6)  <= '1' when state = MAIN_BANG else '0';
+    led_reg(6)  <= '1' when state = DIGITIZE else '0';
+    led_reg(7)  <= '1' when state = DONE else '0';
     -- GPIO SIGNAL <--> PORT CONNECTIONS
     trigger     <= gpioIn(0);       -- from GPSDO
     -- ?        <= gpioIn(1);       -- unused
     gpio(2)     <= pri_heartbeat;   -- to Pentek
-    gpio(3)     <= '0';             -- unused
-    gpio(4)     <= '0';             -- unused
-    gpio(5)     <= '0';             -- unused
-    gpio(6)     <= '0';             -- unused
-    gpio(7)     <= '0';             -- unused
-    gpio(8)     <= '0';             -- unused
-    gpio(9)     <= '0';             -- unused
-    gpio(12)    <= x_amp_switch ;   -- to HPAs
-    gpio(13)    <= l_amp_switch;
+    gpio(3)     <= triggers(0);
+    gpio(4)     <= '1' when state = ARMED else '0';
+    gpio(5)     <= '1' when state = PRE_PULSE else '0';
+    gpio(6)     <= '1' when state = MAIN_BANG else '0';
+    gpio(7)     <= '1' when state = DIGITIZE else '0';
+    gpio(8)     <= '1' when state = DONE else '0';
+    gpio(9)     <= x_amp_switch ;   -- to HPAs
     gpio(10)    <= x_pol_tx ;    -- to polarisation switches
     gpio(11)    <= l_pol_tx;
+    gpio(12)    <= '0';             -- unused
+    gpio(13)    <= l_amp_switch;
     gpio(15 downto 14) <= l_pol_rx;
 
     ---------------------------------------------------------------------------
