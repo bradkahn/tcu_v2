@@ -583,17 +583,47 @@ begin --architecture RTL
                             state <= PRE_PULSE;
                             MBcounter <= MBcounter + 1;
                         end if;
+
+                        --       POLARISATION MODES
+                        -- +------+-----+-------+-------+
+                        -- | Mode |Band | TxPol | RxPol |
+                        -- +----------------------------+
+                        -- | 000  |  L  |   V   |   V   |
+                        -- | 001  |  L  |   V   |   H   |
+                        -- | 010  |  L  |   H   |   V   |
+                        -- | 011  |  L  |   H   |   H   |
+                        -- | 100  |  X  |   H   |  V,H  |
+                        -- | 101  |  X  |   V   |  V,H  |
+                        -- +------+-----+-------+-------+
+
                         if MBcounter > 0 then   -- needed this to remove the 10ns lag between pointing to the next pulse and getting the new pol_mode.
                                                 -- doesnt affect system as the amps need to be on just before MB
-                            if pol_mode = "100" or pol_mode = "101" then
+                            -- this is an X-band pulse
+                            if pol_mode(2) = '1' then
                                 x_amp_switch <= X_AMP_ON;
                                 l_amp_switch <= L_AMP_OFF;
-                            elsif pol_mode = "000" or pol_mode = "001" or pol_mode = "010" or pol_mode = "011" then
+
+                                if pol_mode(0) = '0' then
+                                    x_pol_tx <= X_POL_TX_HORIZONTAL;
+                                else
+                                    x_pol_tx <= X_POL_TX_VERTICAL;
+                                end if;
+
+                            -- this is an L-band pulse
+                            else
                                 l_amp_switch <= L_AMP_ON;
                                 x_amp_switch <= X_AMP_OFF;
-                            else
-                                x_amp_switch <= X_AMP_OFF;
-                                l_amp_switch <= L_AMP_OFF;
+
+                                if pol_mode(1) = '1' then
+                                    l_pol_tx <= L_POL_TX_HORIZONTAL;
+                                else
+                                    l_pol_tx <= L_POL_TX_VERTICAL;
+                                end if;
+                                if pol_mode(0) = '1' then
+                                    l_pol_rx <= L_POL_RX_HORIZONTAL;
+                                else
+                                    l_pol_rx <= L_POL_RX_VERTICAL;
+                                end if;
                             end if;
                         end if;
                     else
