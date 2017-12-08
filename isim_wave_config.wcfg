@@ -22,7 +22,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="29" />
+   <WVObjectSize size="37" />
    <wvobject fp_name="/tcu_v2_top_tb/uut/sys_clk_p" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">sys_clk_p</obj_property>
       <obj_property name="ObjectShortName">sys_clk_p</obj_property>
@@ -326,10 +326,1048 @@
          <obj_property name="ElementShortName">reg_bank[255:0]</obj_property>
          <obj_property name="ObjectShortName">reg_bank[255:0]</obj_property>
          <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="group632" type="group">
-         <obj_property name="label">PULSE_1</obj_property>
-         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[255]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[255]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[255]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[254]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[254]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[254]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[253]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[253]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[253]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[252]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[252]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[252]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[251]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[251]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[251]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[250]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[250]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[250]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[249]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[249]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[249]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[248]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[248]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[248]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[247]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[247]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[247]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[246]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[246]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[246]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[245]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[245]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[245]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[244]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[244]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[244]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[243]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[243]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[243]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[242]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[242]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[242]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[241]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[241]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[241]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[240]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[240]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[240]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[239]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[239]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[239]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[238]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[238]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[238]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[237]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[237]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[237]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[236]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[236]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[236]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[235]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[235]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[235]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[234]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[234]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[234]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[233]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[233]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[233]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[232]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[232]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[232]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[231]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[231]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[231]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[230]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[230]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[230]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[229]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[229]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[229]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[228]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[228]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[228]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[227]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[227]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[227]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[226]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[226]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[226]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[225]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[225]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[225]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[224]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[224]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[224]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[223]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[223]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[223]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[222]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[222]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[222]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[221]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[221]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[221]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[220]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[220]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[220]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[219]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[219]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[219]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[218]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[218]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[218]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[217]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[217]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[217]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[216]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[216]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[216]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[215]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[215]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[215]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[214]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[214]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[214]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[213]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[213]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[213]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[212]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[212]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[212]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[211]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[211]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[211]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[210]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[210]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[210]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[209]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[209]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[209]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[208]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[208]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[208]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[207]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[207]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[207]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[206]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[206]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[206]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[205]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[205]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[205]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[204]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[204]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[204]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[203]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[203]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[203]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[202]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[202]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[202]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[201]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[201]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[201]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[200]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[200]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[200]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[199]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[199]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[199]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[198]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[198]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[198]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[197]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[197]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[197]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[196]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[196]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[196]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[195]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[195]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[195]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[194]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[194]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[194]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[193]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[193]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[193]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[192]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[192]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[192]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[191]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[191]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[191]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[190]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[190]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[190]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[189]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[189]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[189]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[188]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[188]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[188]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[187]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[187]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[187]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[186]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[186]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[186]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[185]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[185]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[185]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[184]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[184]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[184]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[183]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[183]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[183]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[182]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[182]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[182]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[181]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[181]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[181]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[180]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[180]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[180]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[179]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[179]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[179]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[178]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[178]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[178]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[177]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[177]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[177]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[176]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[176]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[176]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[175]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[175]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[175]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[174]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[174]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[174]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[173]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[173]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[173]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[172]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[172]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[172]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[171]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[171]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[171]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[170]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[170]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[170]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[169]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[169]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[169]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[168]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[168]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[168]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[167]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[167]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[167]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[166]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[166]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[166]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[165]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[165]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[165]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[164]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[164]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[164]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[163]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[163]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[163]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[162]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[162]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[162]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[161]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[161]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[161]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[160]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[160]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[160]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[159]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[159]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[159]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[158]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[158]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[158]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[157]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[157]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[157]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[156]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[156]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[156]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[155]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[155]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[155]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[154]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[154]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[154]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[153]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[153]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[153]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[152]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[152]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[152]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[151]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[151]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[151]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[150]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[150]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[150]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[149]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[149]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[149]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[148]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[148]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[148]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[147]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[147]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[147]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[146]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[146]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[146]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[145]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[145]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[145]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[144]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[144]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[144]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[143]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[143]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[143]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[142]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[142]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[142]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[141]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[141]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[141]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[140]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[140]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[140]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[139]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[139]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[139]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[138]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[138]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[138]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[137]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[137]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[137]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[136]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[136]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[136]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[135]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[135]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[135]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[134]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[134]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[134]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[133]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[133]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[133]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[132]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[132]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[132]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[131]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[131]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[131]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[130]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[130]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[130]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[129]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[129]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[129]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[128]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[128]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[128]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[127]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[127]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[127]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[126]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[126]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[126]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[125]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[125]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[125]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[124]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[124]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[124]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[123]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[123]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[123]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[122]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[122]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[122]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[121]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[121]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[121]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[120]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[120]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[120]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[119]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[119]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[119]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[118]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[118]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[118]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[117]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[117]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[117]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[116]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[116]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[116]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[115]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[115]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[115]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[114]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[114]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[114]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[113]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[113]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[113]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[112]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[112]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[112]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[111]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[111]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[111]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[110]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[110]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[110]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[109]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[109]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[109]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[108]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[108]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[108]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[107]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[107]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[107]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[106]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[106]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[106]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[105]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[105]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[105]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[104]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[104]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[104]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[103]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[103]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[103]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[102]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[102]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[102]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[101]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[101]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[101]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[100]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[100]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[100]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[99]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[99]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[99]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[98]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[98]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[98]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[97]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[97]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[97]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[96]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[96]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[96]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[95]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[95]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[95]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[94]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[94]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[94]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[93]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[93]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[93]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[92]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[92]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[92]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[91]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[91]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[91]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[90]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[90]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[90]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[89]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[89]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[89]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[88]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[88]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[88]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[87]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[87]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[87]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[86]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[86]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[86]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[85]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[85]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[85]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[84]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[84]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[84]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[83]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[83]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[83]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[82]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[82]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[82]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[81]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[81]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[81]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[80]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[80]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[80]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[79]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[79]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[79]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[78]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[78]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[78]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[77]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[77]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[77]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[76]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[76]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[76]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[75]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[75]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[75]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[74]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[74]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[74]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[73]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[73]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[73]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[72]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[72]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[72]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[71]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[71]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[71]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[70]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[70]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[70]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[69]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[69]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[69]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[68]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[68]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[68]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[67]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[67]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[67]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[66]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[66]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[66]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[65]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[65]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[65]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[64]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[64]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[64]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[63]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[63]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[63]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[62]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[62]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[62]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[61]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[61]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[61]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[60]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[60]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[60]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[59]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[59]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[59]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[58]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[58]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[58]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[57]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[57]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[57]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[56]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[56]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[56]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[55]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[55]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[55]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[54]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[54]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[54]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[53]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[53]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[53]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[52]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[52]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[52]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[51]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[51]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[51]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[50]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[50]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[50]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[49]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[49]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[49]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[48]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[48]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[48]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[47]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[47]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[47]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[46]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[46]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[46]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[45]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[45]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[45]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[44]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[44]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[44]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[43]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[43]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[43]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[42]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[42]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[42]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[41]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[41]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[41]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[40]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[40]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[40]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[39]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[39]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[39]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[38]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[38]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[38]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[37]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[37]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[37]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[36]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[36]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[36]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[35]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[35]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[35]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[34]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[34]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[34]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[33]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[33]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[33]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[32]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[32]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[32]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[31]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[31]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[31]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[30]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[30]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[30]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[29]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[29]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[29]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[28]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[28]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[28]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[27]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[27]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[27]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[26]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[26]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[26]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[25]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[25]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[25]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[24]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[24]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[24]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[23]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[23]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[23]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[22]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[22]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[22]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[21]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[21]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[21]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[20]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[20]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[20]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[19]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[19]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[19]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[18]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[18]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[18]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[17]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[17]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[17]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[16]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[16]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[16]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[15]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[15]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[15]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[14]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[14]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[14]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[13]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[13]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[13]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[12]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[12]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[12]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
          <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[11]" type="array" db_ref_id="1">
             <obj_property name="ElementShortName">[11]</obj_property>
             <obj_property name="ObjectShortName">reg_bank[11]</obj_property>
@@ -349,6 +1387,113 @@
             <obj_property name="ElementShortName">[8]</obj_property>
             <obj_property name="ObjectShortName">reg_bank[8]</obj_property>
             <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[7]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[7]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[7]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[6]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[6]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[6]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[5]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[5]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[5]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[4]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[4]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[4]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[3]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[3]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[3]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[2]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[2]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[2]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[1]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[1]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[1]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[0]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[0]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="group487" type="group">
+         <obj_property name="label">PULSE_3</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[16]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[16]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[16]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[15]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[15]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[15]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[14]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[14]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[14]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[13]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[13]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[13]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[12]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[12]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[12]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[11]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[11]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[11]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="group632" type="group">
+         <obj_property name="label">PULSE_1</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[10]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[10]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[10]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[9]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[9]</obj_property>
+            <obj_property name="ObjectShortName">reg_bank[9]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="vbus264" type="vbus" db_ref_id="1">
+            <obj_property name="label">PRI</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+            <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[8]" type="array" db_ref_id="1">
+               <obj_property name="DisplayName">label</obj_property>
+               <obj_property name="ElementShortName">[8]</obj_property>
+               <obj_property name="ObjectShortName">reg_bank[8]</obj_property>
+               <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+               <obj_property name="label">pri_upper</obj_property>
+            </wvobject>
+            <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[11]" type="array" db_ref_id="1">
+               <obj_property name="DisplayName">label</obj_property>
+               <obj_property name="ElementShortName">[11]</obj_property>
+               <obj_property name="ObjectShortName">reg_bank[11]</obj_property>
+               <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+               <obj_property name="label">pri_lower</obj_property>
+            </wvobject>
          </wvobject>
          <wvobject fp_name="/tcu_v2_top_tb/uut/reg_bank[7]" type="array" db_ref_id="1">
             <obj_property name="ElementShortName">[7]</obj_property>
@@ -449,64 +1594,56 @@
       <obj_property name="BkColor">128 128 255</obj_property>
       <obj_property name="TextColor">230 230 230</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/pc" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">pc[7:0]</obj_property>
-      <obj_property name="ObjectShortName">pc[7:0]</obj_property>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/pulse_index" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pulse_index[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pulse_index[7:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/mb" type="array" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">mb[15:0]</obj_property>
-      <obj_property name="ObjectShortName">mb[15:0]</obj_property>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/mboffset" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">mboffset[15:0]</obj_property>
+      <obj_property name="ObjectShortName">mboffset[15:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      <obj_property name="label">main_bang_offset</obj_property>
    </wvobject>
    <wvobject fp_name="/tcu_v2_top_tb/uut/mbcounter" type="array" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
       <obj_property name="ElementShortName">mbcounter[15:0]</obj_property>
       <obj_property name="ObjectShortName">mbcounter[15:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       <obj_property name="label">main_bang_count</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/d" type="array" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">d[15:0]</obj_property>
-      <obj_property name="ObjectShortName">d[15:0]</obj_property>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/digoffset" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">digoffset[15:0]</obj_property>
+      <obj_property name="ObjectShortName">digoffset[15:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      <obj_property name="label">dig_offset</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/dcounter" type="array" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">dcounter[15:0]</obj_property>
-      <obj_property name="ObjectShortName">dcounter[15:0]</obj_property>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/digcounter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">digcounter[15:0]</obj_property>
+      <obj_property name="ObjectShortName">digcounter[15:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      <obj_property name="label">dig_count</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/p" type="array" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">p[31:0]</obj_property>
-      <obj_property name="ObjectShortName">p[31:0]</obj_property>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/prioffset" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">prioffset[31:0]</obj_property>
+      <obj_property name="ObjectShortName">prioffset[31:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      <obj_property name="label">pri_offset</obj_property>
    </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/pcounter" type="array" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">pcounter[31:0]</obj_property>
-      <obj_property name="ObjectShortName">pcounter[31:0]</obj_property>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/pricounter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pricounter[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pricounter[31:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      <obj_property name="label">pri_count</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tcu_v2_top_tb/uut/m_counter" type="array" db_ref_id="1">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">m_counter[31:0]</obj_property>
-      <obj_property name="ObjectShortName">m_counter[31:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      <obj_property name="label">m_repeats_count</obj_property>
    </wvobject>
    <wvobject fp_name="/tcu_v2_top_tb/uut/m_reg_cmp" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">m_reg_cmp[31:0]</obj_property>
       <obj_property name="ObjectShortName">m_reg_cmp[31:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/m_counter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">m_counter[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_counter[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="label">m_repeats_count</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/pol_mode" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pol_mode[2:0]</obj_property>
+      <obj_property name="ObjectShortName">pol_mode[2:0]</obj_property>
    </wvobject>
    <wvobject fp_name="divider700" type="divider">
       <obj_property name="label">New Divider</obj_property>
@@ -619,5 +1756,33 @@
    <wvobject fp_name="/tcu_v2_top_tb/uut/next_state" type="other" db_ref_id="1">
       <obj_property name="ElementShortName">next_state</obj_property>
       <obj_property name="ObjectShortName">next_state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/x_amp_switch" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">x_amp_switch</obj_property>
+      <obj_property name="ObjectShortName">x_amp_switch</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/l_amp_switch" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">l_amp_switch</obj_property>
+      <obj_property name="ObjectShortName">l_amp_switch</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/l_pol_rx" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">l_pol_rx[1:0]</obj_property>
+      <obj_property name="ObjectShortName">l_pol_rx[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/l_pol_tx" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">l_pol_tx</obj_property>
+      <obj_property name="ObjectShortName">l_pol_tx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/pri_heartbeat" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pri_heartbeat</obj_property>
+      <obj_property name="ObjectShortName">pri_heartbeat</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/soft_arm" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">soft_arm</obj_property>
+      <obj_property name="ObjectShortName">soft_arm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_v2_top_tb/uut/trigger" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">trigger</obj_property>
+      <obj_property name="ObjectShortName">trigger</obj_property>
    </wvobject>
 </wave_config>
