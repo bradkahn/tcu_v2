@@ -539,24 +539,14 @@ begin --architecture RTL
     --  TCU STATE MACHINE
     -------------------------------------------------------------------------------
 
-    -- TODO:
-    --      send PRF pulse to pentek
-    --      send UDP packet to rex
+    -- single synchronous process implementation
 
-    -- infer state register
-    state_register : process(sys_clk_100MHz_ext)
-    begin
-        if rising_edge(sys_clk_100MHz_ext) then
-            state <= next_state;
-        end if;
-    end process state_register;
-
-    -- synchronous section
-    synchronous : process(sys_clk_100MHz_ext, pulse_index)
-    variable pulse_index_int : integer range 0 to 255 := 0;
+    tcu_fsm : process(sys_clk_100MHz_ext)
+        variable pulse_index_int : integer range 0 to 255 := 0;
     begin
         pulse_index_int := to_integer(unsigned(pulse_index));
         if rising_edge(sys_clk_100MHz_ext) then
+
             -- populate dataout from regbank based on Program Counter (pulse_index)
             dataout  <= reg_bank(pulse_index_int) & reg_bank(pulse_index_int+1) & reg_bank(pulse_index_int+2) & reg_bank(pulse_index_int+3) & reg_bank(pulse_index_int+4) & reg_bank(pulse_index_int+5);
             MBoffset       <= unsigned(reg_bank(pulse_index_int));
@@ -567,147 +557,83 @@ begin --architecture RTL
             pol_mode <= reg_bank(pulse_index_int+4)(2 downto 0);
 
             case(state) is
+
                 when IDLE =>
                     if soft_arm = '1' then
-                        next_state <= ARMED;
+                        state <= ARMED;
                     else
-                        next_state <= IDLE;
+                        state <= IDLE;
                     end if;
 
                 when ARMED =>
                     if trigger = '1' then
-                        next_state <= PRE_PULSE;
-                    elsif soft_arm = '0' then
-                        next_state <= IDLE;
+                        state <= PRE_PULSE;
                     else
-                        next_state <= ARMED;
+                        state <= ARMED;
                     end if;
 
                 when PRE_PULSE =>
-                    pulse_index <= x"00";
-                    -- MBCounter is incrementing
-                    -- compare MBCounter and MB
-                    if MBcounter = MBoffset then
-                        next_state <= MAIN_BANG;
-                    elsif MBcounter < MBoffset then
-                        next_state <= PRE_PULSE;
-                        MBcounter <= MBcounter + 1;
+                    -- turn on appropriate amp
+                    -- set pol switches
+                    if M_counter < unsigned(M_reg_cmp) then -- needed this because it was executing one pulse extra at the end
+                        if MBcounter >= MBoffset then
+                            state <= MAIN_BANG;
+                            MBcounter <= x"0000";
+                        else
+                            state <= PRE_PULSE;
+                            MBcounter <= MBcounter + 1;
+                        end if;
                     else
-                        next_state <= FAULT;
+                        state <= DONE;
+                        -- turn off amps
                     end if;
 
+
                 when MAIN_BANG =>
-                    MBcounter <= x"0000";
-                    -- DIGcounter is incrementing
-                    -- compare DIGcounter tp D
-                    if DIGcounter = DIGoffset then
-                        next_state <= DIGITIZE;
+                    if DIGcounter>= DIGoffset then
+                        state <= DIGITIZE;
                         DIGcounter <= x"0000";
-                    elsif DIGcounter < DIGoffset then
-                        next_state <= MAIN_BANG;
-                        DIGcounter <= DIGcounter + 1;
                     else
-                        next_state <= FAULT;
+                        state <= MAIN_BANG;
+                        DIGcounter <= DIGcounter + 1;
                     end if;
 
                 when DIGITIZE =>
-                    if pulse_index = unsigned(N_reg)*6 then
-                        pulse_index <= x"00";
-                        M_counter <= M_counter + 1;
-                    else
+                    -- turn off amps
+
+
+                    if PRIcounter >= PRIoffset then
+
                         pulse_index <= pulse_index + 6;
-                    end if;
-                    if PRIcounter = PRIoffset then
-                        PRIcounter <= x"00000000";
-                        if M_counter = unsigned(M_reg_cmp) then
-                            M_counter  <= x"00000000";
-                            next_state <= DONE;
-                        else
-                            next_state <= PRE_PULSE;
+                        if (pulse_index/6)+1 >= unsigned(N_reg) then
+                            M_counter <= M_counter + 1;
+                            pulse_index <= x"00";
                         end if;
-                    elsif PRIcounter < PRIoffset then
+
+                        if M_counter >= unsigned(M_reg_cmp) then
+                            state <= DONE;
+                            -- M_counter <= x"00000000";
+                        else
+                            state <= PRE_PULSE;
+                        end if;
+                        PRIcounter <= x"00000000";
+                    else
                         next_state <= DIGITIZE;
                         PRIcounter <= PRIcounter + 1;
-                    else
-                        next_state <= FAULT;
                     end if;
 
                 when DONE =>
-                    next_state <= DONE;
+                    state <= DONE;
 
-                when FAULT =>
-                    next_state <= FAULT;
 
                 when others =>
-                    next_state <= FAULT;
+                    -- turn off amps
+                    state <= IDLE;
             end case;
-        end if;
-    end process synchronous;
 
-        --       POLARISATION MODES
-        -- +------+-----+-------+-------+
-        -- | Mode |Band | TxPol | RxPol |
-        -- +----------------------------+
-        -- | 000  |  L  |   V   |   V   |
-        -- | 001  |  L  |   V   |   H   |
-        -- | 010  |  L  |   H   |   V   |
-        -- | 011  |  L  |   H   |   H   |
-        -- | 100  |  X  |   H   |  V,H  |
-        -- | 101  |  X  |   V   |  V,H  |
-        -- +------+-----+-------+-------+
 
-    polarisation_modes : process(pol_mode)
-    begin
-        -- Note: these expressions are only sypported in vhdl 2008
-        -- x_pol_tx <= X_POL_TX_HORIZONTAL when pol_mode(0) = '0' else X_POL_TX_VERTICAL;
-        -- l_pol_tx <= L_POL_TX_HORIZONTAL when pol_mode(1) = '1' else L_POL_TX_VERTICAL;
-        -- l_pol_rx <= L_POL_RX_HORIZONTAL when pol_mode(2) = '0' else L_POL_RX_VERTICAL;
-        if pol_mode(0) = '0' then
-            x_pol_tx <= X_POL_TX_HORIZONTAL;
-        else
-            x_pol_tx <= X_POL_TX_VERTICAL;
-        end if;
-        if pol_mode(1) = '1' then
-            l_pol_tx <= L_POL_TX_HORIZONTAL;
-        else
-            l_pol_tx <= L_POL_TX_VERTICAL;
-        end if;
-        if pol_mode(2) = '0' then
-            l_pol_rx <= L_POL_RX_HORIZONTAL;
-        else
-            l_pol_rx <= L_POL_RX_VERTICAL;
         end if;
     end process;
-
-    combinational : process(state, pol_mode)
-    begin
-        -- TODO:    FACTOR IN DELAY OF AMP SWITCH OFF (PW - 2.5us)
-        --          could account for this by adjusting MBoffset and PRIoffset!
-
-        -- Note: these expressions are only sypported in vhdl 2008
-        -- x_amp_switch <= X_AMP_ON when (state = PRE_PULSE or state = MAIN_BANG) and pol_mode(2) = '1' else X_AMP_OFF;
-        -- l_amp_switch <= L_AMP_ON when (state = PRE_PULSE or state = MAIN_BANG) and pol_mode(2) = '0' else L_AMP_OFF;
-
-        if (state = PRE_PULSE or state = MAIN_BANG) then
-            if pol_mode(2) = '1' then
-                x_amp_switch <= X_AMP_ON;
-                l_amp_switch <= L_AMP_OFF;
-            else
-                x_amp_switch <= X_AMP_OFF;
-                l_amp_switch <= L_AMP_ON;
-            end if;
-        else
-            l_amp_switch <= L_AMP_OFF;
-            x_amp_switch <= X_AMP_OFF;
-        end if;
-
-        if state = MAIN_BANG then
-            pri_heartbeat <= '1';
-        else
-            pri_heartbeat <='0';
-        end if;
-
-    end process combinational;
 
     soft_arm    <= triggers(0); -- from internal TCU register
     -- GPIO SIGNAL <--> PORT CONNECTIONS
