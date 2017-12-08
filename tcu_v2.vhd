@@ -111,18 +111,18 @@ architecture rtl of tcu_top is
     -- TODO: convert the 32 bit verion of N to integer types like the other counters
     signal M_counter        : unsigned(31 downto 0) := x"00000000";             -- Number of repeats that have already ocurred
 
-    signal MB               : unsigned(15 downto 0) := x"0000";                 -- Main bang offset extracted from pulses reg
+    signal MBoffset               : unsigned(15 downto 0) := x"0000";                 -- Main bang offset extracted from pulses reg
     signal MBcounter        : unsigned(15 downto 0) := x"0000";                 -- Main bang counter compared to Main bang offset
-    signal D                : unsigned(15 downto 0) := x"0000";                 -- Digitisation offset extracted from pulses reg
-    signal Dcounter         : unsigned(15 downto 0) := x"0000";                 -- Digitisation counter compared to Digitisation offset
-    signal P                : unsigned(31 downto 0) := x"00000000";             -- PRI offset extracted from pulses reg
-    signal Pcounter         : unsigned(31 downto 0) := x"00000000";             -- PRI counter compared to PRI offset
+    signal DIGoffset                : unsigned(15 downto 0) := x"0000";                 -- Digitisation offset extracted from pulses reg
+    signal DIGcounter         : unsigned(15 downto 0) := x"0000";                 -- Digitisation counter compared to Digitisation offset
+    signal PRIoffset                : unsigned(31 downto 0) := x"00000000";             -- PRI offset extracted from pulses reg
+    signal PRIcounter         : unsigned(31 downto 0) := x"00000000";             -- PRI counter compared to PRI offset
 
     signal triggers         : std_logic_vector(15 downto 0) := (others => '0'); -- triggers(0) 'soft on' / arming bit from register
     signal status_reg       : std_logic_vector(15 downto 0) := (others => '0'); -- status_reg(0) used to indicate that all pulse repeats for experiment are completed
 
-    --signal PC               : integer range 0 to 255 := 0;                      -- Program Counter keeps track of current pulse
-    signal PC               : unsigned(7 downto 0)  := x"00";                      -- Program Counter keeps track of current pulse
+    --signal pulse_index               : integer range 0 to 255 := 0;                      -- Program Counter keeps track of current pulse
+    signal pulse_index               : unsigned(7 downto 0)  := x"00";                      -- Program Counter keeps track of current pulse
     signal dataout          : std_logic_vector(95 downto 0);                    -- Contains all pulse parameters for current pulse
 
     -- Amplifiers and switches
@@ -213,18 +213,6 @@ architecture rtl of tcu_top is
     signal state        : state_type := IDLE;
     signal next_state   : state_type := IDLE;
 
-    alias soft_arm      : std_logic is triggers(0); -- from internal TCU register
-    alias trigger       : std_logic is gpioIn(0);   -- from GPSDO
-
-    alias pri_heartbeat : std_logic is gpio(2);     -- to Pentek
-
-    alias x_amp_switch  : std_logic is gpio(12);    -- to HPAs
-    alias l_amp_switch  : std_logic is gpio(13);
-
-    alias x_pol_tx      : std_logic is gpio(10);     -- to polarisation switches
-    alias l_pol_tx      : std_logic is gpio(11);
-    alias l_pol_rx      : std_logic_vector(1 downto 0) is gpio(15 downto 14);
-
     -- TODO: CHECK HOW X BAND POLARISATION TX SWITCH IS WIRED UP AND CHANGE THESE ACCORDINGLY
     constant X_POL_TX_HORIZONTAL : std_logic := '0';
     constant X_POL_TX_VERTICAL   : std_logic := '1';
@@ -244,6 +232,18 @@ architecture rtl of tcu_top is
     constant X_AMP_OFF  : std_logic := '0';
     constant L_AMP_ON   : std_logic := '1';
     constant L_AMP_OFF  : std_logic := '0';
+
+    signal soft_arm      : std_logic := '0'; -- from internal TCU register
+    signal trigger       : std_logic := '0';   -- from GPSDO
+
+    signal pri_heartbeat : std_logic := '0';     -- to Pentek
+
+    signal x_amp_switch  : std_logic := X_AMP_OFF;    -- to HPAs
+    signal l_amp_switch  : std_logic := L_AMP_OFF;
+
+    signal x_pol_tx      : std_logic := '0';     -- to polarisation switches
+    signal l_pol_tx      : std_logic := '0';
+    signal l_pol_rx      : std_logic_vector(1 downto 0) := (others=>'0');
 
     ---------------------------------------------------------------------------
     --	Ethernet Component declaration section
@@ -528,8 +528,8 @@ begin --architecture RTL
     --
     -- -- gpioIn(0) <= sys_clk_100MHz;
     -- -- gpioIn(1) <= '0';
-    gpio(6) <= '1';
-    gpio(11)<= '0';
+    -- gpio(6) <= '1';
+    -- gpio(11)<= '0';
     -- -- gpio(12)		--	X band HPA
     -- -- gpio(13)		-- L band HPA
     -- -- gpio(14)		-- L band polarisation
@@ -552,19 +552,19 @@ begin --architecture RTL
     end process state_register;
 
     -- synchronous section
-    synchronous : process(sys_clk_100MHz_ext)
-    variable pulse_index : integer range 0 to 255 := 0;
+    synchronous : process(sys_clk_100MHz_ext, pulse_index)
+    variable pulse_index_int : integer range 0 to 255 := 0;
     begin
-        pulse_index := to_integer(unsigned(pc));
+        pulse_index_int := to_integer(unsigned(pulse_index));
         if rising_edge(sys_clk_100MHz_ext) then
-            -- populate dataout from regbank based on Program Counter (PC)
-            dataout  <= reg_bank(pulse_index) & reg_bank(pulse_index+1) & reg_bank(pulse_index+2) & reg_bank(pulse_index+3) & reg_bank(pulse_index+4) & reg_bank(pulse_index+5);
-            MB       <= unsigned(reg_bank(pulse_index));
-            D        <= unsigned(reg_bank(pulse_index+1));
-            P        <= unsigned(reg_bank(pulse_index+2)) & unsigned(reg_bank(pulse_index+5));
+            -- populate dataout from regbank based on Program Counter (pulse_index)
+            dataout  <= reg_bank(pulse_index_int) & reg_bank(pulse_index_int+1) & reg_bank(pulse_index_int+2) & reg_bank(pulse_index_int+3) & reg_bank(pulse_index_int+4) & reg_bank(pulse_index_int+5);
+            MBoffset       <= unsigned(reg_bank(pulse_index_int));
+            DIGoffset        <= unsigned(reg_bank(pulse_index_int+1));
+            PRIoffset        <= unsigned(reg_bank(pulse_index_int+2)) & unsigned(reg_bank(pulse_index_int+5));
             --PRI(1) <= P(31 downto 16);
             --PRI(0) <= P(15 downto 0);
-            pol_mode <= reg_bank(pulse_index+4)(10 downto 8);
+            pol_mode <= reg_bank(pulse_index_int+4)(2 downto 0);
 
             case(state) is
                 when IDLE =>
@@ -584,11 +584,12 @@ begin --architecture RTL
                     end if;
 
                 when PRE_PULSE =>
+                    pulse_index <= x"00";
                     -- MBCounter is incrementing
                     -- compare MBCounter and MB
-                    if MBcounter = MB then
+                    if MBcounter = MBoffset then
                         next_state <= MAIN_BANG;
-                    elsif MBcounter < MB then
+                    elsif MBcounter < MBoffset then
                         next_state <= PRE_PULSE;
                         MBcounter <= MBcounter + 1;
                     else
@@ -596,39 +597,37 @@ begin --architecture RTL
                     end if;
 
                 when MAIN_BANG =>
-                    -- Dcounter is incrementing
-                    -- compare Dcounter tp D
-                    if Dcounter = D then
+                    MBcounter <= x"0000";
+                    -- DIGcounter is incrementing
+                    -- compare DIGcounter tp D
+                    if DIGcounter = DIGoffset then
                         next_state <= DIGITIZE;
-                    elsif Dcounter < D then
+                        DIGcounter <= x"0000";
+                    elsif DIGcounter < DIGoffset then
                         next_state <= MAIN_BANG;
-                        Dcounter <= Dcounter + 1;
+                        DIGcounter <= DIGcounter + 1;
                     else
                         next_state <= FAULT;
                     end if;
 
                 when DIGITIZE =>
-                    -- Pcounter is incrementing
-                    -- compare Pcounter to P
-                    if Pcounter = P then
-                        if PC = unsigned(N_reg(7 downto 0))*6 then
-                            if M_counter = unsigned(M_reg_cmp) then
-                                next_state <= DONE;
-                            elsif M_counter < unsigned(M_reg_cmp) then
-                                next_state <= DIGITIZE;
-                                M_counter <= M_counter + 1;
-                            else
-                                next_state <= FAULT;
-                            end if;
-                        elsif PC < unsigned(N_reg(7 downto 0))*6 then
-                            next_state <= DIGITIZE;
-                            PC <= PC + x"06";
+                    if pulse_index = unsigned(N_reg)*6 then
+                        pulse_index <= x"00";
+                        M_counter <= M_counter + 1;
+                    else
+                        pulse_index <= pulse_index + 6;
+                    end if;
+                    if PRIcounter = PRIoffset then
+                        PRIcounter <= x"00000000";
+                        if M_counter = unsigned(M_reg_cmp) then
+                            M_counter  <= x"00000000";
+                            next_state <= DONE;
                         else
-                            next_state <= FAULT;
+                            next_state <= PRE_PULSE;
                         end if;
-                    elsif Pcounter < P then
+                    elsif PRIcounter < PRIoffset then
                         next_state <= DIGITIZE;
-                        Pcounter <= Pcounter + 1;
+                        PRIcounter <= PRIcounter + 1;
                     else
                         next_state <= FAULT;
                     end if;
@@ -668,9 +667,19 @@ begin --architecture RTL
         else
             x_pol_tx <= X_POL_TX_VERTICAL;
         end if;
+        if pol_mode(1) = '1' then
+            l_pol_tx <= L_POL_TX_HORIZONTAL;
+        else
+            l_pol_tx <= L_POL_TX_VERTICAL;
+        end if;
+        if pol_mode(2) = '0' then
+            l_pol_rx <= L_POL_RX_HORIZONTAL;
+        else
+            l_pol_rx <= L_POL_RX_VERTICAL;
+        end if;
     end process;
 
-    combinational : process(state)
+    combinational : process(state, pol_mode)
     begin
         -- TODO:    FACTOR IN DELAY OF AMP SWITCH OFF (PW - 2.5us)
         --          could account for this by adjusting MBoffset and PRIoffset!
@@ -678,9 +687,45 @@ begin --architecture RTL
         -- Note: these expressions are only sypported in vhdl 2008
         -- x_amp_switch <= X_AMP_ON when (state = PRE_PULSE or state = MAIN_BANG) and pol_mode(2) = '1' else X_AMP_OFF;
         -- l_amp_switch <= L_AMP_ON when (state = PRE_PULSE or state = MAIN_BANG) and pol_mode(2) = '0' else L_AMP_OFF;
-        --
-        -- pri_heartbeat <= '1' when (state = MAIN_BANG) else '0';
+
+        if (state = PRE_PULSE or state = MAIN_BANG) then
+            if pol_mode(2) = '1' then
+                x_amp_switch <= X_AMP_ON;
+                l_amp_switch <= L_AMP_OFF;
+            else
+                x_amp_switch <= X_AMP_OFF;
+                l_amp_switch <= L_AMP_ON;
+            end if;
+        else
+            l_amp_switch <= L_AMP_OFF;
+            x_amp_switch <= X_AMP_OFF;
+        end if;
+
+        if state = MAIN_BANG then
+            pri_heartbeat <= '1';
+        else
+            pri_heartbeat <='0';
+        end if;
+
     end process combinational;
+
+    soft_arm    <= triggers(0); -- from internal TCU register
+    -- GPIO SIGNAL <--> PORT CONNECTIONS
+    trigger     <= gpioIn(0);       -- from GPSDO
+    -- ?        <= gpioIn(1);       -- unused
+    gpio(2)     <= pri_heartbeat;   -- to Pentek
+    gpio(3)     <= '0';             -- unused
+    gpio(4)     <= '0';             -- unused
+    gpio(5)     <= '0';             -- unused
+    gpio(6)     <= '0';             -- unused
+    gpio(7)     <= '0';             -- unused
+    gpio(8)     <= '0';             -- unused
+    gpio(9)     <= '0';             -- unused
+    gpio(12)    <= x_amp_switch ;   -- to HPAs
+    gpio(13)    <= l_amp_switch;
+    gpio(10)    <= x_pol_tx ;    -- to polarisation switches
+    gpio(11)    <= l_pol_tx;
+    gpio(15 downto 14) <= l_pol_rx;
 
     ---------------------------------------------------------------------------
     -- UDP TRANSMISSION SECTION
