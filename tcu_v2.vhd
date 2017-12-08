@@ -682,36 +682,6 @@ begin --architecture RTL
         end if;
     end process;
 
-    -- amp_switching : process(state, pol_mode)
-    -- begin
-    --     case(state) is
-    --
-    --         when PRE_PULSE =>
-    --         if MBcounter >= 1 then
-    --             if pol_mode(2) = '1' then
-    --                 x_amp_switch <= X_AMP_ON;
-    --                 l_amp_switch <= L_AMP_OFF;
-    --             else
-    --                 x_amp_switch <= X_AMP_OFF;
-    --                 l_amp_switch <= L_AMP_ON;
-    --             end if;
-    --         end if;
-    --         when MAIN_BANG =>
-    --         if MBcounter >= 1 then
-    --             if pol_mode(2) = '1' then
-    --                 x_amp_switch <= X_AMP_ON;
-    --                 l_amp_switch <= L_AMP_OFF;
-    --             else
-    --                 x_amp_switch <= X_AMP_OFF;
-    --                 l_amp_switch <= L_AMP_ON;
-    --             end if;
-    --         end if;
-    --         when others =>
-    --             x_amp_switch <= X_AMP_OFF;
-    --             l_amp_switch <= L_AMP_OFF;
-    --     end case;
-    -- end process amp_switching;
-
     soft_arm    <= triggers(0); -- from internal TCU register
     -- GPIO SIGNAL <--> PORT CONNECTIONS
     trigger     <= gpioIn(0);       -- from GPSDO
