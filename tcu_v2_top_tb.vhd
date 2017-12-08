@@ -422,50 +422,50 @@ BEGIN
         -- echo -e -n "\x01\x00" > /proc/671/hw/ioreg/n
         register_write(address => N_REG_BASE, data=>x"0006");
         -- echo -e -n "\x00\x0b\x00\x00" > /proc/671/hw/ioreg/m
-        register_write(address => M_REG_BASE, data=>x"0000");
-        register_write(address => (M_REG_BASE(25 downto 1) & "1"), data=>x"0002");
-        -- pulse 0
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"0"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"1"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"2"), data=>x"0000");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"3"), data=>x"0514");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"4"), data=>x"0000");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"5"), data=>x"00a0");
-        -- pulse 1
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"6"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"7"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"8"), data=>x"0000");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"9"), data=>x"0514");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"a"), data=>x"0001");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"b"), data=>x"00a0");
-        -- pulse 2x
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"c"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"d"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"e"), data=>x"0000");
-        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"f"), data=>x"0514");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"10"), data=>x"0002");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"11"), data=>x"00a0");
-        -- pulse 2
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"12"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"13"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"14"), data=>x"0000");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"15"), data=>x"0514");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"16"), data=>x"0003");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"17"), data=>x"00a0");
-        -- pulse 2
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"18"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"18"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"19"), data=>x"0000");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1a"), data=>x"0514");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1b"), data=>x"0004");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1c"), data=>x"00a0");
-        -- pulse 2
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1d"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1e"), data=>x"0032");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1f"), data=>x"0000");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"20"), data=>x"0514");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"21"), data=>x"0005");
-        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"22"), data=>x"00a0");
+        register_write(address => M_REG_BASE, data=>x"0002");
+        register_write(address => (M_REG_BASE(25 downto 1) & "1"), data=>x"0000");
+        -- pulse 0 (pulse_index = 0)
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"0"), data=>x"0032");    -- MBoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"1"), data=>x"0032");    -- DIGoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"2"), data=>x"0000");    -- PRI_upper
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"3"), data=>x"0514");    -- Frequency
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"4"), data=>x"0000");    -- Mode
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"5"), data=>x"00a0");    -- PRI_lower
+        -- pulse 1 (pulse_index = 6)
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"6"), data=>x"0032");    -- MBoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"7"), data=>x"0032");    -- DIGoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"8"), data=>x"0000");    -- PRI_upper
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"9"), data=>x"0514");    -- Frequency
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"a"), data=>x"0001");    -- Mode
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"b"), data=>x"00a0");    -- PRI_lower
+        -- pulse 2 (pulse_index = 12)
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"c"), data=>x"0032");    -- MBoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"d"), data=>x"0032");    -- DIGoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"e"), data=>x"0000");    -- PRI_upper
+        register_write(address => (PULSES_REG_BASE(25 downto 4) & x"f"), data=>x"0514");    -- Frequency
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"10"), data=>x"0002");   -- Mode
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"11"), data=>x"00a0");   -- PRI_lower
+        -- pulse 3 (pulse_index = 18)
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"12"), data=>x"0032");   -- MBoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"13"), data=>x"0032");   -- DIGoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"14"), data=>x"0000");   -- PRI_upper
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"15"), data=>x"0514");   -- Frequency
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"16"), data=>x"0003");   -- Mode
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"17"), data=>x"00a0");   -- PRI_lower
+        -- pulse 4 (pulse_index = 24)
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"18"), data=>x"0032");   -- MBoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"19"), data=>x"0032");   -- DIGoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1a"), data=>x"0000");   -- PRI_upper
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1b"), data=>x"0514");   -- Frequency
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1c"), data=>x"0004");   -- Mode
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1d"), data=>x"00a0");   -- PRI_lower
+        -- pulse 5 (pulse_index = 30)
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1e"), data=>x"0032");   -- MBoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"1f"), data=>x"0032");   -- DIGoffset
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"20"), data=>x"0000");   -- PRI_upper
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"21"), data=>x"0514");   -- Frequency
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"22"), data=>x"0005");   -- Mode
+        register_write(address => (PULSES_REG_BASE(25 downto 8) & x"23"), data=>x"00a0");   -- PRI_lower
         -- echo -e -n "\x00\x00" > /proc/671/hw/ioreg/reg_led
         register_write(address => LED_REG_BASE, data=>x"0000");
         -- echo -e -n "\x01\x00" > /proc/671/hw/ioreg/reg_led
