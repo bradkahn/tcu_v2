@@ -57,7 +57,7 @@ HEADER_PATH = "/home/brad/tcu_v2/"  # <-- this needs to change
 HEADER_NAME = "NeXtRAD_Header2.txt"
 TCU_ADDRESS = '192.168.1.16'
 NUM_PULSE_PARAMS = 6                # see pulse dictionary format
-BOF_EXE = 'TCU_1.bof'               # .bof must already be in /opt/rhinofs/
+BOF_EXE = 'tcu_v2.bof'               # .bof must already be in /opt/rhinofs/
 
 num_transfers = int()               # used to calculate M
 num_pulses = int()                  # N
@@ -197,7 +197,7 @@ def parse_header():
     # VERIFY PARAMETERS
     # -------------------------------------------------------------------------
 
-    if pulse_num == 0:
+    if next_pulse_index == 0:
         logger.error('no [pulseX] where found in header')
         sys.exit(65)
     if num_transfers == 0:
@@ -212,7 +212,7 @@ def parse_header():
                          str(pulse['pulse_number']))
             sys.exit(65)
 
-    num_pulses = pulse_num
+    num_pulses = next_pulse_index
     logger.debug('number of pulses found (n) = ' + str(num_pulses))
     # division operators: '/' for float, '//' integer
     num_repeats = num_transfers // num_pulses
