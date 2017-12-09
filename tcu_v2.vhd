@@ -633,9 +633,13 @@ begin --architecture RTL
                     end if;
 
                 when DONE =>
-                    state           <= DONE;
                     x_amp_switch    <= X_AMP_OFF;
                     l_amp_switch    <= L_AMP_OFF;
+                    if soft_arm = '0' then
+                        state       <= IDLE;
+                    else
+                        state       <= DONE;
+                    end if;
 
                 when others =>
                     -- turn off amps
