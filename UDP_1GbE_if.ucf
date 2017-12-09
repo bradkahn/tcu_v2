@@ -219,7 +219,7 @@ NET "gpmc_n_adv_ale" IOSTANDARD = LVCMOS33;
 
 ##NET "fmc0_prsnt_n" LOC = V20;
 ##NET "fmc_i2c_scl" LOC = T20;
-##NET "fmc_i2c_sda" LOC = T19; 
+##NET "fmc_i2c_sda" LOC = T19;
 
 # Set location of processor interface pins
 
@@ -337,6 +337,31 @@ NET "bcd[21]" LOC = AB15;
 NET "bcd[22]" LOC = AE13;
 NET "bcd[23]" LOC = AF13;
 
+# Extra FMC105 GPIO pins
+
+NET "gpio_fmc[0]"   LOC = V11;  # FMC0_LA_P24
+NET "gpio_fmc[1]"   LOC = V10;  # FMC0_LA_N24
+NET "gpio_fmc[2]"   LOC = AA9;  # FMC0_LA_P25
+NET "gpio_fmc[3]"   LOC = AB9;  # FMC0_LA_N25
+NET "gpio_fmc[4]"   LOC = AA10; # FMC0_LA_P26
+NET "gpio_fmc[5]"   LOC = AB11; # FMC0_LA_N26
+NET "gpio_fmc[6]"   LOC = AD6;  # FMC0_LA_P27
+NET "gpio_fmc[7]"   LOC = AF6;  # FMC0_LA_N27
+NET "gpio_fmc[8]"   LOC = W10;  # FMC0_LA_P28
+NET "gpio_fmc[9]"   LOC = W9;   # FMC0_LA_N28
+NET "gpio_fmc[10]"  LOC = AE5;  # FMC0_LA_P29
+NET "gpio_fmc[11]"  LOC = AF5;  # FMC0_LA_N29
+NET "gpio_fmc[12]"  LOC = Y9;   # FMC0_LA_P30
+NET "gpio_fmc[13]"  LOC = AA8;  # FMC0_LA_N30
+NET "gpio_fmc[14]"  LOC = AB7;  # FMC0_LA_P31
+NET "gpio_fmc[15]"  LOC = AC6;  # FMC0_LA_N31
+
+# FMC105 LEDs
+
+NET "led_fmc[0]"   LOC = AC5;  # FMC0_LA_P32
+NET "led_fmc[1]"   LOC = AD5;  # FMC0_LA_N32
+NET "led_fmc[2]"   LOC = W8;   # FMC0_LA_P33
+NET "led_fmc[3]"   LOC = W7;   # FMC0_LA_N33
 
 # Set ethernet pins
 
@@ -344,7 +369,7 @@ NET "GIGE_COL"     LOC = AC2 | IOSTANDARD = LVCMOS25;
 NET "GIGE_CRS"     LOC = AD1 | IOSTANDARD = LVCMOS25;
 #NET "GIGE_MDC"     LOC = AC1 | IOSTANDARD = LVCMOS25;
 NET "GIGE_MDIO"    LOC = AE2 | IOSTANDARD = LVCMOS25;
-NET "GIGE_GTX_CLK" LOC = AB5 | IOSTANDARD = LVCMOS25 | SLEW = FAST;	
+NET "GIGE_GTX_CLK" LOC = AB5 | IOSTANDARD = LVCMOS25 | SLEW = FAST;
 NET "GIGE_nRESET"  LOC = AA2 | IOSTANDARD = LVCMOS25;
 
 NET "GIGE_RXD[0]" LOC = W5  | IOSTANDARD = LVCMOS25;
@@ -367,9 +392,9 @@ NET "GIGE_TXD[4]" LOC = AC3 | IOSTANDARD = LVCMOS25 | SLEW = FAST;
 NET "GIGE_TXD[5]" LOC = V7  | IOSTANDARD = LVCMOS25 | SLEW = FAST;
 NET "GIGE_TXD[6]" LOC = V6  | IOSTANDARD = LVCMOS25 | SLEW = FAST;
 NET "GIGE_TXD[7]" LOC = U4  | IOSTANDARD = LVCMOS25 | SLEW = FAST;
-NET "GIGE_TX_CLK" LOC = T1  | IOSTANDARD = LVCMOS25 | SLEW = FAST; 
+NET "GIGE_TX_CLK" LOC = T1  | IOSTANDARD = LVCMOS25 | SLEW = FAST;
 NET "GIGE_TX_EN"  LOC = AC4 | IOSTANDARD = LVCMOS25 | SLEW = FAST;
-NET "GIGE_TX_ER"  LOC = AA4 | IOSTANDARD = LVCMOS25 | SLEW = FAST; 
+NET "GIGE_TX_ER"  LOC = AA4 | IOSTANDARD = LVCMOS25 | SLEW = FAST;
 #done ethernet
 
 # Define system clock
@@ -405,5 +430,3 @@ TIMESPEC "TS_sys_clk_ext" = PERIOD "TM_sys_clk_ext"  10.0  ns HIGH 50 %;
 
 #OFFSET = IN 10 ns VALID 0.5 ns BEFORE "fmc0_clk0_m2c_slow" RISING;
 #OFFSET = OUT 0.5 ns AFTER "fmc0_clk0_m2c_slow" FALLING;
-
-
