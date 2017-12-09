@@ -1,0 +1,47 @@
++-------------------------------+
+|          RHINO GPIO           |
+|             [P 2]             |
+|          +----+----+          |
+|      2v5 | 1  | 2  | 2v5      |
+|          +---------+          |
+|   GPIO_0 | 3  | 4  | GPIO_1   |
+|          +---------+          |
+|   GPIO_2 | 5  | 6  | GPIO_3   |
+|          +---------+          |
+|   GPIO_4 | 7  | 8  | GPIO_5   |
+|          +---------+          |
+|   GPIO_6 | 9  | 10 | GPIO_7   |
+|          +---------+          |
+|   GPIO_8 | 11 | 12 | GPIO_9   |
+|          +---------+          |
+|  GPIO_10 | 13 | 14 | GPIO_11  |
+|          +---------+          |
+|  GPIO_12 | 15 | 16 | GPIO_13  |
+|          +---------+          |
+|  GPIO_14 | 17 | 18 | GPIO_15  |
+|          +---------+          |
+|      GND | 19 | 20 | GND      |
+|          +---------+          |
++-------------------------------+
+
+
+LOGIC ANALYZER CONNECTIONS
+
+CHANNEL    SIGNAL           GPIO
+-------    ------           ----
+0          trigger          2
+1          pri_heartbeat    3
+2          ARMED            4
+3          PRE_PULSE        5
+4          MAIN_BANG        6
+5          DIGITIZE         7
+6          DONE             8
+7          x_amp_switch     9
+8          x_pol_tx         10
+9          l_amp_switch     11
+10         l_pol_tx         12
+11         l_pol_rx_0       13
+12         l_pol_rx_1       14
+13         FAULT            15
+14         NC               NC
+15         NC               NC
