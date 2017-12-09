@@ -14,7 +14,7 @@
 % 5           X           H       H,V
 
 NumberOfPulses = 5;
-NUM_TRANSFERS = 10000;
+NUM_TRANSFERS = 12;
 
 % Pulse 0 parameters
 [pulse0]
@@ -64,9 +64,9 @@ PRIoffset = 70000;
 Frequency = 8500;
 Mode = 5;
 
-[pulse6]
-MBoffset  = 10000;
-DIGoffset = 10000;
-PRIoffset = 10000;
-Frequency = 8500;
-Mode = 3;
+%[pulse6]
+%MBoffset  = 10000;
+%DIGoffset = 10000;
+%PRIoffset = 10000;
+%Frequency = 8500;
+%Mode = 3;
