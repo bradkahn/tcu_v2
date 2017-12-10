@@ -231,17 +231,22 @@ architecture rtl of tcu_top is
     constant L_AMP_ON           : std_logic := '1';
     constant L_AMP_OFF          : std_logic := not L_AMP_ON;
 
-    signal soft_arm             : std_logic := '0';            -- from internal TCU register
-    signal trigger              : std_logic := '0';            -- from GPSDO
+    signal soft_arm             : std_logic := '0';             -- from internal TCU register
+    signal trigger              : std_logic := '0';             -- from GPSDO
 
-    signal pri_heartbeat        : std_logic := '0';            -- to Pentek
+    signal pri_heartbeat        : std_logic := '0';             -- to Pentek
 
-    signal x_amp_switch         : std_logic := X_AMP_OFF;      -- to HPAs
+    signal x_amp_switch         : std_logic := X_AMP_OFF;       -- to HPAs
     signal l_amp_switch         : std_logic := L_AMP_OFF;
 
-    signal x_pol_tx             : std_logic := '0';            -- to polarisation switches
+    signal x_pol_tx             : std_logic := '0';             -- to polarisation switches
     signal l_pol_tx             : std_logic := '0';
     signal l_pol_rx             : std_logic_vector(1 downto 0) := (others=>'0');
+
+    signal clk_0_5Hz            : std_logic := '0';             -- slow clocks for LEDs
+    signal clk_1Hz              : std_logic := '0';
+    signal clk_2Hz              : std_logic := '0';
+    signal clk_5Hz              : std_logic := '0';
 
     ---------------------------------------------------------------------------
     --	Ethernet Component declaration section
@@ -523,6 +528,10 @@ begin --architecture RTL
             case(state) is
 
                 when IDLE =>
+                    M_counter   <= (others => '0');
+                    MBcounter   <= (others => '0');
+                    DIGcounter  <= (others => '0');
+                    PRIcounter  <= (others => '0');
                     if soft_arm = '1' then
                         state <= ARMED;
                     else
@@ -622,7 +631,7 @@ begin --architecture RTL
 
                         if M_counter >= unsigned(M_reg_cmp) then
                             state   <= DONE;
-                            -- M_counter <= x"00000000";
+                            M_counter <= x"00000000";
                         else
                             state   <= PRE_PULSE;
                         end if;
@@ -690,10 +699,8 @@ begin --architecture RTL
     -- |          +---------+          |
     -- +-------------------------------+
 
-
-
     trigger     <= gpioIn(0);       -- from GPSDO
-    -- ?        <= gpioIn(1);       -- unused
+    -- <>        <= gpioIn(1);       -- unused
     gpio(2)     <= trigger;         -- from GPSDO
     gpio(3)     <= pri_heartbeat;   -- to Pentek
     gpio(4)     <= '1' when state = ARMED else '0';
@@ -711,7 +718,63 @@ begin --architecture RTL
 
     -- TODO: drive these with meaningful debug signals
     gpio_fmc    <= "1111000011110000";
-    led_fmc     <= "1111";
+
+    with state select led_fmc <=
+          clk_0_5Hz&"000"                           when IDLE,
+          clk_2Hz&(not clk_2Hz)&"00"                when ARMED,
+          clk_5Hz&clk_5Hz&clk_5Hz&clk_5Hz           when PRE_PULSE,
+          clk_5Hz&clk_5Hz&clk_5Hz&clk_5Hz           when MAIN_BANG,
+          clk_5Hz&clk_5Hz&clk_5Hz&clk_5Hz           when DIGITIZE,
+          "1111"                                    when DONE,
+          "0001"                                    when OTHERS;
+
+    -- slow clock to drive LEDs
+    -- process(sys_clk_100MHz_ext)
+    process (sys_clk_100MHz) -- process(sys_clk_100MHz_ext)
+    variable prescaler_0_5Hz    : integer := 0;
+    variable prescaler_1Hz      : integer := 0;
+    variable prescaler_2Hz      : integer := 0;
+    variable prescaler_5Hz      : integer := 0;
+    begin
+        -- if rising_edge(sys_clk_100MHz_ext) then
+    	if rising_edge(sys_clk_100MHz) then
+    		if prescaler_0_5Hz = 100_000_000 then
+    			clk_0_5Hz <= not clk_0_5Hz;
+    			prescaler_0_5Hz := 0;
+    		else
+    			prescaler_0_5Hz := prescaler_0_5Hz + 1;
+    		end if;
+    		if prescaler_1Hz = 50_000_000 then
+    			clk_1Hz <= not clk_1Hz;
+    			prescaler_1Hz := 0;
+    		else
+    			prescaler_1Hz := prescaler_1Hz + 1;
+    		end if;
+    		if prescaler_2Hz = 25_000_000 then
+    			clk_2Hz <= not clk_2Hz;
+    			prescaler_2Hz := 0;
+    		else
+    			prescaler_2Hz := prescaler_2Hz + 1;
+    		end if;
+    		if prescaler_5Hz = 10_000_000 then
+    			clk_5Hz <= not clk_5Hz;
+    			prescaler_5Hz := 0;
+    		else
+    			prescaler_5Hz := prescaler_5Hz + 1;
+    		end if;
+    	end if;
+    end process;
+    --
+    --process (clk_1Hz)
+    --begin
+    --	if rising_edge(clk_1Hz) then
+    --		if dir_reg(0) = '1' then
+    --			led_reg <= led_reg + 1;
+    --		else
+    --			led_reg <= led_reg - 1;
+    --		end if;
+    --	end if;
+--end process;
 
     ---------------------------------------------------------------------------
     -- UDP TRANSMISSION SECTION
