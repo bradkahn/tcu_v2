@@ -27,21 +27,17 @@
 
 LOGIC ANALYZER CONNECTIONS
 
-CHANNEL    SIGNAL           GPIO
--------    ------           ----
-0          trigger          2
-1          pri_heartbeat    3
-2          x_amp_switch     9
-3          x_pol_tx         10
-4          l_amp_switch     11
-5          l_pol_tx         12
-6          l_pol_rx_0       13
-7          l_pol_rx_1       14
---2          ARMED            4
---3          PRE_PULSE        5
---4          MAIN_BANG        6
---5          DIGITIZE         7
---6          DONE             8
---13         FAULT            15
---14         NC               NC
---15         NC               NC
+CHANNEL    SIGNAL           GPIO    PIN
+-------    ------           ----    ---
+0          trigger          2       5
+1          pri_heartbeat    3       6
+2          x_amp_switch     4       7
+3          x_pol_tx         5       8
+4          l_amp_switch     6       9
+5          l_pol_tx         7       10
+6          l_pol_rx_0       8       11
+7          ARMED            9       12
+8          PRE_PULSE        10      13
+9          MAIN_BANG        11      14
+10         DIGITIZE         12      15
+11         DONE             13      16

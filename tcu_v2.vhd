@@ -516,8 +516,8 @@ begin --architecture RTL
         variable pulse_index_int : integer range 0 to 255 := 0;
     begin
         pulse_index_int := to_integer(unsigned(pulse_index));
-        if rising_edge(sys_clk_100MHz_ext) then
-        -- if rising_edge(sys_clk_100MHz) then
+        -- if rising_edge(sys_clk_100MHz_ext) then
+        if rising_edge(sys_clk_100MHz) then
 
             -- populate dataout from regbank based on Program Counter (pulse_index)
             dataout     <= reg_bank(pulse_index_int) & reg_bank(pulse_index_int+1) & reg_bank(pulse_index_int+2) & reg_bank(pulse_index_int+3) & reg_bank(pulse_index_int+4) & reg_bank(pulse_index_int+5);
@@ -703,21 +703,21 @@ begin --architecture RTL
     -- +-------------------------------+
 
     trigger     <= gpioIn(0);       -- from GPSDO
-    -- <>        <= gpioIn(1);       -- unused
+    -- <>       <= gpioIn(1);       -- unused
     gpio(2)     <= trigger;         -- from GPSDO
-    gpio(3)     <= pri_heartbeat;   -- to Pentek
-    gpio(4)     <= '1' when state = ARMED     else '0';
-    gpio(5)     <= '1' when state = PRE_PULSE else '0';
-    gpio(6)     <= '1' when state = MAIN_BANG else '0';
-    gpio(7)     <= '1' when state = DIGITIZE  else '0';
-    gpio(8)     <= '1' when state = DONE      else '0';
-    gpio(9)     <= x_amp_switch ;   -- to HPAs
-    gpio(10)    <= x_pol_tx ;    -- to polarisation switches
-    gpio(11)    <= l_amp_switch;
-    gpio(12)    <= l_pol_tx;
-    gpio(13)    <= l_pol_rx;
-    gpio(14)    <= not pri_heartbeat; -- inverted pri_heartbeat if needed
-    gpio(15)    <= '1' when state = FAULT else '0';
+    gpio(3)     <= not pri_heartbeat;   -- to Pentek (active low)
+    gpio(4)     <= x_amp_switch ;   -- to HPAs
+    gpio(5)     <= x_pol_tx ;    -- to polarisation switches
+    gpio(6)     <= l_amp_switch;
+    gpio(7)     <= l_pol_tx;
+    gpio(8)     <= l_pol_rx;
+    gpio(9)     <= '1' when state = ARMED     else '0';
+    gpio(10)    <= '1' when state = PRE_PULSE else '0';
+    gpio(11)    <= '1' when state = MAIN_BANG else '0';
+    gpio(12)    <= '1' when state = DIGITIZE  else '0';
+    gpio(13)    <= '1' when state = DONE      else '0';
+    gpio(14)    <= '1' when state = FAULT else '0';
+    gpio(15)    <= '0';
 
     -- TODO: drive these with meaningful debug signals
     gpio_fmc    <= "1111000011110000";
@@ -739,8 +739,8 @@ begin --architecture RTL
     variable prescaler_2Hz      : integer := 0;
     variable prescaler_5Hz      : integer := 0;
     begin
-        if rising_edge(sys_clk_100MHz_ext) then
-    	-- if rising_edge(sys_clk_100MHz) then
+        -- if rising_edge(sys_clk_100MHz_ext) then
+    	if rising_edge(sys_clk_100MHz) then
     		if prescaler_0_5Hz = 100_000_000 then
     			clk_0_5Hz <= not clk_0_5Hz;
     			prescaler_0_5Hz := 0;
@@ -767,17 +767,6 @@ begin --architecture RTL
     		end if;
     	end if;
     end process;
-    --
-    --process (clk_1Hz)
-    --begin
-    --	if rising_edge(clk_1Hz) then
-    --		if dir_reg(0) = '1' then
-    --			led_reg <= led_reg + 1;
-    --		else
-    --			led_reg <= led_reg - 1;
-    --		end if;
-    --	end if;
---end process;
 
     ---------------------------------------------------------------------------
     -- UDP TRANSMISSION SECTION
