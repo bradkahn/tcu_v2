@@ -13,52 +13,46 @@
 % 4           X           V       H,V
 % 5           X           H       H,V
 
-NumberOfPulses = 1;
-NUM_TRANSFERS = 12;
+NUM_TRANSFERS = 1000;
 
-% Pulse 0 parameters
 [pulse0]
 MBoffset  = 3000;
 DIGoffset = 870;
 PRIoffset = 96130;
-% in mHz
 Frequency = 1300;
-% Either (V)ertical or (H)orizontal	and band
 Mode = 0;
 
-%% Pulse 1 parameters
-%[pulse1]
-%MBoffset  = 3000;
-%DIGoffset = 870;
-%PRIoffset = 96130;
-%Frequency = 1300;
-%Mode = 1;
-%
-%% Pulse 2 parameters
-%[pulse2]
-%MBoffset  = 3000;
-%DIGoffset = 870;
-%PRIoffset = 96130;
-%Frequency = 1300;
-%Mode = 2;
-%
-%[pulse3]
-%MBoffset  = 3000;
-%DIGoffset = 870;
-%PRIoffset = 96130;
-%Frequency = 1300;
-%Mode = 3;
-%
-%[pulse4]
-%MBoffset  = 3000;
-%DIGoffset = 648;
-%PRIoffset = 96352;
-%Frequency = 8500;
-%Mode = 4;
-%
-%[pulse5]
-%MBoffset  = 4970;
-%DIGoffset = 648;
-%PRIoffset = 96352;
-%Frequency = 8500;
-%Mode = 5;
+[pulse1]
+MBoffset  = 3000;
+DIGoffset = 870;
+PRIoffset = 96130;
+Frequency = 1300;
+Mode = 1;
+
+[pulse2]
+MBoffset  = 3000;
+DIGoffset = 870;
+PRIoffset = 96130;
+Frequency = 1300;
+Mode = 2;
+
+[pulse3]
+MBoffset  = 3000;
+DIGoffset = 870;
+PRIoffset = 96130;
+Frequency = 1300;
+Mode = 3;
+
+[pulse4]
+MBoffset  = 3000;
+DIGoffset = 648;
+PRIoffset = 96352;
+Frequency = 8500;
+Mode = 4;
+
+[pulse5]
+MBoffset  = 3000;
+DIGoffset = 648;
+PRIoffset = 96352;
+Frequency = 8500;
+Mode = 5;
