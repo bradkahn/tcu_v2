@@ -221,12 +221,15 @@ architecture rtl of tcu_top is
 
     -- TODO: CHECK HOW L BAND POLARISATION RX SWITCH IS WIRED UP AND CHANGE THESE ACCORDINGLY
     -- see page 3: https://www.minicircuits.com/pdfs/ZX80-DR230+.pdf
-    constant L_POL_RX_DISABLE   : std_logic_vector(1 downto 0) := "00";
-    constant L_POL_RX_HORIZONTAL: std_logic_vector(1 downto 0) := "01";
-    constant L_POL_RX_VERTICAL  : std_logic_vector(1 downto 0) := "10";
+    -- USED WRONG L-BAND POL RX SWITCH
+    -- constant L_POL_RX_DISABLE   : std_logic_vector(1 downto 0) := "00";
+    -- constant L_POL_RX_HORIZONTAL: std_logic_vector(1 downto 0) := "01";
+    -- constant L_POL_RX_VERTICAL  : std_logic_vector(1 downto 0) := "10";
+    constant L_POL_RX_HORIZONTAL: std_logic := '0';
+    constant L_POL_RX_VERTICAL  : std_logic := not L_POL_RX_HORIZONTAL;
 
     -- change these depending on the logic level interface to the amps
-    constant X_AMP_ON           : std_logic := '1';
+    constant X_AMP_ON           : std_logic := '0';
     constant X_AMP_OFF          : std_logic := not X_AMP_ON;
     constant L_AMP_ON           : std_logic := '1';
     constant L_AMP_OFF          : std_logic := not L_AMP_ON;
@@ -241,7 +244,7 @@ architecture rtl of tcu_top is
 
     signal x_pol_tx             : std_logic := '0';             -- to polarisation switches
     signal l_pol_tx             : std_logic := '0';
-    signal l_pol_rx             : std_logic_vector(1 downto 0) := (others=>'0');
+    signal l_pol_rx             : std_logic := '0';
 
     signal clk_0_5Hz            : std_logic := '0';             -- slow clocks for LEDs
     signal clk_1Hz              : std_logic := '0';
@@ -513,8 +516,8 @@ begin --architecture RTL
         variable pulse_index_int : integer range 0 to 255 := 0;
     begin
         pulse_index_int := to_integer(unsigned(pulse_index));
-        -- if rising_edge(sys_clk_100MHz_ext) then
-        if rising_edge(sys_clk_100MHz) then
+        if rising_edge(sys_clk_100MHz_ext) then
+        -- if rising_edge(sys_clk_100MHz) then
 
             -- populate dataout from regbank based on Program Counter (pulse_index)
             dataout     <= reg_bank(pulse_index_int) & reg_bank(pulse_index_int+1) & reg_bank(pulse_index_int+2) & reg_bank(pulse_index_int+3) & reg_bank(pulse_index_int+4) & reg_bank(pulse_index_int+5);
@@ -703,30 +706,30 @@ begin --architecture RTL
     -- <>        <= gpioIn(1);       -- unused
     gpio(2)     <= trigger;         -- from GPSDO
     gpio(3)     <= pri_heartbeat;   -- to Pentek
-    gpio(4)     <= '1' when state = ARMED else '0';
+    gpio(4)     <= '1' when state = ARMED     else '0';
     gpio(5)     <= '1' when state = PRE_PULSE else '0';
     gpio(6)     <= '1' when state = MAIN_BANG else '0';
-    gpio(7)     <= '1' when state = DIGITIZE else '0';
-    gpio(8)     <= '1' when state = DONE else '0';
+    gpio(7)     <= '1' when state = DIGITIZE  else '0';
+    gpio(8)     <= '1' when state = DONE      else '0';
     gpio(9)     <= x_amp_switch ;   -- to HPAs
     gpio(10)    <= x_pol_tx ;    -- to polarisation switches
     gpio(11)    <= l_amp_switch;
     gpio(12)    <= l_pol_tx;
-    gpio(13)    <= l_pol_rx(0);
-    gpio(14)    <= l_pol_rx(1);
+    gpio(13)    <= l_pol_rx;
+    gpio(14)    <= not pri_heartbeat; -- inverted pri_heartbeat if needed
     gpio(15)    <= '1' when state = FAULT else '0';
 
     -- TODO: drive these with meaningful debug signals
     gpio_fmc    <= "1111000011110000";
 
     with state select led_fmc <=
-          clk_0_5Hz&"000"                           when IDLE,
-          clk_2Hz&(not clk_2Hz)&"00"                when ARMED,
-          clk_5Hz&clk_5Hz&clk_5Hz&clk_5Hz           when PRE_PULSE,
-          clk_5Hz&clk_5Hz&clk_5Hz&clk_5Hz           when MAIN_BANG,
-          clk_5Hz&clk_5Hz&clk_5Hz&clk_5Hz           when DIGITIZE,
-          "1111"                                    when DONE,
-          "0001"                                    when OTHERS;
+          clk_0_5Hz&"000"                 when IDLE,
+          clk_2Hz&(not clk_2Hz)&"00"      when ARMED,
+          clk_5Hz&clk_5Hz&clk_5Hz&clk_5Hz when PRE_PULSE,
+          clk_5Hz&clk_5Hz&clk_5Hz&clk_5Hz when MAIN_BANG,
+          clk_5Hz&clk_5Hz&clk_5Hz&clk_5Hz when DIGITIZE,
+          "1111"                          when DONE,
+          "0001"                          when OTHERS;
 
     -- slow clock to drive LEDs
     -- process(sys_clk_100MHz_ext)
@@ -736,8 +739,8 @@ begin --architecture RTL
     variable prescaler_2Hz      : integer := 0;
     variable prescaler_5Hz      : integer := 0;
     begin
-        -- if rising_edge(sys_clk_100MHz_ext) then
-    	if rising_edge(sys_clk_100MHz) then
+        if rising_edge(sys_clk_100MHz_ext) then
+    	-- if rising_edge(sys_clk_100MHz) then
     		if prescaler_0_5Hz = 100_000_000 then
     			clk_0_5Hz <= not clk_0_5Hz;
     			prescaler_0_5Hz := 0;
