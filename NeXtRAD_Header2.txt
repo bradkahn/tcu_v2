@@ -13,46 +13,74 @@
 % 4           X           V       H,V
 % 5           X           H       H,V
 
-NUM_TRANSFERS = 1000;
+NUM_TRANSFERS = 10000;
 
 [pulse0]
-MBoffset  = 3000;
-DIGoffset = 870;
-PRIoffset = 96130;
-Frequency = 1300;
-Mode = 0;
+MBoffset        = 3000;
+DIGoffset       = 170;
+PRIoffset       = 96830;
+Frequency       = 1300;
+Mode            = 0;
 
 [pulse1]
-MBoffset  = 3000;
-DIGoffset = 870;
-PRIoffset = 96130;
-Frequency = 1300;
-Mode = 1;
+MBoffset        = 3000;
+DIGoffset       = 170;
+PRIoffset       = 96830;
+Frequency       = 1300;
+Mode            = 1;
 
-[pulse2]
-MBoffset  = 3000;
-DIGoffset = 870;
-PRIoffset = 96130;
-Frequency = 1300;
-Mode = 2;
+[pulse1]
+MBoffset        = 3000;
+DIGoffset       = 170;
+PRIoffset       = 96830;
+Frequency       = 1300;
+Mode            = 2;
 
-[pulse3]
-MBoffset  = 3000;
-DIGoffset = 870;
-PRIoffset = 96130;
-Frequency = 1300;
-Mode = 3;
+[pulse1]
+MBoffset        = 3000;
+DIGoffset       = 170;
+PRIoffset       = 96830;
+Frequency       = 1300;
+Mode            = 3;
 
-[pulse4]
-MBoffset  = 3000;
-DIGoffset = 648;
-PRIoffset = 96352;
-Frequency = 8500;
-Mode = 4;
-
-[pulse5]
-MBoffset  = 3000;
-DIGoffset = 648;
-PRIoffset = 96352;
-Frequency = 8500;
-Mode = 5;
+%[pulse0]
+%MBoffset  = 3000;
+%DIGoffset = 870;
+%PRIoffset = 96130;
+%Frequency = 1300;
+%Mode = 0;
+%
+%[pulse1]
+%MBoffset  = 3000;
+%DIGoffset = 870;
+%PRIoffset = 96130;
+%Frequency = 1300;
+%Mode = 1;
+%
+%[pulse2]
+%MBoffset  = 3000;
+%DIGoffset = 870;
+%PRIoffset = 96130;
+%Frequency = 1300;
+%Mode = 2;
+%
+%[pulse3]
+%MBoffset  = 3000;
+%DIGoffset = 870;
+%PRIoffset = 96130;
+%Frequency = 1300;
+%Mode = 3;
+%
+%[pulse4]
+%MBoffset  = 3000;
+%DIGoffset = 648;
+%PRIoffset = 96352;
+%Frequency = 8500;
+%Mode = 4;
+%
+%[pulse5]
+%MBoffset  = 3000;
+%DIGoffset = 648;
+%PRIoffset = 96352;
+%Frequency = 8500;
+%Mode = 5;
