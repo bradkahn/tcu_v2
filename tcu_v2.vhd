@@ -73,8 +73,10 @@ architecture rtl of tcu_top is
     signal gpmc_data_i          : std_logic_vector(15 downto 0):=(others => '0');   -- Register for input bus value
 
     --Clocks
-    signal sys_clk_100MHz       : std_logic;                                        -- internal 100MHz clock
+    signal sys_clk_100MHz_int   : std_logic;                                        -- internal 100MHz clock
     signal sys_clk_100MHz_ext   : std_logic;                                        -- external 100MHz clock coming in from FMC0 J1 P1
+    signal clk_sel              : std_logic;                                        -- driven by one of the above clock sources using jumper on GPIO[1] pin
+    signal sys_clk_100MHz       : std_logic;                                        -- driven by one of the above signal
 
     -- TCU registers available to BORPH
     -- TODO: rename and change address of registers, using Harpoon framework
@@ -220,11 +222,6 @@ architecture rtl of tcu_top is
     constant L_POL_TX_VERTICAL  : std_logic := not L_POL_TX_HORIZONTAL;
 
     -- TODO: CHECK HOW L BAND POLARISATION RX SWITCH IS WIRED UP AND CHANGE THESE ACCORDINGLY
-    -- see page 3: https://www.minicircuits.com/pdfs/ZX80-DR230+.pdf
-    -- USED WRONG L-BAND POL RX SWITCH
-    -- constant L_POL_RX_DISABLE   : std_logic_vector(1 downto 0) := "00";
-    -- constant L_POL_RX_HORIZONTAL: std_logic_vector(1 downto 0) := "01";
-    -- constant L_POL_RX_VERTICAL  : std_logic_vector(1 downto 0) := "10";
     constant L_POL_RX_HORIZONTAL: std_logic := '0';
     constant L_POL_RX_VERTICAL  : std_logic := not L_POL_RX_HORIZONTAL;
 
@@ -258,8 +255,6 @@ architecture rtl of tcu_top is
     port(
         --External Control
         dcm_100mhz_in   : in  std_logic;
-        --		SYS_CLK_P_i  : in  std_logic;
-        --		SYS_CLK_N_i  : in  std_logic;
         SYS_RST_i       : in  std_logic;
 
         -- Clock out ports
@@ -384,7 +379,7 @@ begin --architecture RTL
     clk_manager_inst : clk_manager
     port map(
         --External Control
-        dcm_100mhz_in   => sys_clk_100mhz,
+        dcm_100mhz_in   => sys_clk_100MHz_int,
         --			SYS_CLK_P_i  => sys_clk_p,
         --			SYS_CLK_N_i  => sys_clk_n,
         SYS_RST_i       => sys_rst_i,
@@ -430,7 +425,7 @@ begin --architecture RTL
     (
         I  => sys_clk_P,
         IB => sys_clk_N,
-        O  => sys_clk_100MHz
+        O  => sys_clk_100MHz_int
     );
 
     IBUFGDS_tcu_clk : IBUFG
@@ -503,20 +498,17 @@ begin --architecture RTL
 
     -- -- M_reg_cmp is used when comparing with the counter
     M_reg_cmp(31 downto 16) <= M_reg(1);
-    M_reg_cmp(15 downto 0) <=  M_reg(0);
+    M_reg_cmp(15 downto 0)  <=  M_reg(0);
 
     ------------------------------------------------------------------------------
     --  TCU STATE MACHINE
     -------------------------------------------------------------------------------
 
     -- single synchronous process implementation
-
-    -- tcu_fsm : process(sys_clk_100MHz_ext)
     tcu_fsm : process(sys_clk_100MHz)
         variable pulse_index_int : integer range 0 to 255 := 0;
     begin
         pulse_index_int := to_integer(unsigned(pulse_index));
-        -- if rising_edge(sys_clk_100MHz_ext) then
         if rising_edge(sys_clk_100MHz) then
 
             -- populate dataout from regbank based on Program Counter (pulse_index)
@@ -524,8 +516,6 @@ begin --architecture RTL
             MBoffset    <= unsigned(reg_bank(pulse_index_int));
             DIGoffset   <= unsigned(reg_bank(pulse_index_int+1));
             PRIoffset   <= unsigned(reg_bank(pulse_index_int+2)) & unsigned(reg_bank(pulse_index_int+5));
-            --PRI(1) <= P(31 downto 16);
-            --PRI(0) <= P(15 downto 0);
             pol_mode    <= reg_bank(pulse_index_int+4)(2 downto 0);
 
             case(state) is
@@ -602,6 +592,12 @@ begin --architecture RTL
                                 end if;
                             end if;
                         end if;
+                        -- taken directly from original TCU code, need to test
+                        if(MBcounter <= 2) then
+                          udp_send_packet <= '1';
+                        else
+                          udp_send_packet <= '0';
+                        end if;
                     else
                         state <= DONE;
                         -- turn off amps
@@ -660,7 +656,32 @@ begin --architecture RTL
                     state           <= FAULT;
             end case;
 
-
+            -- ----------------------------------------------------------------
+            -- Extracting waveform frequency for REX
+            -- ----------------------------------------------------------------
+            case(pol_mode) is
+              when "000" =>
+                l_band_freq <=  reg_bank(pulse_index_int+3);
+                x_band_freq <=  x_band_freq;
+              when "001" =>
+                l_band_freq <=  reg_bank(pulse_index_int+3);
+                x_band_freq <=  x_band_freq;
+              when "010" =>
+                l_band_freq <=  reg_bank(pulse_index_int+3);
+                x_band_freq <=  x_band_freq;
+              when "011" =>
+                l_band_freq <=  reg_bank(pulse_index_int+3);
+                x_band_freq <=  x_band_freq;
+              when "100" =>
+                l_band_freq <=  l_band_freq;
+                x_band_freq <=  reg_bank(pulse_index_int+3);
+              when "101" =>
+                l_band_freq <=  l_band_freq;
+                x_band_freq <=  reg_bank(pulse_index_int+3);
+              when others =>
+                l_band_freq <=  l_band_freq;
+                x_band_freq <=  x_band_freq;
+            end case;
         end if;
     end process;
 
@@ -671,9 +692,9 @@ begin --architecture RTL
     led_reg(3)  <= l_amp_switch;
     led_reg(4)  <= '1' when state = ARMED       else '0';
     led_reg(5)  <= '1' when state = PRE_PULSE   else '0';
-    -- led_reg(6)  <= '1' when state = MAIN_BANG else '0';
     led_reg(6)  <= '1' when state = DIGITIZE    else '0';
     led_reg(7)  <= '1' when state = DONE        else '0';
+
     -- GPIO SIGNAL <--> PORT CONNECTIONS
 
     -- +-------------------------------+
@@ -702,12 +723,12 @@ begin --architecture RTL
     -- |          +---------+          |
     -- +-------------------------------+
 
-    trigger     <= gpioIn(0);       -- from GPSDO
-    -- <>       <= gpioIn(1);       -- unused
-    gpio(2)     <= trigger;         -- from GPSDO
-    gpio(3)     <= not pri_heartbeat;   -- to Pentek (active low)
-    gpio(4)     <= x_amp_switch ;   -- to HPAs
-    gpio(5)     <= x_pol_tx ;    -- to polarisation switches
+    trigger     <= gpioIn(0);         -- from GPSDO
+    clk_sel     <= gpioIn(1);         -- clock select line to select between internal / external 100MHz
+    gpio(2)     <= trigger;           -- from GPSDO
+    gpio(3)     <= not pri_heartbeat; -- to Pentek (active low)
+    gpio(4)     <= x_amp_switch;      -- to HPAs
+    gpio(5)     <= x_pol_tx;          -- to polarisation switches
     gpio(6)     <= l_amp_switch;
     gpio(7)     <= l_pol_tx;
     gpio(8)     <= l_pol_rx;
@@ -716,9 +737,10 @@ begin --architecture RTL
     gpio(11)    <= '1' when state = MAIN_BANG else '0';
     gpio(12)    <= '1' when state = DIGITIZE  else '0';
     gpio(13)    <= '1' when state = DONE      else '0';
-    gpio(14)    <= '1' when state = FAULT else '0';
-    gpio(15)    <= '0';
+    gpio(14)    <= '1' when state = FAULT     else '0';
+    gpio(15)    <= pri_heartbeat;
 
+    sys_clk_100MHz  <= sys_clk_100MHz_int when clk_sel = '1' else sys_clk_100MHz_ext;
     -- TODO: drive these with meaningful debug signals
     gpio_fmc    <= "1111000011110000";
 
@@ -732,14 +754,13 @@ begin --architecture RTL
           "0001"                          when OTHERS;
 
     -- slow clock to drive LEDs
-    -- process(sys_clk_100MHz_ext)
-    process (sys_clk_100MHz) -- process(sys_clk_100MHz_ext)
+    process (sys_clk_100MHz)
     variable prescaler_0_5Hz    : integer := 0;
     variable prescaler_1Hz      : integer := 0;
     variable prescaler_2Hz      : integer := 0;
     variable prescaler_5Hz      : integer := 0;
     begin
-        -- if rising_edge(sys_clk_100MHz_ext) then
+
     	if rising_edge(sys_clk_100MHz) then
     		if prescaler_0_5Hz = 100_000_000 then
     			clk_0_5Hz <= not clk_0_5Hz;
@@ -772,9 +793,9 @@ begin --architecture RTL
     -- UDP TRANSMISSION SECTION
     ---------------------------------------------------------------------------
     --udp_packet <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;
-    udp_tx : process(udp_send_packet, sys_clk_100mhz)
+    udp_tx : process(udp_send_packet, sys_clk_100MHz_int)
         begin
-        if(rising_edge(sys_clk_100mhz)) then
+        if(rising_edge(sys_clk_100MHz_int)) then
             if(udp_send_packet = '1' and udp_send_flag <= '0') then
                 udp_send_flag    <= '1';
                 udp_tx_pkt_vld_r <= '0';
