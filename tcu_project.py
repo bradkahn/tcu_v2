@@ -400,17 +400,18 @@ if __name__ == '__main__':
     num_of_words = len(read_data_array)
     number_of_valid_pulses = num_of_words // 6
 
-    logger.debug('{}\t{}\t{}\t{}\t{}\t\t{}'.format("Pulse #", "MB", "DO", "FREQ", "PRI", "MODE"))
+    logger.debug('{}\t\t{}\t{}\t{}\t{}\t{}\t{}'.format("Pulse #", "MBoff (ns)", "DOoff (ns)", "FREQ (ns)", "PRIoff (ns)", "MODE", "PRF (Hz)"))
+    logger.debug('{}\t\t{}\t{}\t{}\t{}\t{}\t{}'.format("-------", "----------", "----------", "---------", "-----------", "----", "--------"))
     for pulse_number in range(num_pulses):
 
         mb = read_data_array[((pulse_number*6)+0)]
-        mb = eval("0x"+ mb)
+        mb = eval("0x"+ mb)*10
         # mb = mb*10
        # print ("MB\t"+str(mb))
         # table.add_row(["main bang",str(mb*10) + " ns"])
 
         do = read_data_array[((pulse_number*6)+1)]
-        do = eval("0x"+ do)
+        do = eval("0x"+ do)*10
         # do = do*10
        # print ("DO\t"+str(do))
         # table.add_row(["digital offset",str(do*10) + " ns"])
@@ -424,10 +425,10 @@ if __name__ == '__main__':
 
         pri_upper = read_data_array[((pulse_number*6)+2)]
         pri_lower = read_data_array[((pulse_number*6)+5)]
-        pri = eval("0x"+pri_upper+pri_lower)
+        pri = eval("0x"+pri_upper+pri_lower)*10
        # print ("PRI\t"+str(pri))
         #pri = (pri - mb - do)*10 ??????/
-        pri = pri * 10;
+        # pri = pri * 10;
         # table.add_row(["PRI",str(pri)+ " ns"])
 
         mode = read_data_array[((pulse_number*6)+4)]
@@ -435,7 +436,9 @@ if __name__ == '__main__':
         #  print ("Mode\t"+str(mode))
         # table.add_row(["mode",str(mode)])
 
-        logger.debug('{}\t{}\t{}\t{}\t{}\t\t{}'.format(str(pulse_number+1), str(mb), str(do), str(freq), str(pri), str(mode)))
+        prf_calc = 1/(((mb + do + pri))/1000000000)
+
+        logger.debug('{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t{}'.format(str(pulse_number+1), str(mb), str(do), str(freq), str(pri), str(mode), str(prf_calc)))
         # table.add_row([str(pulse_number+1), str(mb), str(do), str(freq), str(pri), str(mode)])
     # *************************************************************************
 
