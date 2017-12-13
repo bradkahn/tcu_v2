@@ -404,7 +404,8 @@ NET "sys_clk_P"     LOC = B14;
 
 # From FMC 0
 # J1 P1
-NET "sys_clk_ext"     LOC = AE15 | IOSTANDARD = LVCMOS25;
+#NET "sys_clk_ext"     LOC = AE15 | IOSTANDARD = LVCMOS25;
+NET "sys_clk_ext"     LOC = AE15 | IOSTANDARD = LVCMOS33;
 
 # Clock constraints
 
