@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 PRI = input("Enter PRI (us):\n")
 PULSE_WIDTH = input("Enter pulse width (us):\n")
 PRE_PULSE = input("Enter prepulse delay (us):\n")
@@ -15,7 +17,7 @@ else:
 # convert offsets into ns, divide into 10ns cycles
 MBoffset = (eval(PRE_PULSE)*1000)//10
 DOoffset = ((eval(PULSE_WIDTH)*1000) - AMP_DELAY)//10
-PRIoffset = (eval(PRI)*1000)//10 - MBoffset - DOoffset
+PRIoffset = ((eval(PRI)*1000)//10) - MBoffset - DOoffset
 
 # [pulse0]
 # MBoffset  = 3000;
