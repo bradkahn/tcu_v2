@@ -249,6 +249,7 @@ def int_to_hex_str(num, endian='l'):
     # rev_byte_list = reversed(byte_list)
     hex_str = str()
     # for word in rev_byte_list:
+    # for word in reversed(byte_list):
     for word in byte_list:
         hex_str += '\\x' + word[0] + '\\x' + word[1]
     return hex_str
@@ -367,7 +368,17 @@ if __name__ == '__main__':
     logger.debug('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(pulse_param_str, fpga_con._pid, 'reg_pulses'))
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(pulse_param_str, fpga_con._pid, 'reg_pulses'))
 
-    num_repeats_str = int_to_hex_str(num_repeats)
+    num_repeats_str = str()
+    print(num_repeats_str)
+    print(int_to_hex_str(num_repeats))
+    print(int_to_hex_str(num_repeats))
+    print(len(int_to_hex_str(num_repeats)))
+    print((int_to_hex_str(num_repeats))[8:])
+    if len(int_to_hex_str(num_repeats)) > 8:
+        num_repeats_str = int_to_hex_str(num_repeats)[8:] + int_to_hex_str(num_repeats)[0:8]
+    else:
+        num_repeats_str = int_to_hex_str(num_repeats)[0:8]
+    print(num_repeats_str)
     logger.debug('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_repeats_str, fpga_con._pid, 'm'))
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_repeats_str, fpga_con._pid, 'm'))
 

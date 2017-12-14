@@ -13,7 +13,7 @@
 % 4           X           V       H,V
 % 5           X           H       H,V
 
-NUM_TRANSFERS = 10000;
+NUM_TRANSFERS = 120000;
 
 
 
