@@ -377,7 +377,7 @@ if __name__ == '__main__':
     if len(int_to_hex_str(num_repeats)) > 8:
         num_repeats_str = int_to_hex_str(num_repeats)[8:] + int_to_hex_str(num_repeats)[0:8]
     else:
-        num_repeats_str = int_to_hex_str(num_repeats)[0:8]
+        num_repeats_str = int_to_hex_str(num_repeats)[0:8] + '\\x00\\x00'
     print(num_repeats_str)
     logger.debug('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_repeats_str, fpga_con._pid, 'm'))
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_repeats_str, fpga_con._pid, 'm'))
