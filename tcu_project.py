@@ -5,6 +5,8 @@
 # 04/12/2017
 # Brad Kahn
 
+# NOTE: this is the old format
+#       need to parse new headerfile and calculate these
 
 # ----------------------------------------------------------------------------
 # EXPECTED HEADER FILE FORMAT
