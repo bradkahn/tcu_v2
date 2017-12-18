@@ -53,6 +53,8 @@ from harpoon.boardsupport import borph
 
 # TODO: find out where header file will live on node laptop
 # TODO: pass command line args for these values! (have default values)
+# TODO: reimplement wil new headerfile
+
 HEADER_PATH = "/home/brad/tcu_v2/"  # <-- this needs to change
 HEADER_NAME = "NeXtRAD_Header2.txt"
 TCU_ADDRESS = '192.168.1.16'
@@ -82,7 +84,7 @@ fh = logging.FileHandler('tcu_experiment_' + date_str + '_' + time_str + '.log')
 fh.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 formatter2 = logging.Formatter('[%(levelname)s] %(message)s')
@@ -254,54 +256,9 @@ def int_to_hex_str(num, endian='l'):
         hex_str += '\\x' + word[0] + '\\x' + word[1]
     return hex_str
 
-
-# -----------------------------------------------------------------------------
-# core instantiation
-# -----------------------------------------------------------------------------
-
-core_tcu = harpoon.IPCore('tcu_core', 'Timing control unit')
-
-# -----------------------------------------------------------------------------
-# registers for core_tcu instantiation
-# -----------------------------------------------------------------------------
-
-harpoon.Register('version', 'version number of this iteration of tcu gateware',
-                 2, 1, core_tcu)
-harpoon.Register('status',
-                 'status flags:\n'
-                 'bit 0: pulse repeats for experiment completed\n'
-                 'bit 3: digitisation flag\n'
-                 'bit 4: pri flag, bit 5: pulse completed\n'
-                 'bit 6: \'1\'\n'
-                 'bit 7: gpioIN(1) trigger from GPSDO',
-                 2, 1, core_tcu)
-harpoon.Register('control', 'reg-description',
-                 2, 3, core_tcu)
-harpoon.Register('fmc', 'reg-description',
-                 4, 3, core_tcu)
-harpoon.Register('pulses', 'reg-description',
-                 180, 3, core_tcu)
-harpoon.Register('m', 'Number of repeats for each pulse in an experiment',
-                 4, 3, core_tcu)
-harpoon.Register('n', 'Number of pulses',
-                 2, 3, core_tcu)
-# -----------------------------------------------------------------------------
-# Project instantiation
-# -----------------------------------------------------------------------------
-project = harpoon.Project('tcu_project',
-                          'project to communicate with the RHINO-TCU',
-                          [core_tcu])
-
-if __name__ == '__main__':
-    print_welcome()
-
-    logger.info('parsing header file: ' + HEADER_PATH + HEADER_NAME)
-    parse_header()
-
-    # -------------------------------------------------------------------------
-    # CONNECT TO RHINO
-    # -------------------------------------------------------------------------
+def connect():
     logger.debug('initializing rhino connection, IP address: ' + TCU_ADDRESS)
+    global fpga_con
     fpga_con = borph.RHINO(address=TCU_ADDRESS,
                            username='root',
                            password='rhino',
@@ -316,9 +273,8 @@ if __name__ == '__main__':
 
     logger.debug('connection successful!')
 
-    # -------------------------------------------------------------------------
-    # CONFIGURE RHINO WITH TCU PROJECT
-    # -------------------------------------------------------------------------
+
+def launch_bof():
     # TODO: this assumes that there is no other .bof running on the RHINO
     #       scan for any .bof running on
     if fpga_con._pid == '':
@@ -335,9 +291,8 @@ if __name__ == '__main__':
             logger.debug('no existing running .bof found, launching TCU.bof')
             fpga_con.launch_bof(BOF_EXE)
 
-    # -------------------------------------------------------------------------
-    # SEND PARAMETERS TO TCU
-    # -------------------------------------------------------------------------
+
+def write_registers():
     # TODO: implement framework functionality:
     #       core_tcu.write_reg('pulses', pulses)
     #       core_tcu.write_reg('m', num_repeats)
@@ -386,11 +341,8 @@ if __name__ == '__main__':
     logger.debug('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_pulses_str, fpga_con._pid, 'n'))
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_pulses_str, fpga_con._pid, 'n'))
 
-    # -------------------------------------------------------------------------
-    # verify registers have correct values
-    # -------------------------------------------------------------------------
-    logger.debug('verifying tcu registers')
 
+def verify_registers():
     logger.debug('reading reg_pulses...')
     reg_pulses_rcv = fpga_con._action('od -x -An /proc/{}/hw/ioreg/{}'.format(fpga_con._pid, 'reg_pulses'))
     logger.debug('reg_pulses:' + reg_pulses_rcv.decode('utf-8'))
@@ -416,34 +368,34 @@ if __name__ == '__main__':
     for pulse_number in range(num_pulses):
 
         mb = read_data_array[((pulse_number*6)+0)]
-        mb = eval("0x"+ mb)*10
+        mb = eval("0x"+mb)*10
         # mb = mb*10
-       # print ("MB\t"+str(mb))
+        # print ("MB\t"+str(mb))
         # table.add_row(["main bang",str(mb*10) + " ns"])
 
         do = read_data_array[((pulse_number*6)+1)]
-        do = eval("0x"+ do)*10
+        do = eval("0x"+do)*10
         # do = do*10
-       # print ("DO\t"+str(do))
+        # print ("DO\t"+str(do))
         # table.add_row(["digital offset",str(do*10) + " ns"])
 
 
         freq = read_data_array[((pulse_number*6)+3)]
         freq = freq[2:4] + freq[0:2]
         freq = eval("0x"+freq)
-       # print ("Freq\t"+str(freq))
+        # print ("Freq\t"+str(freq))
         # table.add_row(["frequency",str(freq) + " MHz"])
 
         pri_upper = read_data_array[((pulse_number*6)+2)]
         pri_lower = read_data_array[((pulse_number*6)+5)]
         pri = eval("0x"+pri_upper+pri_lower)*10
-       # print ("PRI\t"+str(pri))
-        #pri = (pri - mb - do)*10 ??????/
+        # print ("PRI\t"+str(pri))
+        # pri = (pri - mb - do)*10 ??????/
         # pri = pri * 10;
         # table.add_row(["PRI",str(pri)+ " ns"])
 
         mode = read_data_array[((pulse_number*6)+4)]
-        mode = eval("0x"+ mode)
+        mode = eval("0x"+mode)
         #  print ("Mode\t"+str(mode))
         # table.add_row(["mode",str(mode)])
 
@@ -461,19 +413,91 @@ if __name__ == '__main__':
     reg_pulses_rcv = fpga_con._action('od -x -An /proc/{}/hw/ioreg/{}'.format(fpga_con._pid, 'm'))
     logger.debug('m:' + reg_pulses_rcv.decode('utf-8'))
 
-
     # if regs dont match:
     # sys.exit(67)
 
-    # -------------------------------------------------------------------------
-    # arm the TCU
-    # -------------------------------------------------------------------------
-    logger.debug('arming the TCU')
+
+def arm_tcu():
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(int_to_hex_str(0), fpga_con._pid, 'reg_led'))
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(int_to_hex_str(1), fpga_con._pid, 'reg_led'))
     logger.debug('TCU armed')
 
+
+# -----------------------------------------------------------------------------
+# CORE INSTANTIATION
+# -----------------------------------------------------------------------------
+core_tcu = harpoon.IPCore('tcu_core', 'Timing control unit')
+
+# -----------------------------------------------------------------------------
+# REGISTERS FOR CORE_TCU INSTANTIATION
+# -----------------------------------------------------------------------------
+harpoon.Register('version', 'version number of this iteration of tcu gateware',
+                 2, 1, core_tcu)
+harpoon.Register('status',
+                 'status flags:\n'
+                 'bit 0: pulse repeats for experiment completed\n'
+                 'bit 3: digitisation flag\n'
+                 'bit 4: pri flag, bit 5: pulse completed\n'
+                 'bit 6: \'1\'\n'
+                 'bit 7: gpioIN(1) trigger from GPSDO',
+                 2, 1, core_tcu)
+harpoon.Register('control', 'reg-description',
+                 2, 3, core_tcu)
+harpoon.Register('fmc', 'reg-description',
+                 4, 3, core_tcu)
+harpoon.Register('pulses', 'reg-description',
+                 180, 3, core_tcu)
+harpoon.Register('m', 'Number of repeats for each pulse in an experiment',
+                 4, 3, core_tcu)
+harpoon.Register('n', 'Number of pulses',
+                 2, 3, core_tcu)
+# -----------------------------------------------------------------------------
+# Project instantiation
+# -----------------------------------------------------------------------------
+project = harpoon.Project('tcu_project',
+                          'project to communicate with the RHINO-TCU',
+                          [core_tcu])
+
+if __name__ == '__main__':
+    print_welcome()
+
+    logger.info('parsing header file: ' + HEADER_PATH + HEADER_NAME)
+    parse_header()
+
+    # -------------------------------------------------------------------------
+    # CONNECT TO RHINO
+    # -------------------------------------------------------------------------
+    logger.info('connecting to TCU...')
+    connect()
+
+    # -------------------------------------------------------------------------
+    # CONFIGURE RHINO WITH TCU PROJECT
+    # -------------------------------------------------------------------------
+    logger.info('launching TCU .bof...')
+    launch_bof()
+
+    # -------------------------------------------------------------------------
+    # SEND PARAMETERS TO TCU
+    # -------------------------------------------------------------------------
+    logger.info('sending params to TCU...')
+    write_registers()
+
+    # -------------------------------------------------------------------------
+    # VERIFY REGISTERS HAVE CORRECT VALUES
+    # -------------------------------------------------------------------------
+    logger.info('verifying TCU registers...')
+    verify_registers()
+
+    # -------------------------------------------------------------------------
+    # ARM THE TCU
+    # -------------------------------------------------------------------------
+    logger.info('arming the TCU...')
+    arm_tcu()
+
+    # -------------------------------------------------------------------------
+    # CLOSE SSH CONNECTION
+    # -------------------------------------------------------------------------
+    logger.info('closing ssh connection...')
     fpga_con.disconnect()
-    logger.debug('ssh connection closed')
 
     sys.exit(0)
