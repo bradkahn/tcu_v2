@@ -45,8 +45,10 @@
 # user codes: '0', '64 - 113' http://www.tldp.org/LDP/abs/html/exitcodes.html
 # ----------------------------------------------------------------------------
 
+import os.path
 import sys
 import time
+import configparser
 import logging
 
 import harpoon
@@ -97,131 +99,199 @@ logging.getLogger().addHandler(fh)
 logging.getLogger().addHandler(ch)
 
 
-def print_logo():
-    print(harpoon.LOGO)
-
-
 def print_welcome():
-    print_logo()
+    print(harpoon.LOGO)
     print("")
     print("NeXtRAD TCU v2.0")
     print("")
 
 
 def parse_header():
-    # tcu_init.py
-    # startup script for TCU
-    # Brad Kahn
-    # 01/12/2017
-
     # -------------------------------------------------------------------------
     # EXTRACT PARAMETERS FROM HEADER FILE
     # -------------------------------------------------------------------------
 
-    # NOTE: all params need end with a semicolon
-
-    try:
-        header_file = open(HEADER_PATH + HEADER_NAME, 'r')
-    except Exception as e:
-        logger.error('could not find file "{}" in path: {}'.format(HEADER_NAME, HEADER_PATH))
+    # check if headerfile exists
+    if not os.path.isfile(HEADER_PATH + HEADER_NAME):
+        logger.error('could not find header file "{}" in path: {}'
+                     .format(HEADER_NAME, HEADER_PATH))
         sys.exit(64)
 
-    header_lines = header_file.readlines()
-    header_file.close()
+    header_file = configparser.ConfigParser()
+    header_file.read(HEADER_PATH + HEADER_NAME)
 
-    global num_transfers
-    global num_pulses
-    global num_repeats
-    global pulses
+    try:
+        pulse_parameters = header_file['PulseParameters']
+    except Exception as e:
+        logger.error('could not find {} section in header'
+                     .format('PulseParameters'))
 
-    pulse_num = 0
+    #   LFM              NLFM
+    #   0.5us   = 1      0.5us   = 8
+    #   1.0us   = 2      1.0us   = 9
+    #   3.0us   = 3      3.0us   = 10
+    #   5.0us   = 4      5.0us   = 11
+    #   10.0us  = 5      10.0us  = 12
+    #   15.0us  = 6      15.0us  = 13
+    #   20.0us  = 7      20.0us  = 14
 
-    next_pulse_index = 0
+    PULSE_WIDTHS = [0, 0.5, 1.0, 3.0, 5.0, 10.0, 15.0, 20.0,
+                    0.5, 1.0, 3.0, 5.0, 10.0, 15.0, 20.0]
 
-    for line in header_lines:
-        line = line.strip()
-        if line.startswith('NUM_TRANSFERS'):
-            logger.debug("num-transfers found:" + line[:-1])
-            val = line.split()
-            num_transfers = eval(val[2][:-1])
-        elif line.startswith('NumberOfPulses'):
-            logger.debug("number of pulses found:" + line[:-1])
-            val = line.split()
-            num_pulses = eval(val[2][:-1])
-        elif line.startswith('[pulse'):
-            logger.debug("pulse header found:" + line[:-1])
-            line_list = line.split()
-            val = line_list[0]
-            val = val.replace('[pulse', '')
-            val = val.replace(']', '')
-            pulse_num = eval(val)
-            logger.debug("pulse number is: " + str(val))
-            pulses.append(dict())
-            pulses[next_pulse_index]['pulse_number'] = pulse_num
-            next_pulse_index += 1
-        if next_pulse_index > 0:
-            if line.startswith('MBoffset'):
-                val = line.split()
-                logger.debug('MBoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
-                pulses[next_pulse_index-1]['mb_offset'] = eval(val[2][:-1])
-            elif line.startswith('DIGoffset'):
-                val = line.split()
-                logger.debug('DIGoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
-                pulses[next_pulse_index-1]['dig_offset'] = eval(val[2][:-1])
-            elif line.startswith('PRIoffset'):
-                val = line.split()
-                logger.debug('PRIoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
-                pulses[next_pulse_index-1]['pri_offset'] = eval(val[2][:-1])
-            elif line.startswith('Frequency'):
-                val = line.split()
-                logger.debug('Frequency for [pulse{}] is {}'.format(pulse_num, val[2]))
-                pulses[next_pulse_index-1]['frequency'] = eval(val[2][:-1])
-            elif line.startswith('Mode'):
-                val = line.split()
-                logger.debug('Mode for [pulse{}] is {}'.format(pulse_num, val[2]))
-                pulses[next_pulse_index-1]['mode'] = eval(val[2][:-1])
-            # elif line.startswith('TxPol'):
-            #     val = line.split()
-            #     logger.debug('TxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
-            #     pulses[next_pulse_index-1]['tx_pol'] = val[2][:-1]
-            # elif line.startswith('RxPol'):
-            #     val = line.split()
-            #     logger.debug('RxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
-            #     pulses[next_pulse_index-1]['rx_pol'] = val[2][:-1]
-        else:
-            pass
+    try:
+        waveform_index = pulse_parameters['waveform_index']
+        logger.debug('waveform_index = {}'.format(waveform_index))
+    except Exception as e:
+        logger.error("could not find required parameter '{}' from header"
+                     .format('waveform_index'))
+        exit(65)
 
-        # calculate the number of pulses if 'NumberOfPulses' is not in header
-        if num_pulses == 0:
-            num_pulses = len(pulses)
+    pulse_width = PULSE_WIDTHS[waveform_index]
 
-        logging.info('{} unique pulses found'.format(num_pulses))
+    try:
+        polarisation_order = pulse_parameters['pol_order']
+        logger.debug('polarisation_order = {}'.format(polarisation_order))
+    except Exception as e:
+        logger.error("could not find required parameter '{}' from header"
+                     .format('pol_order'))
+        exit(65)
 
-    # -------------------------------------------------------------------------
-    # VERIFY PARAMETERS
-    # -------------------------------------------------------------------------
+    num_unique_pulses = len(polarisation_order.split(','))
+    logger.debug('num_unique_pulses = {}'.format(num_unique_pulses))
 
-    if next_pulse_index == 0:
-        logger.error('no [pulseX] where found in header')
-        sys.exit(65)
-    if num_transfers == 0:
-        logger.error('no NUM_TRANSFERS found in header, needed for "m"')
-        sys.exit(65)
-    for pulse in pulses:
-        # simple check if the number of parameters matches the expected length,
-        # len(["pulse_number","mb_offset","dig_offset","pri_offset","frequency","tx_pol","rx_pol"])
-        # could take this further and check for each parameter individually
-        if len(pulse) != NUM_PULSE_PARAMS:
-            logger.error('missing pulse parameter(s) for pulse ' +
-                         str(pulse['pulse_number']))
-            sys.exit(65)
+    try:
+        num_pris = pulse_parameters['num_pris']
+        logger.debug('num_pris = {}'.format(num_pris))
+    except Exception as e:
+        logger.error("could not find required parameter '{}' from header"
+                     .format('num_pris'))
+        exit(65)
 
-    num_pulses = next_pulse_index
-    logger.debug('number of pulses found (n) = ' + str(num_pulses))
-    # division operators: '/' for float, '//' integer
-    num_repeats = num_transfers // num_pulses
-    logger.debug('calculated number of repeats m = ' + str(num_repeats) +
-                 ' [m = NUM_TRANSFERS / n]')
+    num_cycles = num_pris // num_unique_pulses
+    logger.debug('num_cycles = {} [m = n * num_unique_pulses]'
+                 .format(num_cycles))
+
+    try:
+        pre_pulse = pulse_parameters['pre_pulse']
+        logger.debug('pre_pulse = {}'.format(pre_pulse))
+    except Exception as e:
+        logger.error("could not find required parameter '{}' from header"
+                     .format('pre_pulse'))
+        exit(65)
+
+    # NOTE: this will change to allow for different frequencies in each band
+    try:
+        l_band_waveform_freq = pulse_parameters['l_band_waveform_freq']
+        logger.debug()
+    except Exception as e:
+        logger.error("could not find required parameter '{}' from header"
+                     .format('l_band_waveform_freq'))
+        exit(65)
+
+    try:
+        x_band_waveform_freq = pulse_parameters['x_band_waveform_freq']
+        logger.debug()
+    except Exception as e:
+        logger.error("could not find required parameter '{}' from header"
+                     .format('x_band_waveform_freq'))
+        exit(65)
+
+    # header_lines = header_file.readlines()
+    # header_file.close()
+    #
+    # global num_transfers
+    # global num_pulses
+    # global num_repeats
+    # global pulses
+    #
+    # pulse_num = 0
+    #
+    # next_pulse_index = 0
+    #
+    # for line in header_lines:
+    #     line = line.strip()
+    #     if line.startswith('NUM_TRANSFERS'):
+    #         logger.debug("num-transfers found:" + line[:-1])
+    #         val = line.split()
+    #         num_transfers = eval(val[2][:-1])
+    #     elif line.startswith('NumberOfPulses'):
+    #         logger.debug("number of pulses found:" + line[:-1])
+    #         val = line.split()
+    #         num_pulses = eval(val[2][:-1])
+    #     elif line.startswith('[pulse'):
+    #         logger.debug("pulse header found:" + line[:-1])
+    #         line_list = line.split()
+    #         val = line_list[0]
+    #         val = val.replace('[pulse', '')
+    #         val = val.replace(']', '')
+    #         pulse_num = eval(val)
+    #         logger.debug("pulse number is: " + str(val))
+    #         pulses.append(dict())
+    #         pulses[next_pulse_index]['pulse_number'] = pulse_num
+    #         next_pulse_index += 1
+    #     if next_pulse_index > 0:
+    #         if line.startswith('MBoffset'):
+    #             val = line.split()
+    #             logger.debug('MBoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
+    #             pulses[next_pulse_index-1]['mb_offset'] = eval(val[2][:-1])
+    #         elif line.startswith('DIGoffset'):
+    #             val = line.split()
+    #             logger.debug('DIGoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
+    #             pulses[next_pulse_index-1]['dig_offset'] = eval(val[2][:-1])
+    #         elif line.startswith('PRIoffset'):
+    #             val = line.split()
+    #             logger.debug('PRIoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
+    #             pulses[next_pulse_index-1]['pri_offset'] = eval(val[2][:-1])
+    #         elif line.startswith('Frequency'):
+    #             val = line.split()
+    #             logger.debug('Frequency for [pulse{}] is {}'.format(pulse_num, val[2]))
+    #             pulses[next_pulse_index-1]['frequency'] = eval(val[2][:-1])
+    #         elif line.startswith('Mode'):
+    #             val = line.split()
+    #             logger.debug('Mode for [pulse{}] is {}'.format(pulse_num, val[2]))
+    #             pulses[next_pulse_index-1]['mode'] = eval(val[2][:-1])
+    #         # elif line.startswith('TxPol'):
+    #         #     val = line.split()
+    #         #     logger.debug('TxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
+    #         #     pulses[next_pulse_index-1]['tx_pol'] = val[2][:-1]
+    #         # elif line.startswith('RxPol'):
+    #         #     val = line.split()
+    #         #     logger.debug('RxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
+    #         #     pulses[next_pulse_index-1]['rx_pol'] = val[2][:-1]
+    #     else:
+    #         pass
+    #
+    #     # calculate the number of pulses if 'NumberOfPulses' is not in header
+    #     if num_pulses == 0:
+    #         num_pulses = len(pulses)
+    #
+    #     logging.info('{} unique pulses found'.format(num_pulses))
+    #
+    # # -------------------------------------------------------------------------
+    # # VERIFY PARAMETERS
+    # # -------------------------------------------------------------------------
+    #
+    # if next_pulse_index == 0:
+    #     logger.error('no [pulseX] where found in header')
+    #     sys.exit(65)
+    # if num_transfers == 0:
+    #     logger.error('no NUM_TRANSFERS found in header, needed for "m"')
+    #     sys.exit(65)
+    # for pulse in pulses:
+    #     # simple check if the number of parameters matches the expected length,
+    #     # len(["pulse_number","mb_offset","dig_offset","pri_offset","frequency","tx_pol","rx_pol"])
+    #     # could take this further and check for each parameter individually
+    #     if len(pulse) != NUM_PULSE_PARAMS:
+    #         logger.error('missing pulse parameter(s) for pulse ' +
+    #                      str(pulse['pulse_number']))
+    #         sys.exit(65)
+    #
+    # num_pulses = next_pulse_index
+    # logger.debug('number of pulses found (n) = ' + str(num_pulses))
+    # # division operators: '/' for float, '//' integer
+    # num_repeats = num_transfers // num_pulses
+    # logger.debug('calculated number of repeats m = ' + str(num_repeats) +
+    #              ' [m = NUM_TRANSFERS / n]')
 
     logging.info('header parsing complete')
 
@@ -257,6 +327,7 @@ def int_to_hex_str(num, endian='l'):
     for word in byte_list:
         hex_str += '\\x' + word[0] + '\\x' + word[1]
     return hex_str
+
 
 def connect():
     logger.debug('initializing rhino connection, IP address: ' + TCU_ADDRESS)
@@ -453,6 +524,7 @@ harpoon.Register('m', 'Number of repeats for each pulse in an experiment',
                  4, 3, core_tcu)
 harpoon.Register('n', 'Number of pulses',
                  2, 3, core_tcu)
+
 # -----------------------------------------------------------------------------
 # Project instantiation
 # -----------------------------------------------------------------------------
