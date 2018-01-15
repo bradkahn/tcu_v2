@@ -5,36 +5,6 @@
 # 04/12/2017
 # Brad Kahn
 
-# NOTE: this is the old format
-#       need to parse new headerfile and calculate these
-
-# ----------------------------------------------------------------------------
-# EXPECTED HEADER FILE FORMAT
-# ----------------------------------------------------------------------------
-#   NumberOfPulses = 5;
-#   NUM_TRANSFERS = 10000;
-#
-#   % Pulse 0 parameters
-#   [pulse0]
-#   % offsets are in us
-#   MBoffset  = 50000;
-#   DIGoffset = 60000;
-#   PRIoffset = 70000;
-#   % in mHz
-#   Frequency = 1300;
-#   % Either (V)ertical or (H)orizontal	and band
-#   Mode = 0;
-#
-#   % Pulse 1 parameters
-#   [pulse1]
-#   MBoffset  = 50000;
-#   DIGoffset = 60000;
-#   PRIoffset = 70000;
-#   Frequency = 1300;
-#   Mode = 1;
-#
-#   ... up to [pulse31]
-
 # ----------------------------------------------------------------------------
 # EXIT CODES:
 # 0     : all good, tcu is armed and waiting
@@ -57,12 +27,11 @@ from harpoon.boardsupport import borph
 
 # TODO: find out where header file will live on node laptop
 # TODO: pass command line args for these values! (have default values)
-# TODO: reimplement wil new headerfile
 
-HEADER_PATH = "/home/brad/tcu_v2/"  # <-- this needs to change
-HEADER_NAME = "NeXtRAD_Header2.txt"
+HEADER_PATH = "/home/brad/nextrad_header/"  # <-- this needs to change
+HEADER_NAME = "NeXtRAD.ini"
 TCU_ADDRESS = '192.168.1.16'
-NUM_PULSE_PARAMS = 6                # see pulse dictionary format
+# NUM_PULSE_PARAMS = 6                # see pulse dictionary format
 BOF_EXE = 'tcu_v2.bof'               # .bof must already be in /opt/rhinofs/
 
 num_transfers = int()               # used to calculate M
@@ -70,7 +39,7 @@ num_pulses = int()                  # N
 num_repeats = int()                 # M
 pulses = list()                     # [{pulse1}, {pulse2}, {pulse3}]
 
-# pulse dictionary format, 7 parameters per pulse:
+# pulse dictionary format, 6 parameters per pulse:
 # {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx,
 # "frequency": xxx, 'mode':x}
 
@@ -140,69 +109,106 @@ def parse_header():
 
     try:
         waveform_index = pulse_parameters['waveform_index']
-        logger.debug('waveform_index = {}'.format(waveform_index))
+        pulse_width = PULSE_WIDTHS[eval(waveform_index)]
+        logger.debug('waveform_index = {} --> pulse_width = {}us'
+                    .format(waveform_index, pulse_width))
     except Exception as e:
         logger.error("could not find required parameter '{}' from header"
                      .format('waveform_index'))
         exit(65)
 
-    pulse_width = PULSE_WIDTHS[waveform_index]
-
     try:
-        polarisation_order = pulse_parameters['pol_order']
-        logger.debug('polarisation_order = {}'.format(polarisation_order))
+        polarisation_order = (pulse_parameters['pol_order']).replace('"', '')
+        polarisation_order = polarisation_order.split(',')
+        num_unique_pulses = len(polarisation_order)
+        logger.debug('polarisation_order = {} --> num_unique_pulses = {}'
+                    .format(polarisation_order, num_unique_pulses))
     except Exception as e:
         logger.error("could not find required parameter '{}' from header"
                      .format('pol_order'))
         exit(65)
 
-    num_unique_pulses = len(polarisation_order.split(','))
-    logger.debug('num_unique_pulses = {}'.format(num_unique_pulses))
-
     try:
-        num_pris = pulse_parameters['num_pris']
+        num_pris = eval(pulse_parameters['num_pris'])
+        num_cycles = num_pris // num_unique_pulses
         logger.debug('num_pris = {}'.format(num_pris))
+        logger.debug('num_cycles = {} [m = n * num_unique_pulses]'
+        .format(num_cycles))
     except Exception as e:
         logger.error("could not find required parameter '{}' from header"
                      .format('num_pris'))
         exit(65)
 
-    num_cycles = num_pris // num_unique_pulses
-    logger.debug('num_cycles = {} [m = n * num_unique_pulses]'
-                 .format(num_cycles))
-
     try:
-        pre_pulse = pulse_parameters['pre_pulse']
+        pre_pulse = eval(pulse_parameters['pre_pulse'])
         logger.debug('pre_pulse = {}'.format(pre_pulse))
     except Exception as e:
         logger.error("could not find required parameter '{}' from header"
                      .format('pre_pulse'))
         exit(65)
+        
+    try:
+        pri = eval(pulse_parameters['pri'])
+        logger.debug('pri = {}'.format(pri))
+    except Exception as e:
+        logger.error("could not find required parameter '{}' from header"
+                     .format('pri'))
+        exit(65)
 
     # NOTE: this will change to allow for different frequencies in each band
     try:
-        l_band_waveform_freq = pulse_parameters['l_band_waveform_freq']
-        logger.debug()
+        l_band_waveform_freq = eval(pulse_parameters['l_band_waveform_freq'])
+        logger.debug('l_band_waveform_freq = {}'.format(l_band_waveform_freq))
     except Exception as e:
         logger.error("could not find required parameter '{}' from header"
                      .format('l_band_waveform_freq'))
         exit(65)
 
     try:
-        x_band_waveform_freq = pulse_parameters['x_band_waveform_freq']
-        logger.debug()
+        x_band_waveform_freq = eval(pulse_parameters['x_band_waveform_freq'])
+        logger.debug('x_band_waveform_freq = {}'.format(x_band_waveform_freq))
     except Exception as e:
         logger.error("could not find required parameter '{}' from header"
                      .format('x_band_waveform_freq'))
         exit(65)
+        
+    # -------------------------------------------------------------------------      
+    # CALCULATING REGISTER VALUES
+    # -------------------------------------------------------------------------
+      
+    global num_pulses
+    global num_repeats
+    global pulses     
+       
+    num_pulses = num_unique_pulses # n
+    num_repeats = num_pris // num_unique_pulses # m
+
+    # pulse     = {"pulse_number":xxx, "mb_offset":xxx, "dig_offset":xxx, 
+    #              "pri_offset":xxx, "frequency":xxx, "mode:xxx"}
+    # pulses    = [{pulse1}, {pulse2}, {pulse3}]
+
+    for index, polarity in enumerate(polarisation_order):       
+
+        if polarity in ['0', '1', '2', '3']:
+            frequency = l_band_waveform_freq
+            amp_delay = 1300  # 1.3us
+        else:
+            frequency = x_band_waveform_freq
+            amp_delay = 3510  # 3.51us
+        
+        mb_offset = (pre_pulse*1000)//10
+        do_offset = ((pulse_width*1000) - amp_delay)//10
+        pri_offset = ((pri*1000)//10) - mb_offset - do_offset
+  
+            
+        pulse = {"pulse_number":index, "mb_offset":mb_offset, "dig_offset":do_offset, "pri_offset":pri_offset,
+                 "frequency":frequency, "mode":polarity}
+        pulses.append(pulse)
 
     # header_lines = header_file.readlines()
     # header_file.close()
     #
-    # global num_transfers
-    # global num_pulses
-    # global num_repeats
-    # global pulses
+
     #
     # pulse_num = 0
     #
@@ -541,37 +547,38 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
     # CONNECT TO RHINO
     # -------------------------------------------------------------------------
-    logger.info('connecting to TCU...')
-    connect()
+    # logger.info('connecting to TCU...')
+    # connect()
 
-    # -------------------------------------------------------------------------
-    # CONFIGURE RHINO WITH TCU PROJECT
-    # -------------------------------------------------------------------------
-    logger.info('launching TCU .bof...')
-    launch_bof()
+    # # -------------------------------------------------------------------------
+    # # CONFIGURE RHINO WITH TCU PROJECT
+    # # -------------------------------------------------------------------------
+    # logger.info('launching TCU .bof...')
+    # launch_bof()
+    #
+    # # -------------------------------------------------------------------------
+    # # SEND PARAMETERS TO TCU
+    # # -------------------------------------------------------------------------
+    # logger.info('sending params to TCU...')
+    # write_registers()
+    #
+    # # -------------------------------------------------------------------------
+    # # VERIFY REGISTERS HAVE CORRECT VALUES
+    # # -------------------------------------------------------------------------
+    # logger.info('verifying TCU registers...')
+    # verify_registers()
+    #
+    # # -------------------------------------------------------------------------
+    # # ARM THE TCU
+    # # -------------------------------------------------------------------------
+    # logger.info('arming the TCU...')
+    # arm_tcu()
+    #
+    # # -------------------------------------------------------------------------
+    # # CLOSE SSH CONNECTION
+    # # -------------------------------------------------------------------------
+    # logger.info('closing ssh connection...')
+    # fpga_con.disconnect()
 
-    # -------------------------------------------------------------------------
-    # SEND PARAMETERS TO TCU
-    # -------------------------------------------------------------------------
-    logger.info('sending params to TCU...')
-    write_registers()
-
-    # -------------------------------------------------------------------------
-    # VERIFY REGISTERS HAVE CORRECT VALUES
-    # -------------------------------------------------------------------------
-    logger.info('verifying TCU registers...')
-    verify_registers()
-
-    # -------------------------------------------------------------------------
-    # ARM THE TCU
-    # -------------------------------------------------------------------------
-    logger.info('arming the TCU...')
-    arm_tcu()
-
-    # -------------------------------------------------------------------------
-    # CLOSE SSH CONNECTION
-    # -------------------------------------------------------------------------
-    logger.info('closing ssh connection...')
-    fpga_con.disconnect()
-
+    logger.info('script completed successfully')
     sys.exit(0)
