@@ -30,7 +30,7 @@ from harpoon.boardsupport import borph
 
 HEADER_PATH = "/home/brad/nextrad_header/"  # <-- this needs to change
 HEADER_NAME = "NeXtRAD.ini"
-TCU_ADDRESS = '192.168.1.16'
+TCU_ADDRESS = '192.168.1.36'
 # NUM_PULSE_PARAMS = 6                # see pulse dictionary format
 BOF_EXE = 'tcu_v2.bof'               # .bof must already be in /opt/rhinofs/
 
@@ -76,6 +76,9 @@ def print_welcome():
 
 
 def parse_header():
+    global num_pulses
+    global num_repeats
+    global pulses
     # -------------------------------------------------------------------------
     # EXTRACT PARAMETERS FROM HEADER FILE
     # -------------------------------------------------------------------------
@@ -109,9 +112,9 @@ def parse_header():
 
     try:
         waveform_index = pulse_parameters['waveform_index']
-        pulse_width = PULSE_WIDTHS[eval(waveform_index)]
-        logger.debug('waveform_index = {} --> pulse_width = {}us'
-                    .format(waveform_index, pulse_width))
+        pulse_width = (int(PULSE_WIDTHS[eval(waveform_index)]*1000))  # ns
+        logger.debug('waveform_index = {} --> pulse_width = {} ({}us)'
+                     .format(waveform_index, pulse_width, pulse_width/1000))
     except Exception as e:
         logger.error("could not find required parameter '{}' from header"
                      .format('waveform_index'))
@@ -120,9 +123,9 @@ def parse_header():
     try:
         polarisation_order = (pulse_parameters['pol_order']).replace('"', '')
         polarisation_order = polarisation_order.split(',')
-        num_unique_pulses = len(polarisation_order)
-        logger.debug('polarisation_order = {} --> num_unique_pulses = {}'
-                    .format(polarisation_order, num_unique_pulses))
+        num_pulses = len(polarisation_order)
+        logger.debug('polarisation_order = {} --> num_pulses = {}'
+                     .format(polarisation_order, num_pulses))
     except Exception as e:
         logger.error("could not find required parameter '{}' from header"
                      .format('pol_order'))
@@ -130,10 +133,9 @@ def parse_header():
 
     try:
         num_pris = eval(pulse_parameters['num_pris'])
-        num_cycles = num_pris // num_unique_pulses
-        logger.debug('num_pris = {}'.format(num_pris))
-        logger.debug('num_cycles = {} [m = n * num_unique_pulses]'
-        .format(num_cycles))
+        num_repeats = num_pris  # change of terminology
+        logger.debug('num_pris (num_repeats) = {}'.format(num_pris))
+
     except Exception as e:
         logger.error("could not find required parameter '{}' from header"
                      .format('num_pris'))
@@ -146,7 +148,7 @@ def parse_header():
         logger.error("could not find required parameter '{}' from header"
                      .format('pre_pulse'))
         exit(65)
-        
+
     try:
         pri = eval(pulse_parameters['pri'])
         logger.debug('pri = {}'.format(pri))
@@ -171,23 +173,14 @@ def parse_header():
         logger.error("could not find required parameter '{}' from header"
                      .format('x_band_waveform_freq'))
         exit(65)
-        
-    # -------------------------------------------------------------------------      
+
+    # -------------------------------------------------------------------------
     # CALCULATING REGISTER VALUES
     # -------------------------------------------------------------------------
-      
-    global num_pulses
-    global num_repeats
-    global pulses     
-       
-    num_pulses = num_unique_pulses # n
-    num_repeats = num_pris // num_unique_pulses # m
 
-    # pulse     = {"pulse_number":xxx, "mb_offset":xxx, "dig_offset":xxx, 
-    #              "pri_offset":xxx, "frequency":xxx, "mode:xxx"}
-    # pulses    = [{pulse1}, {pulse2}, {pulse3}]
+    logger.debug('calculating register values...')
 
-    for index, polarity in enumerate(polarisation_order):       
+    for index, polarity in enumerate(polarisation_order):
 
         if polarity in ['0', '1', '2', '3']:
             frequency = l_band_waveform_freq
@@ -195,109 +188,20 @@ def parse_header():
         else:
             frequency = x_band_waveform_freq
             amp_delay = 3510  # 3.51us
-        
+
         mb_offset = (pre_pulse*1000)//10
-        do_offset = ((pulse_width*1000) - amp_delay)//10
+        do_offset = ((pulse_width) - amp_delay)//10
         pri_offset = ((pri*1000)//10) - mb_offset - do_offset
-  
-            
-        pulse = {"pulse_number":index, "mb_offset":mb_offset, "dig_offset":do_offset, "pri_offset":pri_offset,
-                 "frequency":frequency, "mode":polarity}
+
+        pulse = {"pulse_number": index, "mb_offset": mb_offset,
+                 "dig_offset": do_offset, "pri_offset": pri_offset,
+                 "frequency": frequency, "mode": eval(polarity)}
+
+        logger.debug('PULSE {}: mb_offset = {}, dig_offset = {},'
+                     ' pri_offset = {}, frequency = {}, mode = {}'
+                     .format(index, mb_offset, do_offset, pri_offset,
+                             frequency, eval(polarity)))
         pulses.append(pulse)
-
-    # header_lines = header_file.readlines()
-    # header_file.close()
-    #
-
-    #
-    # pulse_num = 0
-    #
-    # next_pulse_index = 0
-    #
-    # for line in header_lines:
-    #     line = line.strip()
-    #     if line.startswith('NUM_TRANSFERS'):
-    #         logger.debug("num-transfers found:" + line[:-1])
-    #         val = line.split()
-    #         num_transfers = eval(val[2][:-1])
-    #     elif line.startswith('NumberOfPulses'):
-    #         logger.debug("number of pulses found:" + line[:-1])
-    #         val = line.split()
-    #         num_pulses = eval(val[2][:-1])
-    #     elif line.startswith('[pulse'):
-    #         logger.debug("pulse header found:" + line[:-1])
-    #         line_list = line.split()
-    #         val = line_list[0]
-    #         val = val.replace('[pulse', '')
-    #         val = val.replace(']', '')
-    #         pulse_num = eval(val)
-    #         logger.debug("pulse number is: " + str(val))
-    #         pulses.append(dict())
-    #         pulses[next_pulse_index]['pulse_number'] = pulse_num
-    #         next_pulse_index += 1
-    #     if next_pulse_index > 0:
-    #         if line.startswith('MBoffset'):
-    #             val = line.split()
-    #             logger.debug('MBoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
-    #             pulses[next_pulse_index-1]['mb_offset'] = eval(val[2][:-1])
-    #         elif line.startswith('DIGoffset'):
-    #             val = line.split()
-    #             logger.debug('DIGoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
-    #             pulses[next_pulse_index-1]['dig_offset'] = eval(val[2][:-1])
-    #         elif line.startswith('PRIoffset'):
-    #             val = line.split()
-    #             logger.debug('PRIoffset for [pulse{}] is {}'.format(pulse_num, val[2]))
-    #             pulses[next_pulse_index-1]['pri_offset'] = eval(val[2][:-1])
-    #         elif line.startswith('Frequency'):
-    #             val = line.split()
-    #             logger.debug('Frequency for [pulse{}] is {}'.format(pulse_num, val[2]))
-    #             pulses[next_pulse_index-1]['frequency'] = eval(val[2][:-1])
-    #         elif line.startswith('Mode'):
-    #             val = line.split()
-    #             logger.debug('Mode for [pulse{}] is {}'.format(pulse_num, val[2]))
-    #             pulses[next_pulse_index-1]['mode'] = eval(val[2][:-1])
-    #         # elif line.startswith('TxPol'):
-    #         #     val = line.split()
-    #         #     logger.debug('TxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
-    #         #     pulses[next_pulse_index-1]['tx_pol'] = val[2][:-1]
-    #         # elif line.startswith('RxPol'):
-    #         #     val = line.split()
-    #         #     logger.debug('RxPol for [pulse{}] is {}'.format(pulse_num, val[2]))
-    #         #     pulses[next_pulse_index-1]['rx_pol'] = val[2][:-1]
-    #     else:
-    #         pass
-    #
-    #     # calculate the number of pulses if 'NumberOfPulses' is not in header
-    #     if num_pulses == 0:
-    #         num_pulses = len(pulses)
-    #
-    #     logging.info('{} unique pulses found'.format(num_pulses))
-    #
-    # # -------------------------------------------------------------------------
-    # # VERIFY PARAMETERS
-    # # -------------------------------------------------------------------------
-    #
-    # if next_pulse_index == 0:
-    #     logger.error('no [pulseX] where found in header')
-    #     sys.exit(65)
-    # if num_transfers == 0:
-    #     logger.error('no NUM_TRANSFERS found in header, needed for "m"')
-    #     sys.exit(65)
-    # for pulse in pulses:
-    #     # simple check if the number of parameters matches the expected length,
-    #     # len(["pulse_number","mb_offset","dig_offset","pri_offset","frequency","tx_pol","rx_pol"])
-    #     # could take this further and check for each parameter individually
-    #     if len(pulse) != NUM_PULSE_PARAMS:
-    #         logger.error('missing pulse parameter(s) for pulse ' +
-    #                      str(pulse['pulse_number']))
-    #         sys.exit(65)
-    #
-    # num_pulses = next_pulse_index
-    # logger.debug('number of pulses found (n) = ' + str(num_pulses))
-    # # division operators: '/' for float, '//' integer
-    # num_repeats = num_transfers // num_pulses
-    # logger.debug('calculated number of repeats m = ' + str(num_repeats) +
-    #              ' [m = NUM_TRANSFERS / n]')
 
     logging.info('header parsing complete')
 
@@ -392,7 +296,7 @@ def write_registers():
         else:
             pulse_param_str += '\\x00\\x00'
         pulse_param_str += int_to_hex_str(pulse['frequency'], 'b')  # big endian
-        pulse_param_str += int_to_hex_str(pulse['mode']) # pulse_param_str += '\\x01\\x00'  # just for testing...
+        pulse_param_str += int_to_hex_str(pulse['mode'])
         if len(int_to_hex_str(pulse['pri_offset'])) > 8:
             pulse_param_str += int_to_hex_str(pulse['pri_offset'])[8:]
         else:
@@ -439,10 +343,7 @@ def verify_registers():
         for word in line_in_array:
             read_data_array.append(word)
 
-    num_of_words = len(read_data_array)
-    number_of_valid_pulses = num_of_words // 6
-
-    logger.debug('{}\t\t{}\t{}\t{}\t{}\t{}\t{}'.format("Pulse #", "MBoff (ns)", "DOoff (ns)", "FREQ (ns)", "PRIoff (ns)", "MODE", "PRF (Hz)"))
+    logger.debug('{}\t\t{}\t{}\t{}\t{}\t{}\t{}'.format("Pulse #", "MBoff (ns)", "DOoff (ns)", "FREQ (Hz)", "PRIoff (ns)", "MODE", "PRF (Hz)"))
     logger.debug('{}\t\t{}\t{}\t{}\t{}\t{}\t{}'.format("-------", "----------", "----------", "---------", "-----------", "----", "--------"))
     for pulse_number in range(num_pulses):
 
@@ -480,7 +381,7 @@ def verify_registers():
 
         prf_calc = 1/(((mb + do + pri))/1000000000)
 
-        logger.debug('{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t{}'.format(str(pulse_number+1), str(mb), str(do), str(freq), str(pri), str(mode), str(prf_calc)))
+        logger.debug('{}\t\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t{}'.format(str(pulse_number+1), str(mb), str(do), str(freq), str(pri), str(mode), str(prf_calc)))
         # table.add_row([str(pulse_number+1), str(mb), str(do), str(freq), str(pri), str(mode)])
     # *************************************************************************
 
@@ -547,38 +448,38 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
     # CONNECT TO RHINO
     # -------------------------------------------------------------------------
-    # logger.info('connecting to TCU...')
-    # connect()
+    logger.info('connecting to TCU...')
+    connect()
 
-    # # -------------------------------------------------------------------------
-    # # CONFIGURE RHINO WITH TCU PROJECT
-    # # -------------------------------------------------------------------------
-    # logger.info('launching TCU .bof...')
-    # launch_bof()
-    #
-    # # -------------------------------------------------------------------------
-    # # SEND PARAMETERS TO TCU
-    # # -------------------------------------------------------------------------
-    # logger.info('sending params to TCU...')
-    # write_registers()
-    #
-    # # -------------------------------------------------------------------------
-    # # VERIFY REGISTERS HAVE CORRECT VALUES
-    # # -------------------------------------------------------------------------
-    # logger.info('verifying TCU registers...')
-    # verify_registers()
-    #
-    # # -------------------------------------------------------------------------
-    # # ARM THE TCU
-    # # -------------------------------------------------------------------------
-    # logger.info('arming the TCU...')
-    # arm_tcu()
-    #
-    # # -------------------------------------------------------------------------
-    # # CLOSE SSH CONNECTION
-    # # -------------------------------------------------------------------------
-    # logger.info('closing ssh connection...')
-    # fpga_con.disconnect()
+    # -------------------------------------------------------------------------
+    # CONFIGURE RHINO WITH TCU PROJECT
+    # -------------------------------------------------------------------------
+    logger.info('launching TCU .bof...')
+    launch_bof()
+
+    # -------------------------------------------------------------------------
+    # SEND PARAMETERS TO TCU
+    # -------------------------------------------------------------------------
+    logger.info('sending params to TCU...')
+    write_registers()
+
+    # -------------------------------------------------------------------------
+    # VERIFY REGISTERS HAVE CORRECT VALUES
+    # -------------------------------------------------------------------------
+    logger.info('verifying TCU registers...')
+    verify_registers()
+
+    # -------------------------------------------------------------------------
+    # ARM THE TCU
+    # -------------------------------------------------------------------------
+    logger.info('arming the TCU...')
+    arm_tcu()
+
+    # -------------------------------------------------------------------------
+    # CLOSE SSH CONNECTION
+    # -------------------------------------------------------------------------
+    logger.info('closing ssh connection...')
+    fpga_con.disconnect()
 
     logger.info('script completed successfully')
     sys.exit(0)
