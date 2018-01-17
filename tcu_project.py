@@ -15,6 +15,8 @@
 # user codes: '0', '64 - 113' http://www.tldp.org/LDP/abs/html/exitcodes.html
 # ----------------------------------------------------------------------------
 
+import argparse
+import getpass
 import os.path
 import sys
 import time
@@ -440,6 +442,13 @@ project = harpoon.Project('tcu_project',
                           [core_tcu])
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(usage='tcu_project [address]', description='Startup script for the NeXtRAD Timing Control Unit (TCU)')
+    parser.add_argument('address', help='IP address of TCU')
+    parser.add_argument('-p','--path', help='path of header file located on node computer [/home/'+getpass.getuser()+'/]', default='/home/'+getpass.getuser()+'/')
+    parser.add_argument('-f','--file', help="name of header file located on node computer [NeXtRAD.ini]", default='NeXtRAD.ini')
+    parser.add_argument('-b','--bof', help='name of .bof file to be executed on RHINO [tcu_v2.bof]', default='tcu_v2.bof')
+    parser.parse_args()
+
     print_welcome()
 
     logger.info('parsing header file: ' + HEADER_PATH + HEADER_NAME)
