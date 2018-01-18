@@ -26,16 +26,6 @@ import logging
 import harpoon
 from harpoon.boardsupport import borph
 
-
-# TODO: find out where header file will live on node laptop
-# TODO: pass command line args for these values! (have default values)
-
-HEADER_PATH = "/home/brad/nextrad_header/"  # <-- this needs to change
-HEADER_NAME = "NeXtRAD.ini"
-TCU_ADDRESS = '192.168.1.36'
-# NUM_PULSE_PARAMS = 6                # see pulse dictionary format
-BOF_EXE = 'tcu_v2.bof'               # .bof must already be in /opt/rhinofs/
-
 num_transfers = int()               # used to calculate M
 num_pulses = int()                  # N
 num_repeats = int()                 # M
@@ -447,7 +437,15 @@ if __name__ == '__main__':
     parser.add_argument('-p','--path', help='path of header file located on node computer [/home/'+getpass.getuser()+'/]', default='/home/'+getpass.getuser()+'/')
     parser.add_argument('-f','--file', help="name of header file located on node computer [NeXtRAD.ini]", default='NeXtRAD.ini')
     parser.add_argument('-b','--bof', help='name of .bof file to be executed on RHINO [tcu_v2.bof]', default='tcu_v2.bof')
-    parser.parse_args()
+    parser.add_argument('-t','--timeout', help='login timeout (seconds) to establish SSH connection to RHINO [30]', type=int, default=30)
+    args = parser.parse_args()
+
+    logger.debug("command line args: {}".format(args))
+
+    HEADER_PATH = args.path
+    HEADER_NAME = args.file
+    TCU_ADDRESS = args.address
+    BOF_EXE = args.bof  # NOTE: assumes .bof must already be in /opt/rhinofs/
 
     print_welcome()
 
