@@ -431,7 +431,7 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
     parser = argparse.ArgumentParser(usage='tcu_project [address]', description='Startup script for the NeXtRAD Timing Control Unit (TCU)')
     parser.add_argument('address', help='IP address of TCU')
-    parser.add_argument('-f','--file', help="header file")
+    parser.add_argument('file', help="header file")
     parser.add_argument('-b','--bof', help='name of .bof file to be executed on RHINO [tcu_v2.bof]', default='tcu_v2.bof')
     parser.add_argument('-t','--timeout', help='login timeout (seconds) to establish SSH connection to RHINO [30]', type=int, default=30)
     args = parser.parse_args()
