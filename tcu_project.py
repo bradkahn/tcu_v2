@@ -394,42 +394,42 @@ def arm_tcu():
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(int_to_hex_str(1), fpga_con._pid, 'reg_led'))
     logger.debug('TCU armed')
 
-
+# TODO: incorporate this:
 # -----------------------------------------------------------------------------
 # CORE INSTANTIATION
 # -----------------------------------------------------------------------------
-core_tcu = harpoon.IPCore('tcu_core', 'Timing control unit')
+# core_tcu = harpoon.IPCore('tcu_core', 'Timing control unit')
 
 # -----------------------------------------------------------------------------
 # REGISTERS FOR CORE_TCU INSTANTIATION
 # -----------------------------------------------------------------------------
-harpoon.Register('version', 'version number of this iteration of tcu gateware',
-                 2, 1, core_tcu)
-harpoon.Register('status',
-                 'status flags:\n'
-                 'bit 0: pulse repeats for experiment completed\n'
-                 'bit 3: digitisation flag\n'
-                 'bit 4: pri flag, bit 5: pulse completed\n'
-                 'bit 6: \'1\'\n'
-                 'bit 7: gpioIN(1) trigger from GPSDO',
-                 2, 1, core_tcu)
-harpoon.Register('control', 'reg-description',
-                 2, 3, core_tcu)
-harpoon.Register('fmc', 'reg-description',
-                 4, 3, core_tcu)
-harpoon.Register('pulses', 'reg-description',
-                 180, 3, core_tcu)
-harpoon.Register('m', 'Number of repeats for each pulse in an experiment',
-                 4, 3, core_tcu)
-harpoon.Register('n', 'Number of pulses',
-                 2, 3, core_tcu)
+# harpoon.Register('version', 'version number of this iteration of tcu gateware',
+#                  2, 1, core_tcu)
+# harpoon.Register('status',
+#                  'status flags:\n'
+#                  'bit 0: pulse repeats for experiment completed\n'
+#                  'bit 3: digitisation flag\n'
+#                  'bit 4: pri flag, bit 5: pulse completed\n'
+#                  'bit 6: \'1\'\n'
+#                  'bit 7: gpioIN(1) trigger from GPSDO',
+#                  2, 1, core_tcu)
+# harpoon.Register('control', 'reg-description',
+#                  2, 3, core_tcu)
+# harpoon.Register('fmc', 'reg-description',
+#                  4, 3, core_tcu)
+# harpoon.Register('pulses', 'reg-description',
+#                  180, 3, core_tcu)
+# harpoon.Register('m', 'Number of repeats for each pulse in an experiment',
+#                  4, 3, core_tcu)
+# harpoon.Register('n', 'Number of pulses',
+#                  2, 3, core_tcu)
 
 # -----------------------------------------------------------------------------
 # Project instantiation
 # -----------------------------------------------------------------------------
-project = harpoon.Project('tcu_project',
-                          'project to communicate with the RHINO-TCU',
-                          [core_tcu])
+# project = harpoon.Project('tcu_project',
+#                           'project to communicate with the RHINO-TCU',
+#                           [core_tcu])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(usage='tcu_project [address]', description='Startup script for the NeXtRAD Timing Control Unit (TCU)')
