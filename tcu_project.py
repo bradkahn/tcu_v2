@@ -65,15 +65,14 @@ def print_welcome():
     print("")
     print("NeXtRAD TCU v2.0")
     print("")
+    print("TODO: support for pulse widths < 3us")
+    print("")
 
 
 def parse_header():
     global num_pulses
     global num_repeats
     global pulses
-    # -------------------------------------------------------------------------
-    # EXTRACT PARAMETERS FROM HEADER FILE
-    # -------------------------------------------------------------------------
 
     # check if headerfile exists
     if not os.path.isfile(HEADER_PATH + HEADER_NAME):
@@ -299,16 +298,10 @@ def write_registers():
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(pulse_param_str, fpga_con._pid, 'reg_pulses'))
 
     num_repeats_str = str()
-    print(num_repeats_str)
-    print(int_to_hex_str(num_repeats))
-    print(int_to_hex_str(num_repeats))
-    print(len(int_to_hex_str(num_repeats)))
-    print((int_to_hex_str(num_repeats))[8:])
     if len(int_to_hex_str(num_repeats)) > 8:
         num_repeats_str = int_to_hex_str(num_repeats)[8:] + int_to_hex_str(num_repeats)[0:8]
     else:
         num_repeats_str = int_to_hex_str(num_repeats)[0:8] + '\\x00\\x00'
-    print(num_repeats_str)
     logger.debug('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_repeats_str, fpga_con._pid, 'm'))
     fpga_con._action('echo -en \'{}\' | cat > /proc/{}/hw/ioreg/{}'.format(num_repeats_str, fpga_con._pid, 'm'))
 
@@ -432,6 +425,10 @@ def arm_tcu():
 #                           [core_tcu])
 
 if __name__ == '__main__':
+
+    # -------------------------------------------------------------------------
+    # PARSE COMMAND LINE ARGUMENTS
+    # -------------------------------------------------------------------------
     parser = argparse.ArgumentParser(usage='tcu_project [address]', description='Startup script for the NeXtRAD Timing Control Unit (TCU)')
     parser.add_argument('address', help='IP address of TCU')
     parser.add_argument('-p','--path', help='path of header file located on node computer [/home/'+getpass.getuser()+'/]', default='/home/'+getpass.getuser()+'/')
@@ -449,6 +446,9 @@ if __name__ == '__main__':
 
     print_welcome()
 
+    # -------------------------------------------------------------------------
+    # EXTRACT PARAMETERS FROM HEADER FILE
+    # -------------------------------------------------------------------------
     logger.info('parsing header file: ' + HEADER_PATH + HEADER_NAME)
     parse_header()
 
