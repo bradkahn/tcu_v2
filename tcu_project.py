@@ -75,13 +75,13 @@ def parse_header():
     global pulses
 
     # check if headerfile exists
-    if not os.path.isfile(HEADER_PATH + HEADER_NAME):
+    if not os.path.isfile(HEADER_FILE):
         logger.error('could not find header file "{}" in path: {}'
                      .format(HEADER_NAME, HEADER_PATH))
         sys.exit(64)
 
     header_file = configparser.ConfigParser()
-    header_file.read(HEADER_PATH + HEADER_NAME)
+    header_file.read(HEADER_FILE)
 
     try:
         pulse_parameters = header_file['PulseParameters']
@@ -431,16 +431,14 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
     parser = argparse.ArgumentParser(usage='tcu_project [address]', description='Startup script for the NeXtRAD Timing Control Unit (TCU)')
     parser.add_argument('address', help='IP address of TCU')
-    parser.add_argument('-p','--path', help='path of header file located on node computer [/home/'+getpass.getuser()+'/]', default='/home/'+getpass.getuser()+'/')
-    parser.add_argument('-f','--file', help="name of header file located on node computer [NeXtRAD.ini]", default='NeXtRAD.ini')
+    parser.add_argument('-f','--file', help="header file")
     parser.add_argument('-b','--bof', help='name of .bof file to be executed on RHINO [tcu_v2.bof]', default='tcu_v2.bof')
     parser.add_argument('-t','--timeout', help='login timeout (seconds) to establish SSH connection to RHINO [30]', type=int, default=30)
     args = parser.parse_args()
 
     logger.debug("command line args: {}".format(args))
 
-    HEADER_PATH = args.path
-    HEADER_NAME = args.file
+    HEADER_FILE = args.file
     TCU_ADDRESS = args.address
     BOF_EXE = args.bof  # NOTE: assumes .bof must already be in /opt/rhinofs/
 
@@ -449,7 +447,7 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------
     # EXTRACT PARAMETERS FROM HEADER FILE
     # -------------------------------------------------------------------------
-    logger.info('parsing header file: ' + HEADER_PATH + HEADER_NAME)
+    logger.info('parsing header file: ' + HEADER_FILE)
     parse_header()
 
     # -------------------------------------------------------------------------
