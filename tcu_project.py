@@ -60,15 +60,6 @@ logging.getLogger().addHandler(fh)
 logging.getLogger().addHandler(ch)
 
 
-def print_welcome():
-    print(harpoon.LOGO)
-    print("")
-    print("NeXtRAD TCU v2.0")
-    print("")
-    print("TODO: support for pulse widths < 3us")
-    print("")
-
-
 def parse_header():
     global num_pulses
     global num_repeats
@@ -424,6 +415,7 @@ def arm_tcu():
 #                           'project to communicate with the RHINO-TCU',
 #                           [core_tcu])
 
+
 if __name__ == '__main__':
 
     # -------------------------------------------------------------------------
@@ -435,14 +427,12 @@ if __name__ == '__main__':
     parser.add_argument('-b','--bof', help='name of .bof file to be executed on RHINO [tcu_v2.bof]', default='tcu_v2.bof')
     parser.add_argument('-t','--timeout', help='login timeout (seconds) to establish SSH connection to RHINO [30]', type=int, default=30)
     args = parser.parse_args()
-
+    logger.debug(harpoon.LOGO)
     logger.debug("command line args: {}".format(args))
 
     HEADER_FILE = args.file
     TCU_ADDRESS = args.address
     BOF_EXE = args.bof  # NOTE: assumes .bof must already be in /opt/rhinofs/
-
-    print_welcome()
 
     # -------------------------------------------------------------------------
     # EXTRACT PARAMETERS FROM HEADER FILE
