@@ -14,10 +14,10 @@ positional arguments:
     address     IP address of TCU  
     file        header file  
 optional arguments:  
-    -h, --help      show this help message and exit  
-    -b BOF, --bof BOF       name of .bof file to be executedon RHINO ['tcu_v2.bof']  
-    -t TIMEOUT, --timeout       TIMEOUT login timeout (seconds) toestablish SSH connection to RHINO [30]  
-    -l LOGDIR, --logdir     LOGDIR directory to store log file default ['/tmp']
+    -h, --help                      show this help message and exit  
+    -b BOF, --bof BOF               name of .bof file to be executedon RHINO ['tcu_v2.bof']  
+    -t TIMEOUT, --timeout TIMEOUT   login timeout (seconds) toestablish SSH connection to RHINO [30]  
+    -l LOGDIR, --logdir LOGDIR      directory to store log file default ['/tmp']
 ```  
 
 ### Dependencies
@@ -25,7 +25,6 @@ optional arguments:
 *   python3
 *   harpoon framework (still in development)
 *   pexpect
-
 *   *TODO: list other dependencies*
 
 ### Exit Codes for tcu_v2.py
