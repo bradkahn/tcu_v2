@@ -9,7 +9,9 @@
 *TODO: description of script*
 
 ### Usage
-```usage: tcu_project [address] [file]
+```
+tcu_project [address] [file]
+
 positional arguments:  
     address     IP address of TCU  
     file        header file  
@@ -27,7 +29,7 @@ optional arguments:
 *   pexpect
 *   *TODO: list other dependencies*
 
-### Exit Codes for tcu_v2.py
+### Exit Codes
 | Code | Description |
 | ------ | ------ |
 | 0 | all good, tcu is armed and waiting |
