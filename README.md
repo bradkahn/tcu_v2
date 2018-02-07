@@ -9,19 +9,19 @@
 ### Usage
 > usage: tcu_project [address] [file]
 >
-> positional arguments:
->   address               IP address of TCU
->   file                  header file
+> positional arguments:  
+>   address               IP address of TCU  
+>   file                  header file  
 >
-> optional arguments:
->   -h, --help            show this help message and exit
->   -b BOF, --bof BOF     name of .bof file to be executedon RHINO
->                         ['tcu_v2.bof']
->   -t TIMEOUT, --timeout TIMEOUT
->                         login timeout (seconds) toestablish SSH connection to
->                         RHINO [30]
->   -l LOGDIR, --logdir LOGDIR
->                         directory to store log file default ['/tmp']
+> optional arguments:  
+>   -h, --help            show this help message and exit  
+>   -b BOF, --bof BOF     name of .bof file to be executedon RHINO  
+>                         ['tcu_v2.bof']  
+>   -t TIMEOUT, --timeout TIMEOUT  
+>                         login timeout (seconds) toestablish SSH connection to  
+>                         RHINO [30]  
+>   -l LOGDIR, --logdir LOGDIR  
+>                         directory to store log file default ['/tmp']  
 
 ### Dependencies
 
@@ -33,7 +33,6 @@
 ### Exit Codes for tcu_v2.py
 | Code | Description |
 | ------ | ------ |
-| Dropbox | [plugins/dropbox/README.md] [PlDb] |
 | 0 | all good, tcu is armed and waiting |
 | 64 | headerfile not found |
 | 65 | expected parameter missing from headerfile |
