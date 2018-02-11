@@ -35,38 +35,27 @@ pulses = list()                     # [{pulse1}, {pulse2}, {pulse3}]
 # {"pulse_number": xxx, "mb_offset":xxx, "dig_offset":xxx, "pri_offset":xxx,
 # "frequency": xxx, 'mode':x}
 
-# -----------------------------------------------------------------------------
-# Logging stuff
-# -----------------------------------------------------------------------------
 
 logger = logging.getLogger('tcu_project_logger')
-logger.setLevel(logging.DEBUG)
-# create file handler which logs even debug messages
-time_struct = time.localtime()
-time_str = time.strftime("%H:%M:%S", time_struct)
-date_str = time.strftime("%d-%m-%Y", time_struct)
-fh = logging.FileHandler('tcu_experiment_' + date_str + '_' + time_str + '.log')
-fh.setLevel(logging.DEBUG)
-# create console handler with a higher log level
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
-# create formatter and add it to the handlers
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-formatter2 = logging.Formatter('[%(levelname)s] %(message)s')
-ch.setFormatter(formatter2)
-fh.setFormatter(formatter)
-# add the handlers to logger
-logging.getLogger().addHandler(fh)
-logging.getLogger().addHandler(ch)
-
-
-def print_welcome():
-    print(harpoon.LOGO)
-    print("")
-    print("NeXtRAD TCU v2.0")
-    print("")
-    print("TODO: support for pulse widths < 3us")
-    print("")
+def init_logger():
+    logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    time_struct = time.localtime()
+    time_str = time.strftime("%H:%M:%S", time_struct)
+    date_str = time.strftime("%d-%m-%Y", time_struct)
+    fh = logging.FileHandler('tcu_experiment_' + date_str + '_' + time_str + '.log')
+    fh.setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter2 = logging.Formatter('[%(levelname)s] %(message)s')
+    ch.setFormatter(formatter2)
+    fh.setFormatter(formatter)
+    # add the handlers to logger
+    logging.getLogger().addHandler(fh)
+    logging.getLogger().addHandler(ch)
 
 
 def parse_header():
@@ -238,7 +227,6 @@ def connect():
                            password='rhino',
                            login_timeout=30)
     logger.debug('attempting to connect...')
-    logger.info('attempting to connect...')
     try:
         fpga_con.connect()
     except Exception as e:
@@ -424,66 +412,78 @@ def arm_tcu():
 #                           'project to communicate with the RHINO-TCU',
 #                           [core_tcu])
 
+
 if __name__ == '__main__':
 
     # -------------------------------------------------------------------------
     # PARSE COMMAND LINE ARGUMENTS
     # -------------------------------------------------------------------------
-    parser = argparse.ArgumentParser(usage='tcu_project [address]', description='Startup script for the NeXtRAD Timing Control Unit (TCU)')
+    parser = argparse.ArgumentParser(usage='tcu_project [address]',
+                                     description='Startup script for the '
+                                                 'NeXtRAD Timing Control Unit')
     parser.add_argument('address', help='IP address of TCU')
     parser.add_argument('file', help="header file")
-    parser.add_argument('-b','--bof', help='name of .bof file to be executed on RHINO [tcu_v2.bof]', default='tcu_v2.bof')
-    parser.add_argument('-t','--timeout', help='login timeout (seconds) to establish SSH connection to RHINO [30]', type=int, default=30)
+    parser.add_argument('-b', '--bof', help='name of .bof file to be executed'
+                        'on RHINO [\'tcu_v2.bof\']', default='tcu_v2.bof')
+    parser.add_argument('-t', '--timeout', help='login timeout (seconds) to'
+                        'establish SSH connection to RHINO [30]',
+                        type=int, default=30)
+    parser.add_argument('-l', '--logdir', help='directory to store log file default [\'/tmp\']', default='/tmp')
     args = parser.parse_args()
 
+    init_logger()
+
+    logger.debug(harpoon.LOGO)
     logger.debug("command line args: {}".format(args))
 
     HEADER_FILE = args.file
     TCU_ADDRESS = args.address
     BOF_EXE = args.bof  # NOTE: assumes .bof must already be in /opt/rhinofs/
 
-    print_welcome()
+    logger.info('initializing TCU at IP [{}] with header file at [{}],'
+                'this should take a moment...'
+                .format(TCU_ADDRESS, HEADER_FILE))
 
     # -------------------------------------------------------------------------
     # EXTRACT PARAMETERS FROM HEADER FILE
     # -------------------------------------------------------------------------
-    logger.info('parsing header file: ' + HEADER_FILE)
+    logger.debug('parsing header file: ' + HEADER_FILE)
     parse_header()
 
     # -------------------------------------------------------------------------
     # CONNECT TO RHINO
     # -------------------------------------------------------------------------
-    logger.info('connecting to TCU...')
+    logger.debug('connecting to TCU...')
     connect()
 
     # -------------------------------------------------------------------------
     # CONFIGURE RHINO WITH TCU PROJECT
     # -------------------------------------------------------------------------
-    logger.info('launching TCU .bof...')
+    logger.debug('launching TCU .bof...')
     launch_bof()
 
     # -------------------------------------------------------------------------
     # SEND PARAMETERS TO TCU
     # -------------------------------------------------------------------------
-    logger.info('sending params to TCU...')
+    logger.debug('sending params to TCU...')
     write_registers()
 
     # -------------------------------------------------------------------------
     # VERIFY REGISTERS HAVE CORRECT VALUES
     # -------------------------------------------------------------------------
-    logger.info('verifying TCU registers...')
+    logger.debug('verifying TCU registers...')
     verify_registers()
 
     # -------------------------------------------------------------------------
     # ARM THE TCU
     # -------------------------------------------------------------------------
-    logger.info('arming the TCU...')
+    logger.debug('arming the TCU...')
     arm_tcu()
 
     # -------------------------------------------------------------------------
     # CLOSE SSH CONNECTION
     # -------------------------------------------------------------------------
-    logger.info('closing ssh connection...')
+    logger.debug('closing ssh connection...')
     fpga_con.disconnect()
 
     logger.info('script completed successfully')
