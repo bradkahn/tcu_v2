@@ -741,9 +741,40 @@ begin --architecture RTL
     gpio(15)    <= pri_heartbeat;
 
     sys_clk_100MHz  <= sys_clk_100MHz_int when clk_sel = '1' else sys_clk_100MHz_ext;
-    -- TODO: drive these with meaningful debug signals
-    gpio_fmc    <= "1111000011110000";
-
+    -- NET "gpio_fmc[0]"   LOC = V11;  # FMC0_LA_P24
+    -- NET "gpio_fmc[1]"   LOC = V10;  # FMC0_LA_N24
+    -- NET "gpio_fmc[2]"   LOC = AA9;  # FMC0_LA_P25
+    -- NET "gpio_fmc[3]"   LOC = AB9;  # FMC0_LA_N25
+    -- NET "gpio_fmc[4]"   LOC = AA10; # FMC0_LA_P26
+    -- NET "gpio_fmc[5]"   LOC = AB11; # FMC0_LA_N26
+    -- NET "gpio_fmc[6]"   LOC = AD6;  # FMC0_LA_P27
+    -- NET "gpio_fmc[7]"   LOC = AF6;  # FMC0_LA_N27
+    -- NET "gpio_fmc[8]"   LOC = W10;  # FMC0_LA_P28
+    -- NET "gpio_fmc[9]"   LOC = W9;   # FMC0_LA_N28
+    -- NET "gpio_fmc[10]"  LOC = AE5;  # FMC0_LA_P29
+    -- NET "gpio_fmc[11]"  LOC = AF5;  # FMC0_LA_N29
+    -- NET "gpio_fmc[12]"  LOC = Y9;   # FMC0_LA_P30
+    -- NET "gpio_fmc[13]"  LOC = AA8;  # FMC0_LA_N30
+    -- NET "gpio_fmc[14]"  LOC = AB7;  # FMC0_LA_P31
+    -- NET "gpio_fmc[15]"  LOC = AC6;  # FMC0_LA_N31
+    -- MIRROR IO pins to 3v3 FMC GPIO pins
+    -- trigger         <= gpio_fmc(0);         -- from GPSDO
+    -- clk_sel         <= gpio_fmc(1);         -- clock select line to select between internal / external 100MHz
+    -- gpio_fmc(2)     <= trigger;           -- from GPSDO
+    -- gpio_fmc(3)     <= not pri_heartbeat; -- to Pentek (active low)
+    -- gpio_fmc(4)     <= x_amp_switch;      -- to HPAs
+    -- gpio_fmc(5)     <= x_pol_tx;          -- to polarisation switches
+    -- gpio_fmc(6)     <= l_amp_switch;
+    -- gpio_fmc(7)     <= l_pol_tx;
+    -- gpio_fmc(8)     <= l_pol_rx;
+    -- gpio_fmc(9)     <= '1' when state = ARMED     else '0';
+    -- gpio_fmc(10)    <= '1' when state = PRE_PULSE else '0';
+    -- gpio_fmc(11)    <= '1' when state = MAIN_BANG else '0';
+    -- gpio_fmc(12)    <= '1' when state = DIGITIZE  else '0';
+    -- gpio_fmc(13)    <= '1' when state = DONE      else '0';
+    -- gpio_fmc(14)    <= '1' when state = FAULT     else '0';
+    -- gpio_fmc(15)    <= pri_heartbeat;
+    gpio_fmc <= pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat & pri_heartbeat;
     with state select led_fmc <=
           clk_0_5Hz&"000"                 when IDLE,
           clk_2Hz&(not clk_2Hz)&"00"      when ARMED,
