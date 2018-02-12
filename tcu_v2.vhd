@@ -325,6 +325,10 @@ architecture rtl of tcu_top is
   		LOCKED : OUT std_logic
   		);
   	END COMPONENT;
+
+    signal pri_trigger : std_logic := '0';
+    signal counter : unsigned(31 downto 0) := (OTHERS=>'0');
+    -- signal counter : natural range 0 to 50_000 := 0;
 --==========================
 begin --architecture RTL
 --==========================
@@ -623,7 +627,8 @@ begin --architecture RTL
 
 
                 when MAIN_BANG =>
-                    pri_heartbeat   <= '1';
+                    -- pri_heartbeat   <= '1';
+                    pri_trigger <= '1';
                     if DIGcounter>= DIGoffset then
                         state       <= DIGITIZE;
                         DIGcounter  <= x"0000";
@@ -637,9 +642,11 @@ begin --architecture RTL
                     x_amp_switch    <= X_AMP_OFF;
                     l_amp_switch    <= L_AMP_OFF;
                     -- pri_heartbeat   <= '0';
+                    pri_trigger <= '0';
+
 
                     if PRIcounter >= PRIoffset then
-                        pri_heartbeat   <= '0';
+                        -- pri_heartbeat   <= '0';
                         pulse_index <= pulse_index + 6;
                         if (pulse_index/6)+1 >= unsigned(N_reg) then
                             M_counter   <= M_counter + 1;
@@ -702,6 +709,36 @@ begin --architecture RTL
             end case;
         end if;
     end process;
+
+
+CounterWithTriggerPulse : process (sys_clk_100MHz) is
+begin
+    if rising_edge(sys_clk_100MHz) then
+        if pri_trigger = '1' then
+            counter <= MBoffset + DIGoffset + PRIoffset;
+        elsif counter > 0 then
+            counter <= counter - 1;
+            if counter >= ((MBoffset + DIGoffset + PRIoffset)/2) then
+              pri_heartbeat <= '1';
+            else
+              pri_heartbeat <= '0';
+            end if;
+        end if;
+    end if; -- clock
+end process CounterWithTriggerPulse;
+
+    -- pri_pulse : process(sys_clk_100MHz, pulse_out_flag)
+    -- variable pulse_out_ctr : integer := 0;
+    -- begin
+    --   if pulse_out_flag = '1' then
+    --     pulse_out_latch <= '1';
+    --   end if;
+    --   if rising_edge(sys_clk_100MHz) then
+    --     if pulse_out_latch = '1' then
+    --       -- increment counter...
+    --     end if;
+    --   end if;
+    -- end process;
 
     soft_arm    <= triggers(0); -- from internal TCU register
     -- led_reg(0)  <= trigger;
