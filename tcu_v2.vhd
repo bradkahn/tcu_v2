@@ -428,7 +428,10 @@ begin --architecture RTL
         O  => sys_clk_100MHz_int
     );
 
-    IBUFGDS_tcu_clk : IBUFG
+    ---------------------------------------------------------------------------
+    -- Input clock buffer, for EXTERNAL 100MHz clock 
+    ---------------------------------------------------------------------------
+    IBUFG_tcu_clk : IBUFG
     generic map
     (
         IBUF_LOW_PWR => FALSE

@@ -271,7 +271,7 @@ NET "gpmc_n_adv_ale" LOC = AA26;
 # Set location of GPIO pins
 
 NET "gpioIn[0]" LOC = R8;# | IOSTANDARD = "LVCMOS25";
-NET "gpioIn[1]" LOC = T8;# | IOSTANDARD = "LVCMOS25";
+NET "gpioIn[1]" LOC = T8 | PULLDOWN; # LOW = external clk, HIGH = internal clk
 NET "gpio[2]" LOC = U5;
 NET "gpio[3]" LOC = T4;
 NET "gpio[4]" LOC = R10;
