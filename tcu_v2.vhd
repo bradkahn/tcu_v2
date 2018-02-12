@@ -269,54 +269,54 @@ architecture rtl of tcu_top is
     );
     end component clk_manager;
 
-    component UDP_1GbE is
-    generic(
-        UDP_TX_DATA_BYTE_LENGTH : natural := 1;
-        UDP_RX_DATA_BYTE_LENGTH : natural := 1
-    );
-    port(
-        -- user logic interface
-        own_ip_addr     : in    std_logic_vector(31 downto 0);
-        own_mac_addr    : in    std_logic_vector(47 downto 0);
-        dst_ip_addr     : in    std_logic_vector(31 downto 0);
-        dst_mac_addr    : in    std_logic_vector(47 downto 0);
-
-        udp_src_port    : in    std_logic_vector(15 downto 0);
-        udp_dst_port    : in    std_logic_vector(15 downto 0);
-
-        udp_tx_pkt_data : in    std_logic_vector(8 * UDP_TX_DATA_BYTE_LENGTH - 1 downto 0);
-        udp_tx_pkt_vld  : in    std_logic;
-        udp_tx_rdy      : out   std_logic;
-
-        udp_rx_pkt_data : out   std_logic_vector(8 * UDP_RX_DATA_BYTE_LENGTH - 1 downto 0);
-        udp_rx_pkt_req  : in    std_logic;
-        udp_rx_rdy      : out   std_logic;
-
-        mac_init_done   : out   std_logic;
-
-        -- MAC interface
-        GIGE_COL        : in    std_logic;
-        GIGE_CRS        : in    std_logic;
-        GIGE_MDC        : out   std_logic;
-        GIGE_MDIO       : inout std_logic;
-        GIGE_TX_CLK     : in    std_logic;
-        GIGE_nRESET     : out   std_logic;
-        GIGE_RXD        : in    std_logic_vector(7 downto 0);
-        GIGE_RX_CLK     : in    std_logic;
-        GIGE_RX_DV      : in    std_logic;
-        GIGE_RX_ER      : in    std_logic;
-        GIGE_TXD        : out   std_logic_vector(7 downto 0);
-        GIGE_GTX_CLK    : out   std_logic;
-        GIGE_TX_EN      : out   std_logic;
-        GIGE_TX_ER      : out   std_logic;
-
-        -- system control
-        clk_125mhz      : in    std_logic;
-        clk_100mhz      : in    std_logic;
-        sys_rst_i       : in    std_logic;
-        sysclk_locked   : in    std_logic
-    );
-    end component UDP_1GbE;
+    -- component UDP_1GbE is
+    -- generic(
+    --     UDP_TX_DATA_BYTE_LENGTH : natural := 1;
+    --     UDP_RX_DATA_BYTE_LENGTH : natural := 1
+    -- );
+    -- port(
+    --     -- user logic interface
+    --     own_ip_addr     : in    std_logic_vector(31 downto 0);
+    --     own_mac_addr    : in    std_logic_vector(47 downto 0);
+    --     dst_ip_addr     : in    std_logic_vector(31 downto 0);
+    --     dst_mac_addr    : in    std_logic_vector(47 downto 0);
+    --
+    --     udp_src_port    : in    std_logic_vector(15 downto 0);
+    --     udp_dst_port    : in    std_logic_vector(15 downto 0);
+    --
+    --     udp_tx_pkt_data : in    std_logic_vector(8 * UDP_TX_DATA_BYTE_LENGTH - 1 downto 0);
+    --     udp_tx_pkt_vld  : in    std_logic;
+    --     udp_tx_rdy      : out   std_logic;
+    --
+    --     udp_rx_pkt_data : out   std_logic_vector(8 * UDP_RX_DATA_BYTE_LENGTH - 1 downto 0);
+    --     udp_rx_pkt_req  : in    std_logic;
+    --     udp_rx_rdy      : out   std_logic;
+    --
+    --     mac_init_done   : out   std_logic;
+    --
+    --     -- MAC interface
+    --     GIGE_COL        : in    std_logic;
+    --     GIGE_CRS        : in    std_logic;
+    --     GIGE_MDC        : out   std_logic;
+    --     GIGE_MDIO       : inout std_logic;
+    --     GIGE_TX_CLK     : in    std_logic;
+    --     GIGE_nRESET     : out   std_logic;
+    --     GIGE_RXD        : in    std_logic_vector(7 downto 0);
+    --     GIGE_RX_CLK     : in    std_logic;
+    --     GIGE_RX_DV      : in    std_logic;
+    --     GIGE_RX_ER      : in    std_logic;
+    --     GIGE_TXD        : out   std_logic_vector(7 downto 0);
+    --     GIGE_GTX_CLK    : out   std_logic;
+    --     GIGE_TX_EN      : out   std_logic;
+    --     GIGE_TX_ER      : out   std_logic;
+    --
+    --     -- system control
+    --     clk_125mhz      : in    std_logic;
+    --     clk_100mhz      : in    std_logic;
+    --     sys_rst_i       : in    std_logic;
+    --     sysclk_locked   : in    std_logic
+    -- );
+    -- end component UDP_1GbE;
 
     COMPONENT clk_wiz_v3_6
   	PORT(
@@ -337,74 +337,74 @@ begin --architecture RTL
     --	Ethernet components
     ---------------------------------------------------------------------------
 
-    UDP_1GbE_inst : UDP_1GbE
-    generic map(
-        UDP_TX_DATA_BYTE_LENGTH => UDP_TX_DATA_BYTE_LENGTH,
-        UDP_RX_DATA_BYTE_LENGTH => UDP_RX_DATA_BYTE_LENGTH
-    )
-    port map(
-        -- user logic interface
-        own_ip_addr     => x"c0a86b1c",	-- 192.168.107.28
-        own_mac_addr    => x"0e0e0e0e0e0b",
-        dst_ip_addr     => x"c0a86b1d",	-- 192.168.107.29
-        dst_mac_addr    => x"0e0e0e0e0e0c",
+      -- UDP_1GbE_inst : UDP_1GbE
+      -- generic map(
+      --     UDP_TX_DATA_BYTE_LENGTH => UDP_TX_DATA_BYTE_LENGTH,
+      --     UDP_RX_DATA_BYTE_LENGTH => UDP_RX_DATA_BYTE_LENGTH
+      -- )
+      -- port map(
+      --     -- user logic interface
+      --     own_ip_addr     => x"c0a86b1c",	-- 192.168.107.28
+      --     own_mac_addr    => x"0e0e0e0e0e0b",
+      --     dst_ip_addr     => x"c0a86b1d",	-- 192.168.107.29
+      --     dst_mac_addr    => x"0e0e0e0e0e0c",
+      --
+      --     -- mac's MAC is x"406c8f0012cd"
+      --     -- REx's MAC is x"0e0e0e0e0e0c"
+      --
+      --     udp_src_port    => x"1f40", --8000
+      --     udp_dst_port    => x"1f43", --8003
+      --
+      --     udp_tx_pkt_data => udp_tx_pkt_data,
+      --     udp_tx_pkt_vld  => udp_tx_pkt_vld,
+      --     udp_tx_rdy      => udp_tx_rdy,
+      --
+      --     udp_rx_pkt_data => udp_rx_pkt_data,
+      --     udp_rx_pkt_req  => udp_rx_pkt_req,
+      --     udp_rx_rdy      => udp_rx_rdy,
+      --
+      --     mac_init_done   => mac_init_done,
+      --
+      --     -- MAC interface
+      --     GIGE_COL        => GIGE_COL,
+      --     GIGE_CRS        => GIGE_CRS,
+      --     GIGE_MDC        => GIGE_MDC,
+      --     GIGE_MDIO       => GIGE_MDIO,
+      --     GIGE_TX_CLK     => GIGE_TX_CLK,
+      --     GIGE_nRESET     => GIGE_nRESET,
+      --     GIGE_RXD        => GIGE_RXD,
+      --     GIGE_RX_CLK     => GIGE_RX_CLK,
+      --     GIGE_RX_DV      => GIGE_RX_DV,
+      --     GIGE_RX_ER      => GIGE_RX_ER,
+      --     GIGE_TXD        => GIGE_TXD,
+      --     GIGE_GTX_CLK    => GIGE_GTX_CLK,
+      --     GIGE_TX_EN      => GIGE_TX_EN,
+      --     GIGE_TX_ER      => GIGE_TX_ER,
+      --
+      --     -- system control
+      --     clk_125mhz      => clk_125mhz,
+      --     clk_100mhz      => clk_100mhz,
+      --     sys_rst_i       => sys_reset,
+      --     sysclk_locked   => sysclk_locked
+      -- );
 
-        -- mac's MAC is x"406c8f0012cd"
-        -- REx's MAC is x"0e0e0e0e0e0c"
-
-        udp_src_port    => x"1f40", --8000
-        udp_dst_port    => x"1f43", --8003
-
-        udp_tx_pkt_data => udp_tx_pkt_data,
-        udp_tx_pkt_vld  => udp_tx_pkt_vld,
-        udp_tx_rdy      => udp_tx_rdy,
-
-        udp_rx_pkt_data => udp_rx_pkt_data,
-        udp_rx_pkt_req  => udp_rx_pkt_req,
-        udp_rx_rdy      => udp_rx_rdy,
-
-        mac_init_done   => mac_init_done,
-
-        -- MAC interface
-        GIGE_COL        => GIGE_COL,
-        GIGE_CRS        => GIGE_CRS,
-        GIGE_MDC        => GIGE_MDC,
-        GIGE_MDIO       => GIGE_MDIO,
-        GIGE_TX_CLK     => GIGE_TX_CLK,
-        GIGE_nRESET     => GIGE_nRESET,
-        GIGE_RXD        => GIGE_RXD,
-        GIGE_RX_CLK     => GIGE_RX_CLK,
-        GIGE_RX_DV      => GIGE_RX_DV,
-        GIGE_RX_ER      => GIGE_RX_ER,
-        GIGE_TXD        => GIGE_TXD,
-        GIGE_GTX_CLK    => GIGE_GTX_CLK,
-        GIGE_TX_EN      => GIGE_TX_EN,
-        GIGE_TX_ER      => GIGE_TX_ER,
-
-        -- system control
-        clk_125mhz      => clk_125mhz,
-        clk_100mhz      => clk_100mhz,
-        sys_rst_i       => sys_reset,
-        sysclk_locked   => sysclk_locked
-    );
-
-    clk_manager_inst : clk_manager
-    port map(
-        --External Control
-        dcm_100mhz_in   => sys_clk_100MHz_int,
-        --			SYS_CLK_P_i  => sys_clk_p,
-        --			SYS_CLK_N_i  => sys_clk_n,
-        SYS_RST_i       => sys_rst_i,
-
-        -- Clock out ports
-        clk_125mhz      => clk_125mhz,
-        clk_100mhz      => clk_100mhz,
-        clk_25mhz       => clk_25mhz,
-
-        -- Status and control signals
-        RESET           => sys_reset,
-        sysclk_locked   => sysclk_locked
-    );
+    -- clk_manager_inst : clk_manager
+    -- port map(
+    --     --External Control
+    --     dcm_100mhz_in   => sys_clk_100MHz_int,
+    --     --			SYS_CLK_P_i  => sys_clk_p,
+    --     --			SYS_CLK_N_i  => sys_clk_n,
+    --     SYS_RST_i       => sys_rst_i,
+    --
+    --     -- Clock out ports
+    --     clk_125mhz      => clk_125mhz,
+    --     clk_100mhz      => clk_100mhz,
+    --     clk_25mhz       => clk_25mhz,
+    --
+    --     -- Status and control signals
+    --     RESET           => sys_reset,
+    --     sysclk_locked   => sysclk_locked
+    -- );
 
     ---------------------------------------------------------------------------
     -- Instantiate input buffer for FPGA_PROC_BUS_CLK
