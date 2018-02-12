@@ -247,6 +247,7 @@ architecture rtl of tcu_top is
     signal clk_1Hz              : std_logic := '0';
     signal clk_2Hz              : std_logic := '0';
     signal clk_5Hz              : std_logic := '0';
+    signal clk_1KHz              : std_logic := '0';
 
     ---------------------------------------------------------------------------
     --	Ethernet Component declaration section
@@ -317,6 +318,13 @@ architecture rtl of tcu_top is
     );
     end component UDP_1GbE;
 
+    COMPONENT clk_wiz_v3_6
+  	PORT(
+  		CLK_IN1 : IN std_logic;
+  		CLK_OUT1 : OUT std_logic;
+  		LOCKED : OUT std_logic
+  		);
+  	END COMPONENT;
 --==========================
 begin --architecture RTL
 --==========================
@@ -429,18 +437,25 @@ begin --architecture RTL
     );
 
     ---------------------------------------------------------------------------
-    -- Input clock buffer, for EXTERNAL 100MHz clock 
+    -- Input clock buffer, for EXTERNAL 100MHz clock
     ---------------------------------------------------------------------------
-    IBUFG_tcu_clk : IBUFG
-    generic map
-    (
-        IBUF_LOW_PWR => FALSE
-        --    IOSTANDARD => "LVCMOS25"
-    )
-    port map
-    (
-        I => sys_clk_ext,
-        O => sys_clk_100MHz_ext
+    -- IBUFG_tcu_clk : IBUFG
+    -- generic map
+    -- (
+    --     IBUF_LOW_PWR => FALSE
+    --     --    IOSTANDARD => "LVCMOS25"
+    -- )
+    -- port map
+    -- (
+    --     I => sys_clk_ext,
+    --     O => sys_clk_100MHz_ext
+    -- );
+
+
+    Inst_clk_wiz_v3_6: clk_wiz_v3_6 PORT MAP(
+    CLK_IN1 => sys_clk_ext,
+    CLK_OUT1 => sys_clk_100MHz,
+    LOCKED => led_reg(7)
     );
 
     ---------------------------------------------------------------------------
@@ -621,10 +636,10 @@ begin --architecture RTL
                     -- turn off amps
                     x_amp_switch    <= X_AMP_OFF;
                     l_amp_switch    <= L_AMP_OFF;
-                    pri_heartbeat   <= '0';
+                    -- pri_heartbeat   <= '0';
 
                     if PRIcounter >= PRIoffset then
-
+                        pri_heartbeat   <= '0';
                         pulse_index <= pulse_index + 6;
                         if (pulse_index/6)+1 >= unsigned(N_reg) then
                             M_counter   <= M_counter + 1;
@@ -689,14 +704,22 @@ begin --architecture RTL
     end process;
 
     soft_arm    <= triggers(0); -- from internal TCU register
-    led_reg(0)  <= trigger;
-    led_reg(1)  <= pri_heartbeat;
-    led_reg(2)  <= x_amp_switch;
-    led_reg(3)  <= l_amp_switch;
-    led_reg(4)  <= '1' when state = ARMED       else '0';
-    led_reg(5)  <= '1' when state = PRE_PULSE   else '0';
-    led_reg(6)  <= '1' when state = DIGITIZE    else '0';
-    led_reg(7)  <= '1' when state = DONE        else '0';
+    -- led_reg(0)  <= trigger;
+    -- led_reg(1)  <= pri_heartbeat;
+    -- led_reg(2)  <= x_amp_switch;
+    -- led_reg(3)  <= l_amp_switch;
+    -- led_reg(4)  <= '1' when state = ARMED       else '0';
+    -- led_reg(5)  <= '1' when state = PRE_PULSE   else '0';
+    -- led_reg(6)  <= '1' when state = DIGITIZE    else '0';
+    -- led_reg(7)  <= '1' when state = DONE        else '0';
+    led_reg(0)  <= clk_sel;
+    led_reg(1)  <= '0';
+    led_reg(2)  <= '0';
+    led_reg(3)  <= '0';
+    led_reg(4)  <= '0';
+    led_reg(5)  <= '0';
+    led_reg(6)  <= '0';
+    -- led_reg(7)  <= '0';
 
     -- GPIO SIGNAL <--> PORT CONNECTIONS
 
@@ -735,15 +758,15 @@ begin --architecture RTL
     gpio(6)     <= l_amp_switch;
     gpio(7)     <= l_pol_tx;
     gpio(8)     <= l_pol_rx;
-    gpio(9)     <= '1' when state = ARMED     else '0';
-    gpio(10)    <= '1' when state = PRE_PULSE else '0';
-    gpio(11)    <= '1' when state = MAIN_BANG else '0';
-    gpio(12)    <= '1' when state = DIGITIZE  else '0';
-    gpio(13)    <= '1' when state = DONE      else '0';
-    gpio(14)    <= '1' when state = FAULT     else '0';
+    gpio(9)     <= pri_heartbeat;
+    gpio(10)    <= pri_heartbeat;
+    gpio(11)    <= pri_heartbeat;
+    gpio(12)    <= pri_heartbeat;
+    gpio(13)    <= pri_heartbeat;
+    gpio(14)    <= clk_1KHz;
     gpio(15)    <= pri_heartbeat;
 
-    sys_clk_100MHz  <= sys_clk_100MHz_int when clk_sel = '1' else sys_clk_100MHz_ext;
+    -- sys_clk_100MHz  <= sys_clk_100MHz_int when clk_sel = '1' else sys_clk_100MHz_ext;
     -- NET "gpio_fmc[0]"   LOC = V11;  # FMC0_LA_P24
     -- NET "gpio_fmc[1]"   LOC = V10;  # FMC0_LA_N24
     -- NET "gpio_fmc[2]"   LOC = AA9;  # FMC0_LA_P25
