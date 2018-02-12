@@ -853,6 +853,7 @@ end process CounterWithTriggerPulse;
     variable prescaler_1Hz      : integer := 0;
     variable prescaler_2Hz      : integer := 0;
     variable prescaler_5Hz      : integer := 0;
+    variable prescaler_1KHz      : integer := 0;
     begin
 
     	if rising_edge(sys_clk_100MHz) then
@@ -880,35 +881,41 @@ end process CounterWithTriggerPulse;
     		else
     			prescaler_5Hz := prescaler_5Hz + 1;
     		end if;
+    		if prescaler_1KHz = 50_000 then
+    			clk_1KHz <= not clk_1KHz;
+    			prescaler_1KHz := 0;
+    		else
+    			prescaler_1KHz := prescaler_1KHz + 1;
+    		end if;
     	end if;
     end process;
 
     ---------------------------------------------------------------------------
     -- UDP TRANSMISSION SECTION
     ---------------------------------------------------------------------------
-    --udp_packet <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;
-    udp_tx : process(udp_send_packet, sys_clk_100MHz_int)
-        begin
-        if(rising_edge(sys_clk_100MHz_int)) then
-            if(udp_send_packet = '1' and udp_send_flag <= '0') then
-                udp_send_flag    <= '1';
-                udp_tx_pkt_vld_r <= '0';
-            elsif(udp_tx_rdy = '1' and udp_send_flag = '1') then
-                if(tx_delay_cnt = TX_DELAY) then
-                    tx_delay_cnt     <= 0;
-                    udp_tx_pkt_vld_r <= '1';    -- LAUNCH
-                    udp_tx_pkt_data  <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;	 --x"0d000000000004000300140534210000";
-                    udp_send_flag    <= '0';
-                else
-                    udp_tx_pkt_vld_r <= '0';
-                    tx_delay_cnt     <= tx_delay_cnt + 1;
-                end if;
-            else
-                udp_tx_pkt_vld_r <= '0';    -- ARM
-            end if;
-        end if;
-    end process udp_tx;
-
-    udp_tx_pkt_vld <= udp_tx_pkt_vld_r;
+    -- --udp_packet <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;
+    -- udp_tx : process(udp_send_packet, sys_clk_100MHz_int)
+    --     begin
+    --     if(rising_edge(sys_clk_100MHz_int)) then
+    --         if(udp_send_packet = '1' and udp_send_flag <= '0') then
+    --             udp_send_flag    <= '1';
+    --             udp_tx_pkt_vld_r <= '0';
+    --         elsif(udp_tx_rdy = '1' and udp_send_flag = '1') then
+    --             if(tx_delay_cnt = TX_DELAY) then
+    --                 tx_delay_cnt     <= 0;
+    --                 udp_tx_pkt_vld_r <= '1';    -- LAUNCH
+    --                 udp_tx_pkt_data  <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;	 --x"0d000000000004000300140534210000";
+    --                 udp_send_flag    <= '0';
+    --             else
+    --                 udp_tx_pkt_vld_r <= '0';
+    --                 tx_delay_cnt     <= tx_delay_cnt + 1;
+    --             end if;
+    --         else
+    --             udp_tx_pkt_vld_r <= '0';    -- ARM
+    --         end if;
+    --     end if;
+    -- end process udp_tx;
+    --
+    -- udp_tx_pkt_vld <= udp_tx_pkt_vld_r;
 
 end rtl;
