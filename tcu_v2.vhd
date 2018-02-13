@@ -75,7 +75,7 @@ architecture rtl of tcu_top is
 
     --Clocks
     -- signal sys_clk_100MHz_int   : std_logic;                                        -- internal 100MHz clock
-    signal sys_clk_100MHz_ext   : std_logic;                                        -- external 100MHz clock coming in from FMC0 J1 P1
+    -- signal sys_clk_100MHz_ext   : std_logic;                                        -- external 100MHz clock coming in from FMC0 J1 P1
     -- signal clk_sel              : std_logic;                                        -- driven by one of the above clock sources using jumper on GPIO[1] pin
     signal sys_clk_100MHz       : std_logic;                                        -- driven by one of the above signal
 
@@ -136,7 +136,7 @@ architecture rtl of tcu_top is
      -- Currently each register is 64 x 16
      ALIAS reg_file_address : std_logic_vector(7 downto 0) IS gpmc_address(7 downto 0);
     ---------------------------------------------------------------------------
-    --	Ethernet Signal declaration section
+    --    Ethernet Signal declaration section
     ---------------------------------------------------------------------------
   --
   --   signal sys_rst_i        : std_logic := '0';
@@ -144,9 +144,9 @@ architecture rtl of tcu_top is
   --   signal REX_status       : std_logic_vector(15 downto 0) := (others => '0');
   --   signal REX_status_confirmed : std_logic := '0';
   --
-	-- -- Transmit settings to REX = 00;
-	-- -- Ask REX for status msg	 = 01;
-  --   --	signal eth_msg_type	:	std_logic_vector(1 downto 0) := "00";
+    -- -- Transmit settings to REX = 00;
+    -- -- Ask REX for status msg     = 01;
+  --   --    signal eth_msg_type    :    std_logic_vector(1 downto 0) := "00";
   --
   --   signal eth_in_len       : std_logic_vector(15 downto 0);
   --   signal eth_in_type      : std_logic_vector(15 downto 0);
@@ -165,7 +165,7 @@ architecture rtl of tcu_top is
     -- attribute S of GIGE_RX_ER : signal is "TRUE";
     --
     -- -- define constants
-    -- constant UDP_TX_DATA_BYTE_LENGTH    : integer := 16;		--not SET TO MINIMUM LENGTH
+    -- constant UDP_TX_DATA_BYTE_LENGTH    : integer := 16;        --not SET TO MINIMUM LENGTH
     -- constant UDP_RX_DATA_BYTE_LENGTH    : integer := 37;
     -- constant TX_DELAY                   : integer := 100;
     --
@@ -190,7 +190,7 @@ architecture rtl of tcu_top is
     -- signal udp_rx_rdy_r         : std_logic;
     --
     -- signal dst_mac_addr         : std_logic_vector(47 downto 0);
-    -- --	signal tx_state			: std_logic_vector(2 downto 0) := "000";
+    -- --    signal tx_state            : std_logic_vector(2 downto 0) := "000";
     -- signal rx_state             : std_logic_vector(1 downto 0) := "00";
     -- signal locked               : std_logic;
     -- signal mac_init_done        : std_logic;
@@ -202,7 +202,7 @@ architecture rtl of tcu_top is
     -- signal udp_send_packet      : std_logic;
     -- signal udp_send_flag        : std_logic;
     -- signal udp_receive_packet   : std_logic_vector(1 downto 0) := "00";
-    -- --	signal udp_receive_flag	: std_logic  := '0';
+    -- --    signal udp_receive_flag    : std_logic  := '0';
     -- signal udp_packet           : std_logic_vector (8 * UDP_TX_DATA_BYTE_LENGTH - 1 downto 0);
     -- signal rex_set              : std_logic;
 
@@ -252,7 +252,7 @@ architecture rtl of tcu_top is
     -- signal clk_1KHz              : std_logic := '0';
 
     ---------------------------------------------------------------------------
-    --	Ethernet Component declaration section
+    --    Ethernet Component declaration section
     ---------------------------------------------------------------------------
     -- component clk_manager is
     -- port(
@@ -320,13 +320,14 @@ architecture rtl of tcu_top is
     -- );
     -- end component UDP_1GbE;
 
-	COMPONENT clk_wiz_v3_6
-	PORT(
-		CLK_IN1 : IN std_logic;          
-		CLK_OUT1 : OUT std_logic;
-		CLK_OUT2 : OUT std_logic
-		);
-	END COMPONENT;
+    COMPONENT clk_wiz_v3_6
+    PORT(
+        CLK_IN : IN std_logic;
+        CLK_400MHz_OUT : OUT std_logic;
+        CLK_100MHz_OUT : OUT std_logic;
+        CLK_10MHz_OUT : OUT std_logic
+        );
+    END COMPONENT;
 
     signal pri_trigger : std_logic := '0';
     signal counter : integer := 0;
@@ -336,14 +337,93 @@ architecture rtl of tcu_top is
     signal pulse_index_int : integer range 0 to 255 := 0;
 
     signal sys_clk_10MHz : std_logic := '0';
-  	signal clk_out: std_logic := '0';
+    signal sys_clk_400MHz: std_logic := '0';
+    signal clk_out: std_logic := '0';
+
+    ---------------------------------------------------------------------------
+    -- CHIPSCOPE DEBUG CORES DECLARARATION
+    ---------------------------------------------------------------------------
+    COMPONENT chipscope_icon
+    PORT(
+        CONTROL0 : INOUT std_logic_vector(35 downto 0);
+        CONTROL1 : INOUT std_logic_vector(35 downto 0);
+        CONTROL2 : INOUT std_logic_vector(35 downto 0)
+        );
+    END COMPONENT;
+
+    COMPONENT vio_reg_bank
+    PORT(
+        ASYNC_IN : IN std_logic_vector(95 downto 0);
+        CONTROL : INOUT std_logic_vector(35 downto 0)
+        );
+    END COMPONENT;
+
+    COMPONENT ila_pri_counter
+    PORT(
+        CLK : IN std_logic;
+        TRIG0 : IN std_logic_vector(32 downto 0);
+        CONTROL : INOUT std_logic_vector(35 downto 0)
+        );
+    END COMPONENT;
+
+    COMPONENT ila_tcu_outputs
+    PORT(
+        CLK : IN std_logic;
+        TRIG0 : IN std_logic_vector(5 downto 0);
+        CONTROL : INOUT std_logic_vector(35 downto 0)
+        );
+    END COMPONENT;
+
+    signal control_0_sig : std_logic_vector(35 downto 0);
+    signal control_1_sig : std_logic_vector(35 downto 0);
+    signal control_2_sig : std_logic_vector(35 downto 0);
+    signal pulse_1_params: std_logic_vector(95 downto 0);
+    signal ila_pri_counter_trig: std_logic_vector(32 downto 0);
+    signal ila_tcu_outputs_trig: std_logic_vector(5 downto 0);
 
 --==========================
 begin --architecture RTL
 --==========================
-  -- sys_clk_ext_GND <= '0';
     ---------------------------------------------------------------------------
-    --	Ethernet components
+    -- CHIPSCOPE DEBUG CORES INSTANTIATION
+    ---------------------------------------------------------------------------
+
+    Inst_chipscope_icon: chipscope_icon
+    PORT MAP(
+        CONTROL0 => control_0_sig,
+        CONTROL1 => control_1_sig,
+        CONTROL2 => control_2_sig
+    );
+    -- pulse_1_params <= reg_bank(0) & reg_bank(1) & reg_bank(2) & reg_bank(3) & reg_bank(4) & reg_bank(5);
+    Inst_vio_reg_bank: vio_reg_bank
+    PORT MAP(
+        CONTROL => control_0_sig,
+        -- ASYNC_IN => pulse_1_params
+        ASYNC_IN => dataout
+    );
+
+    Inst_ila_pri_counter: ila_pri_counter
+    PORT MAP(
+        CONTROL => control_1_sig,
+        CLK => sys_clk_400MHz,
+        TRIG0 => ila_pri_counter_trig
+    );
+
+    ila_pri_counter_trig(32) <= pri_heartbeat;
+    ila_pri_counter_trig(31 downto 0) <= std_logic_vector(to_unsigned(counter, 32));
+
+    Inst_ila_tcu_outputs: ila_tcu_outputs
+    PORT MAP(
+        CONTROL => control_2_sig,
+        CLK => sys_clk_400MHz,
+        TRIG0 => ila_tcu_outputs_trig
+    );
+
+    ila_tcu_outputs_trig(5) <= pri_heartbeat;
+    ila_tcu_outputs_trig(4 downto 0) <= "00000";
+
+    ---------------------------------------------------------------------------
+    --    Ethernet components
     ---------------------------------------------------------------------------
 
       -- UDP_1GbE_inst : UDP_1GbE
@@ -353,9 +433,9 @@ begin --architecture RTL
       -- )
       -- port map(
       --     -- user logic interface
-      --     own_ip_addr     => x"c0a86b1c",	-- 192.168.107.28
+      --     own_ip_addr     => x"c0a86b1c",    -- 192.168.107.28
       --     own_mac_addr    => x"0e0e0e0e0e0b",
-      --     dst_ip_addr     => x"c0a86b1d",	-- 192.168.107.29
+      --     dst_ip_addr     => x"c0a86b1d",    -- 192.168.107.29
       --     dst_mac_addr    => x"0e0e0e0e0e0c",
       --
       --     -- mac's MAC is x"406c8f0012cd"
@@ -401,8 +481,8 @@ begin --architecture RTL
     -- port map(
     --     --External Control
     --     dcm_100mhz_in   => sys_clk_100MHz_int,
-    --     --			SYS_CLK_P_i  => sys_clk_p,
-    --     --			SYS_CLK_N_i  => sys_clk_n,
+    --     --            SYS_CLK_P_i  => sys_clk_p,
+    --     --            SYS_CLK_N_i  => sys_clk_n,
     --     SYS_RST_i       => sys_rst_i,
     --
     --     -- Clock out ports
@@ -464,11 +544,11 @@ begin --architecture RTL
     --     O => sys_clk_100MHz_ext
     -- );
 
-
     Inst_clk_wiz_v3_6: clk_wiz_v3_6 PORT MAP(
-    CLK_IN1 => sys_clk_ext,
-    CLK_OUT1 => sys_clk_100MHz,
-	 CLK_OUT2 => sys_clk_10MHz
+        CLK_IN => sys_clk_ext,
+        CLK_400MHz_OUT => sys_clk_400MHz,
+        CLK_100MHz_OUT => sys_clk_100MHz,
+        CLK_10MHz_OUT => sys_clk_10MHz
     );
 
     ---------------------------------------------------------------------------
@@ -880,38 +960,38 @@ end process CounterWithTriggerPulse;
     -- variable prescaler_1KHz      : integer := 0;
     -- begin
     --
-    -- 	if rising_edge(sys_clk_100MHz) then
-    -- 		if prescaler_0_5Hz = 100_000_000 then
-    -- 			clk_0_5Hz <= not clk_0_5Hz;
-    -- 			prescaler_0_5Hz := 0;
-    -- 		else
-    -- 			prescaler_0_5Hz := prescaler_0_5Hz + 1;
-    -- 		end if;
-    -- 		if prescaler_1Hz = 50_000_000 then
-    -- 			clk_1Hz <= not clk_1Hz;
-    -- 			prescaler_1Hz := 0;
-    -- 		else
-    -- 			prescaler_1Hz := prescaler_1Hz + 1;
-    -- 		end if;
-    -- 		if prescaler_2Hz = 25_000_000 then
-    -- 			clk_2Hz <= not clk_2Hz;
-    -- 			prescaler_2Hz := 0;
-    -- 		else
-    -- 			prescaler_2Hz := prescaler_2Hz + 1;
-    -- 		end if;
-    -- 		if prescaler_5Hz = 10_000_000 then
-    -- 			clk_5Hz <= not clk_5Hz;
-    -- 			prescaler_5Hz := 0;
-    -- 		else
-    -- 			prescaler_5Hz := prescaler_5Hz + 1;
-    -- 		end if;
-    -- 		if prescaler_1KHz = 50_000 then
-    -- 			clk_1KHz <= not clk_1KHz;
-    -- 			prescaler_1KHz := 0;
-    -- 		else
-    -- 			prescaler_1KHz := prescaler_1KHz + 1;
-    -- 		end if;
-    -- 	end if;
+    --     if rising_edge(sys_clk_100MHz) then
+    --         if prescaler_0_5Hz = 100_000_000 then
+    --             clk_0_5Hz <= not clk_0_5Hz;
+    --             prescaler_0_5Hz := 0;
+    --         else
+    --             prescaler_0_5Hz := prescaler_0_5Hz + 1;
+    --         end if;
+    --         if prescaler_1Hz = 50_000_000 then
+    --             clk_1Hz <= not clk_1Hz;
+    --             prescaler_1Hz := 0;
+    --         else
+    --             prescaler_1Hz := prescaler_1Hz + 1;
+    --         end if;
+    --         if prescaler_2Hz = 25_000_000 then
+    --             clk_2Hz <= not clk_2Hz;
+    --             prescaler_2Hz := 0;
+    --         else
+    --             prescaler_2Hz := prescaler_2Hz + 1;
+    --         end if;
+    --         if prescaler_5Hz = 10_000_000 then
+    --             clk_5Hz <= not clk_5Hz;
+    --             prescaler_5Hz := 0;
+    --         else
+    --             prescaler_5Hz := prescaler_5Hz + 1;
+    --         end if;
+    --         if prescaler_1KHz = 50_000 then
+    --             clk_1KHz <= not clk_1KHz;
+    --             prescaler_1KHz := 0;
+    --         else
+    --             prescaler_1KHz := prescaler_1KHz + 1;
+    --         end if;
+    --     end if;
     -- end process;
 
     ---------------------------------------------------------------------------
@@ -928,7 +1008,7 @@ end process CounterWithTriggerPulse;
     --             if(tx_delay_cnt = TX_DELAY) then
     --                 tx_delay_cnt     <= 0;
     --                 udp_tx_pkt_vld_r <= '1';    -- LAUNCH
-    --                 udp_tx_pkt_data  <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;	 --x"0d000000000004000300140534210000";
+    --                 udp_tx_pkt_data  <= x"0d000000000004000300" & l_band_freq & x_band_freq & pol;     --x"0d000000000004000300140534210000";
     --                 udp_send_flag    <= '0';
     --             else
     --                 udp_tx_pkt_vld_r <= '0';
@@ -942,17 +1022,17 @@ end process CounterWithTriggerPulse;
     --
     -- udp_tx_pkt_vld <= udp_tx_pkt_vld_r;
 
-  	process (sys_clk_10MHz)
-  	variable prescaler : integer := 0;
-  	begin
-  		if rising_edge(sys_clk_10MHz) then
-  			if prescaler = 5000 then
-  				clk_out <= not clk_out;
-  				prescaler:=0;
-  			else
-  			prescaler:=prescaler+1;
-  			end if;
-  		end if;
-  	end process;
-  	gpio(14)<=clk_out;
+      process (sys_clk_10MHz)
+      variable prescaler : integer := 0;
+      begin
+          if rising_edge(sys_clk_10MHz) then
+              if prescaler = 5000 then
+                  clk_out <= not clk_out;
+                  prescaler:=0;
+              else
+              prescaler:=prescaler+1;
+              end if;
+          end if;
+      end process;
+      gpio(14)<=clk_out;
 end rtl;
