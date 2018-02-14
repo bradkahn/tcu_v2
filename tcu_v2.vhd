@@ -808,24 +808,24 @@ begin --architecture RTL
     -- end process;
 
 
-pri_duration <= MBoffset + DIGoffset + PRIoffset;
+pri_duration <= (MBoffset + DIGoffset + PRIoffset);
 pri_duration_half <= shift_right(pri_duration, 1);
-CounterWithTriggerPulse : process (sys_clk_100MHz) is
+CounterWithTriggerPulse : process (sys_clk_10MHz) is
 begin
-    if rising_edge(sys_clk_100MHz) then
+    if rising_edge(sys_clk_10MHz) then
         if pri_trigger = '1' then
           go_pri <= '1';
         end if;
         if go_pri = '1' then
           if counter > x"00000000" then
               counter <= counter - 1;
-              if counter >= (pri_duration_half) then
+              if counter >= (pri_duration_half)/10 then
                 pri_heartbeat <= '1';
               else
                 pri_heartbeat <= '0';
               end if;
           else
-              counter <= pri_duration;
+              counter <= pri_duration/10;
           end if;
         end if;
     end if; -- clock
