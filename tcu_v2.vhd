@@ -330,7 +330,9 @@ architecture rtl of tcu_top is
     END COMPONENT;
 
     signal pri_trigger : std_logic := '0';
-    signal counter : integer := 0;
+    signal counter : unsigned(31 downto 0) := (others=>'0');
+    signal pri_duration : unsigned(31 downto 0) := (others=>'0');
+    signal pri_duration_half : unsigned(31 downto 0) := (others=>'0');
     -- signal counter : natural range 0 to 50_000 := 0;
 
     signal go_pri: std_logic := '0';
@@ -410,7 +412,7 @@ begin --architecture RTL
     );
 
     ila_pri_counter_trig(32) <= pri_heartbeat;
-    ila_pri_counter_trig(31 downto 0) <= std_logic_vector(to_unsigned(counter, 32));
+    ila_pri_counter_trig(31 downto 0) <= std_logic_vector(counter);
 
     Inst_ila_tcu_outputs: ila_tcu_outputs
     PORT MAP(
@@ -806,22 +808,24 @@ begin --architecture RTL
     -- end process;
 
 
-CounterWithTriggerPulse : process (sys_clk_10MHz) is
+pri_duration <= MBoffset + DIGoffset + PRIoffset;
+pri_duration_half <= shift_right(pri_duration, 1);
+CounterWithTriggerPulse : process (sys_clk_100MHz) is
 begin
-    if rising_edge(sys_clk_10MHz) then
+    if rising_edge(sys_clk_100MHz) then
         if pri_trigger = '1' then
           go_pri <= '1';
         end if;
         if go_pri = '1' then
-          if counter > 0 then
+          if counter > x"00000000" then
               counter <= counter - 1;
-              if counter >= ((to_integer(MBoffset) + to_integer(DIGoffset) + to_integer(PRIoffset))/20) then
+              if counter >= (pri_duration_half) then
                 pri_heartbeat <= '1';
               else
                 pri_heartbeat <= '0';
               end if;
           else
-              counter <= to_integer(MBoffset) + to_integer(DIGoffset) + to_integer(PRIoffset);
+              counter <= pri_duration;
           end if;
         end if;
     end if; -- clock
