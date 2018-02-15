@@ -213,6 +213,9 @@ architecture rtl of tcu_top is
     --
     -- type state_type is (IDLE, ARMED, PRE_PULSE, MAIN_BANG, DIGITIZE, DONE, FAULT);
     -- signal state                : state_type := IDLE;
+    -- type state_type is (IDLE, ARMED, PRE_PULSE, MAIN_BANG, DIGITIZE, DONE, FAULT);
+    type pri_state_type is (IDLE, RUNNING);
+    signal pri_state                : pri_state_type := IDLE;
     -- signal next_state           : state_type := IDLE;
     --
     -- -- TODO: CHECK HOW X BAND POLARISATION TX SWITCH IS WIRED UP AND CHANGE THESE ACCORDINGLY
@@ -382,7 +385,7 @@ architecture rtl of tcu_top is
     signal pulse_1_params: std_logic_vector(95 downto 0);
     signal ila_pri_counter_trig: std_logic_vector(32 downto 0);
     signal ila_tcu_outputs_trig: std_logic_vector(5 downto 0);
-
+    signal prescaler : unsigned(31 downto 0) := (others=>'0');
 --==========================
 begin --architecture RTL
 --==========================
@@ -810,27 +813,72 @@ begin --architecture RTL
 
 pri_duration <= (MBoffset + DIGoffset + PRIoffset);
 pri_duration_half <= shift_right(pri_duration, 1);
-CounterWithTriggerPulse : process (sys_clk_10MHz) is
+CounterWithTriggerPulse : process (sys_clk_100MHz) is
 begin
-    if rising_edge(sys_clk_10MHz) then
-        if pri_trigger = '1' then
-          go_pri <= '1';
-        end if;
-        if go_pri = '1' then
-          if counter > x"00000000" then
-              counter <= counter - 1;
-              if counter >= (pri_duration_half)/10 then
-                pri_heartbeat <= '1';
-              else
-                pri_heartbeat <= '0';
-              end if;
-          else
-              counter <= pri_duration/10;
-          end if;
-        end if;
-    end if; -- clock
-end process CounterWithTriggerPulse;
+    -- if rising_edge(sys_clk_10MHz) then
+    --     if pri_trigger = '1' then
+    --       go_pri <= '1';
+    --     end if;
+    --     if go_pri = '1' then
+    --       if counter > x"00000000" then
+    --           counter <= counter - 1;
+    --           if counter >= (pri_duration_half)/10 then
+    --             pri_heartbeat <= '1';
+    --           else
+    --             pri_heartbeat <= '0';
+    --           end if;
+    --       else
+    --           counter <= pri_duration/10;
+    --       end if;
+    --     end if;
+    -- end if; -- clock
 
+    if rising_edge(sys_clk_100MHz) then
+      -- if go_pri = '1' then
+          if counter = pri_duration_half then
+          -- if counter = 50000 then
+              pri_heartbeat <= not pri_heartbeat;
+              counter<=(others=>'0');
+          else
+            counter<=counter+x"00000001";
+          end if;
+      -- end if;
+    end if;
+
+end process CounterWithTriggerPulse;
+led_reg(0) <= '1' when pri_duration_half = x"0000c350" else '0';
+pri_fsm : process(sys_clk_100MHz)
+begin
+  if rising_edge(sys_clk_100MHz) then
+    case( pri_state ) is
+
+      when IDLE =>
+        if pri_trigger = '1' then
+          pri_state <= RUNNING;
+        else
+          pri_state <= IDLE;
+        end if;
+
+      when RUNNING =>
+        go_pri <= '1';
+        -- TODO: get an 'end' signal to stop the counter,
+        -- have another counter being clocked by the pri_heartbeat signal,
+        -- compare that value to mxn?
+        pri_state <= RUNNING;
+
+      when OTHERS =>
+        pri_state <= IDLE;
+    end case;
+  end if;
+end process;
+
+-- num_transfers_counter : process(pri_heartbeat)
+-- begin
+--   if rising_edge(pri_heartbeat) then
+--     -- increment ctr
+--     -- check ctr == mxn
+--   end if;
+-- end process;
     soft_arm    <= triggers(0); -- from internal TCU register
     -- led_reg(0)  <= trigger;
     -- led_reg(1)  <= pri_heartbeat;
@@ -840,7 +888,7 @@ end process CounterWithTriggerPulse;
     -- led_reg(5)  <= '1' when state = PRE_PULSE   else '0';
     -- led_reg(6)  <= '1' when state = DIGITIZE    else '0';
     -- led_reg(7)  <= '1' when state = DONE        else '0';
-    led_reg(0)  <= '0';
+    -- led_reg(0)  <= '0';
     led_reg(1)  <= '0';
     led_reg(2)  <= '0';
     led_reg(3)  <= '0';
@@ -1025,16 +1073,15 @@ end process CounterWithTriggerPulse;
     -- end process udp_tx;
     --
     -- udp_tx_pkt_vld <= udp_tx_pkt_vld_r;
+      process (sys_clk_100MHz)
 
-      process (sys_clk_10MHz)
-      variable prescaler : integer := 0;
       begin
-          if rising_edge(sys_clk_10MHz) then
-              if prescaler = 5000 then
+          if rising_edge(sys_clk_100MHz) then
+              if prescaler = x"0000c350" then
                   clk_out <= not clk_out;
-                  prescaler:=0;
+                  prescaler<=(others=>'0');
               else
-              prescaler:=prescaler+1;
+              prescaler<=prescaler+x"00000001";
               end if;
           end if;
       end process;
