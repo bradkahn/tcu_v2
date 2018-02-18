@@ -834,7 +834,7 @@ begin
     -- end if; -- clock
 
     if rising_edge(sys_clk_100MHz) then
-      -- if go_pri = '1' then
+       if go_pri = '1' then
           if counter = pri_duration_half then
           -- if counter = 50000 then
               pri_heartbeat <= not pri_heartbeat;
@@ -842,7 +842,7 @@ begin
           else
             counter<=counter+x"00000001";
           end if;
-      -- end if;
+       end if;
     end if;
 
 end process CounterWithTriggerPulse;

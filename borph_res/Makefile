@@ -1,6 +1,7 @@
 BOF_FILE=tcu_v2.bof
 SYM_FILE=tcu_registers.sym
-BIN_FILE=tcu_top.bin
+# BIN_FILE=tcu_top.bin
+BIN_FILE=counter_top.bin
 ISE_PROJECT_BIN_FILE=~/NeXtRAD-TCU-Controller/$(BIN_FILE)
 
 
