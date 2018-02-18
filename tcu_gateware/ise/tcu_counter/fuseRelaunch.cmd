@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "secureip" -o "/home/brad/tcu_v2/tcu_gateware/ise/tcu_counter/pulse_counter_tb_isim_beh.exe" -prj "/home/brad/tcu_v2/tcu_gateware/ise/tcu_counter/pulse_counter_tb_beh.prj" "work.pulse_counter_tb" 
