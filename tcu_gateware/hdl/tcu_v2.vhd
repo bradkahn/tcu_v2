@@ -123,17 +123,19 @@ architecture rtl of tcu_top is
     -- TCU interface signals
     ---------------------------------------------------------------------------
 
-    -- PRI signal to Pentek
-    signal pri_out              : std_logic := '0';
-
-    -- HPA switches
-    signal x_amp_switch         : std_logic := X_AMP_OFF;
-    signal l_amp_switch         : std_logic := L_AMP_OFF;
-
-    -- Polarisation switches
-    signal x_pol_tx             : std_logic := '0';
-    signal l_pol_tx             : std_logic := '0';
-    signal l_pol_rx             : std_logic := '0';
+    -- form GPSDO
+    signal trigger_in          : std_logic := '0';
+   -- PRI signal to Pentek
+   signal pri_out              : std_logic := '0';
+--
+--    -- HPA switches
+--    signal x_amp_switch         : std_logic := X_AMP_OFF;
+--    signal l_amp_switch         : std_logic := L_AMP_OFF;
+--
+--    -- Polarisation switches
+--    signal x_pol_tx             : std_logic := '0';
+--    signal l_pol_tx             : std_logic := '0';
+--    signal l_pol_rx             : std_logic := '0';
 
     ---------------------------------------------------------------------------
     -- TCU FSM Signal declaration section
@@ -146,16 +148,73 @@ architecture rtl of tcu_top is
     -- Clock signals
     ---------------------------------------------------------------------------
 
-    signal sys_clk_100MHz_int   : std_logic;                                        -- internal 100MHz clock
-    signal sys_clk_100MHz_ext   : std_logic;                                        -- external 100MHz clock coming in from FMC0 J1 P1
-    signal clk_sel              : std_logic;                                        -- used to switch between internal and external 100MHz clocks
-    signal sys_clk_100MHz       : std_logic;                                        -- driven by one of the above signal
-    signal clk_locked           : std_logic;                                        -- clock locked indicator
+    signal sys_clk_100MHz_int   : std_logic := '0';                             -- internal 100MHz clock
+    signal sys_clk_100MHz_ext   : std_logic := '0';                             -- external 100MHz clock coming in from FMC0 J1 P1
+    signal clk_sel              : std_logic := '0';                             -- used to switch between internal and external 100MHz clocks
+    signal sys_clk_100MHz       : std_logic := '0';                             -- driven by one of the above signal
+    signal clk_locked           : std_logic := '0';                             -- clock locked indicator
 
     -- synthesized clocks
-    signal chipscope_clk        : std_logic;                                        -- 200MHz
-    signal sys_clk              : std_logic;                                        -- 100MHz
-    signal status_clk           : std_logic;                                        -- 10MHz
+    signal chipscope_clk        : std_logic := '0';                             -- 400MHz
+    signal sys_clk              : std_logic := '0';                             -- 100MHz
+    signal status_clk           : std_logic := '0';                             -- 10MHz
+
+
+    ---------------------------------------------------------------------------
+    -- OTHER signals
+    ---------------------------------------------------------------------------
+    signal rst                  : std_logic := '0';
+    signal run                  : std_logic := '1';
+    signal threshold_out        : std_logic := '0';
+    signal done_out             : std_logic := '0';
+    signal x_amp_out            : std_logic := '0';
+    signal l_amp_out            : std_logic := '0';
+    signal global_counter       : std_logic_vector(16 downto 0) := (others=>'0');
+    signal pulses_counter       : std_logic_vector(31 downto 0) := (others=>'0');
+
+    signal control              : std_logic_vector(35 downto 0) := (others=>'0');
+
+
+    ---------------------------------------------------------------------------
+    -- TCU component declarations
+    ---------------------------------------------------------------------------
+
+    COMPONENT pri_generator
+    PORT(
+        clk_IN : IN std_logic;
+        en_IN : IN std_logic;
+        rst_IN : IN std_logic;
+        threshold_OUT : OUT std_logic;
+        pri_OUT : OUT std_logic;
+        count_OUT : OUT std_logic_vector(16 downto 0)
+      );
+    END COMPONENT;
+
+    COMPONENT amp_controller
+    PORT(
+        clk_IN : IN std_logic;
+        rst_IN : IN std_logic;
+        en_IN : IN std_logic;
+        count_IN : IN std_logic_vector(16 downto 0);
+        mode_IN : IN std_logic_vector(2 downto 0);
+        x_amp_on_duration_IN : IN std_logic_vector(15 downto 0);
+        l_amp_on_duration_IN : IN std_logic_vector(15 downto 0);
+        x_amp_OUT : OUT std_logic;
+        l_amp_OUT : OUT std_logic
+      );
+    END COMPONENT;
+
+    COMPONENT pulse_counter
+    PORT(
+        clk_IN : IN std_logic;
+        pulse_IN : IN std_logic;
+        rst_IN : IN std_logic;
+        en_IN : IN std_logic;
+        num_transfers_IN : IN std_logic_vector(31 downto 0);
+        count_OUT : OUT std_logic_vector(31 downto 0);
+        done_OUT : OUT std_logic
+      );
+    END COMPONENT;
 
     ---------------------------------------------------------------------------
     -- Clocking component declaration
@@ -164,7 +223,7 @@ architecture rtl of tcu_top is
     COMPONENT clk_wiz_v3_6
     PORT(
         CLK_IN : IN std_logic;
-        CLK_200MHz_OUT : OUT std_logic;
+        CLK_400MHz_OUT : OUT std_logic;
         CLK_100MHz_OUT : OUT std_logic;
         CLK_10MHz_OUT : OUT std_logic;
         LOCKED : OUT std_logic
@@ -174,7 +233,19 @@ architecture rtl of tcu_top is
     ---------------------------------------------------------------------------
     -- TODO: chipscope debug cores declararation
     ---------------------------------------------------------------------------
+    COMPONENT chipscope_ila
+    PORT(
+        CLK : IN std_logic;
+        TRIG0 : IN std_logic_vector(52 downto 0);
+        CONTROL : INOUT std_logic_vector(35 downto 0)
+    );
+    END COMPONENT;
 
+    COMPONENT chipscope_icon
+    PORT(
+        CONTROL0 : INOUT std_logic_vector(35 downto 0)
+    );
+    END COMPONENT;
     ---------------------------------------------------------------------------
     -- TODO: Ethernet Signal declaration section
     ---------------------------------------------------------------------------
@@ -184,6 +255,52 @@ architecture rtl of tcu_top is
     ---------------------------------------------------------------------------
 begin
 
+  ---------------------------------------------------------------------------
+  -- TCU components instantiation
+  ---------------------------------------------------------------------------
+
+    Inst_pri_generator: pri_generator
+    PORT MAP(
+        clk_IN => status_clk,
+        en_IN => run,
+        rst_IN => rst,
+        threshold_OUT => threshold_out,
+        pri_OUT => pri_out,
+        count_OUT => global_counter
+    );
+
+    gpio_OUT(13) <= threshold_out;
+    gpio_OUT(15) <= pri_out;
+
+    Inst_amp_controller: amp_controller
+    PORT MAP(
+        clk_IN => status_clk,
+        rst_IN => rst,
+        en_IN => run,
+        count_IN => global_counter,
+        mode_IN => "000",
+        x_amp_on_duration_IN => x"01EA", -- based on PW = 10u
+        l_amp_on_duration_IN => x"0A8C",
+        x_amp_OUT => x_amp_out,
+        l_amp_OUT => l_amp_out
+    );
+
+    gpio_OUT(14) <= x_amp_out;
+    gpio_OUT(12) <= l_amp_out;
+
+
+    Inst_pulse_counter: pulse_counter
+    PORT MAP(
+        clk_IN => status_clk,
+        pulse_IN => pri_out,
+        rst_IN => rst,
+        en_IN => run,
+        num_transfers_IN => x"ffffffff",
+        count_OUT => pulses_counter,
+        done_OUT => done_out
+    );
+
+    gpio_OUT(11) <= done_out;
     ---------------------------------------------------------------------------
     -- Clocking components instantiation
     ---------------------------------------------------------------------------
@@ -210,21 +327,23 @@ begin
     );
 
     -- 100MHz clock multiplexer
-    BUFGMUX_inst : BUFGMUX
-    generic map (
-       CLK_SEL_TYPE => "SYNC"  -- Glitchles ("SYNC") or fast ("ASYNC") clock switch-over
-    )
-    port map (
-       O => sys_clk_100MHz,         -- 1-bit output: Clock buffer output
-       I0 => sys_clk_100MHz_ext,    -- 1-bit input: Clock buffer input (S=0)
-       I1 => sys_clk_100MHz_int,    -- 1-bit input: Clock buffer input (S=1)
-       S => clk_sel                 -- 1-bit input: Clock buffer select
-    );
+    -- BUFGMUX_inst : BUFGMUX
+    -- generic map (
+    --    CLK_SEL_TYPE => "SYNC"  -- Glitchles ("SYNC") or fast ("ASYNC") clock switch-over
+    -- )
+    -- port map (
+    --    O => sys_clk_100MHz,         -- 1-bit output: Clock buffer output
+    --    I0 => sys_clk_100MHz_ext,    -- 1-bit input: Clock buffer input (S=0)
+    --    I1 => sys_clk_100MHz_int,    -- 1-bit input: Clock buffer input (S=1)
+    --    S => clk_sel                 -- 1-bit input: Clock buffer select
+    -- );
+
+    sys_clk_100MHz <= sys_clk_100MHz_ext when clk_sel = '0' else sys_clk_100MHz_int;
 
     Inst_clk_wiz_v3_6: clk_wiz_v3_6
     PORT MAP(
         CLK_IN => sys_clk_100MHz,
-        CLK_200MHz_OUT => chipscope_clk,
+        CLK_400MHz_OUT => chipscope_clk,
         CLK_100MHz_OUT => sys_clk,
         CLK_10MHz_OUT => status_clk,
         LOCKED => clk_locked
@@ -275,4 +394,43 @@ begin
     gpmc_d      <= gpmc_data_o when (gpmc_n_oe = '0') else (others => 'Z');
     gpmc_data_i <= gpmc_d;
 
+    ---------------------------------------------------------------------------
+    -- GPIO
+    ---------------------------------------------------------------------------
+
+    trigger_in <= gpio_IN(0);
+    clk_sel <= gpio_IN(1);
+    gpio_OUT(2) <= '0';
+    gpio_OUT(3) <= '0';
+    gpio_OUT(4) <= '0';
+    gpio_OUT(5) <= '0';
+    gpio_OUT(6) <= '0';
+    gpio_OUT(7) <= '0';
+    gpio_OUT(8) <= '0';
+    gpio_OUT(9) <= '0';
+    gpio_OUT(10) <= '0';
+
+    led_OUT(0) <= '0';
+    led_OUT(1) <= '0';
+    led_OUT(2) <= '0';
+    led_OUT(3) <= '0';
+    led_OUT(4) <= '0';
+    led_OUT(5) <= '0';
+    led_OUT(6) <= '0';
+    led_OUT(7) <= '0';
+
+
+    ---------------------------------------------------------------------------
+    -- Chipscope core instantiation
+    ---------------------------------------------------------------------------
+
+    Inst_chipscope_icon: chipscope_icon PORT MAP(
+        CONTROL0 => control
+    );
+
+    Inst_chipscope_ila: chipscope_ila PORT MAP(
+        CONTROL => control,
+        CLK => sys_clk,
+        TRIG0 => threshold_out & global_counter & x"00000000" & "000"
+    );
 end rtl;
