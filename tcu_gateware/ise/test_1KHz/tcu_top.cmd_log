@@ -1,0 +1,2 @@
+xst -intstyle ise -ifn "/home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/test_1KHz/tcu_top.xst" -ofn "/home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/test_1KHz/tcu_top.syr" 
+netgen -intstyle ise -ar Structure -tm tcu_top -w -dir netgen/synthesis -ofmt vhdl -sim tcu_top.ngc tcu_top_synthesis.vhd 

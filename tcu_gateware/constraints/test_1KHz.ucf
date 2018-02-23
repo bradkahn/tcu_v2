@@ -1,0 +1,56 @@
+# Set I/O standard for processor interface pins
+CONFIG VCCAUX  = 3.3;
+
+# Set location of GPIO pins
+
+# | IOSTANDARD = "LVCMOS25";
+NET "gpio_IN[0]" LOC = R8;
+NET "gpio_IN[0]" PULLDOWN;
+# LOW = external clk, HIGH = internal clk
+NET "gpio_IN[1]" LOC = T8;
+NET "gpio_IN[1]" PULLDOWN;
+NET "gpio_OUT[2]" LOC = U5;
+NET "gpio_OUT[3]" LOC = T4;
+NET "gpio_OUT[4]" LOC = R10;
+NET "gpio_OUT[5]" LOC = T9;
+NET "gpio_OUT[6]" LOC = P3;
+NET "gpio_OUT[7]" LOC = P1;
+NET "gpio_OUT[8]" LOC = N6;
+NET "gpio_OUT[9]" LOC = P6;
+NET "gpio_OUT[10]" LOC = P5;
+NET "gpio_OUT[11]" LOC = R5;
+NET "gpio_OUT[12]" LOC = N8;
+NET "gpio_OUT[13]" LOC = N7;
+NET "gpio_OUT[14]" LOC = R4 | SLEW = FAST;
+NET "gpio_OUT[15]" LOC = R3 | SLEW = FAST | DRIVE = 24;
+
+# Set location of LED pins
+
+NET "led_OUT[0]" LOC = Y3;
+NET "led_OUT[1]" LOC = Y1;
+NET "led_OUT[2]" LOC = W2;
+NET "led_OUT[3]" LOC = W1;
+NET "led_OUT[4]" LOC = V3;
+NET "led_OUT[5]" LOC = V1;
+NET "led_OUT[6]" LOC = U2;
+NET "led_OUT[7]" LOC = U1;
+
+
+## Define system clock
+## Internal clocks
+NET "sys_clk_100MHz_int_n_IN"     LOC = A14;
+NET "sys_clk_100MHz_int_p_IN"     LOC = B14;
+
+# From FMC 0
+# J1 P1
+NET "sys_clk_100MHz_ext_IN" LOC = AE15;
+NET "sys_clk_100MHz_ext_IN" IOSTANDARD = LVCMOS33;
+
+# Clock constraints
+
+NET "sys_clk_100MHz_int_p_IN" TNM_NET = "TM_sys_clk";
+NET "sys_clk_100MHz_int_n_IN" TNM_NET = "TM_sys_clk";
+TIMESPEC "TS_sys_clk" = PERIOD "TM_sys_clk"  10.0  ns HIGH 50 %;
+
+NET "sys_clk_100MHz_ext_IN" TNM_NET =  FFS "TM_sys_clk_100MHz_ext_IN";
+TIMESPEC TS_sys_clk_100MHz_ext_IN = PERIOD "TM_sys_clk_100MHz_ext_IN" 10 ns HIGH 50 %;

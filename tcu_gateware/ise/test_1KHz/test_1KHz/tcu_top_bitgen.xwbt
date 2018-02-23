@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=/home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/test_1KHz/tcu_top.ncd
+OUTFILE=/home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/test_1KHz/tcu_top.bit
+FAMILY=Spartan6
+PART=xc6slx150t-4fgg676
+WORKINGDIR=/home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/test_1KHz
+LICENSE=ISE
+USER_INFO=178739136_178739138_210553786_049

@@ -233,19 +233,19 @@ architecture rtl of tcu_top is
     ---------------------------------------------------------------------------
     -- TODO: chipscope debug cores declararation
     ---------------------------------------------------------------------------
-    COMPONENT chipscope_ila
-    PORT(
-        CLK : IN std_logic;
-        TRIG0 : IN std_logic_vector(52 downto 0);
-        CONTROL : INOUT std_logic_vector(35 downto 0)
-    );
-    END COMPONENT;
-
-    COMPONENT chipscope_icon
-    PORT(
-        CONTROL0 : INOUT std_logic_vector(35 downto 0)
-    );
-    END COMPONENT;
+    -- COMPONENT chipscope_ila
+    -- PORT(
+    --     CLK : IN std_logic;
+    --     TRIG0 : IN std_logic_vector(52 downto 0);
+    --     CONTROL : INOUT std_logic_vector(35 downto 0)
+    -- );
+    -- END COMPONENT;
+    --
+    -- COMPONENT chipscope_icon
+    -- PORT(
+    --     CONTROL0 : INOUT std_logic_vector(35 downto 0)
+    -- );
+    -- END COMPONENT;
     ---------------------------------------------------------------------------
     -- TODO: Ethernet Signal declaration section
     ---------------------------------------------------------------------------
@@ -261,7 +261,7 @@ begin
 
     Inst_pri_generator: pri_generator
     PORT MAP(
-        clk_IN => status_clk,
+        clk_IN => sys_clk,
         en_IN => run,
         rst_IN => rst,
         threshold_OUT => threshold_out,
@@ -269,12 +269,9 @@ begin
         count_OUT => global_counter
     );
 
-    gpio_OUT(13) <= threshold_out;
-    gpio_OUT(15) <= pri_out;
-
     Inst_amp_controller: amp_controller
     PORT MAP(
-        clk_IN => status_clk,
+        clk_IN => sys_clk,
         rst_IN => rst,
         en_IN => run,
         count_IN => global_counter,
@@ -285,13 +282,9 @@ begin
         l_amp_OUT => l_amp_out
     );
 
-    gpio_OUT(14) <= x_amp_out;
-    gpio_OUT(12) <= l_amp_out;
-
-
     Inst_pulse_counter: pulse_counter
     PORT MAP(
-        clk_IN => status_clk,
+        clk_IN => sys_clk,
         pulse_IN => pri_out,
         rst_IN => rst,
         en_IN => run,
@@ -300,7 +293,6 @@ begin
         done_OUT => done_out
     );
 
-    gpio_OUT(11) <= done_out;
     ---------------------------------------------------------------------------
     -- Clocking components instantiation
     ---------------------------------------------------------------------------
@@ -400,15 +392,20 @@ begin
 
     trigger_in <= gpio_IN(0);
     clk_sel <= gpio_IN(1);
-    gpio_OUT(2) <= '0';
-    gpio_OUT(3) <= '0';
-    gpio_OUT(4) <= '0';
-    gpio_OUT(5) <= '0';
-    gpio_OUT(6) <= '0';
+    gpio_OUT(2) <= pri_out;
+    gpio_OUT(3) <= threshold_out;
+    gpio_OUT(4) <= x_amp_out;
+    gpio_OUT(5) <= l_amp_out;
+    gpio_OUT(6) <= done_out;
     gpio_OUT(7) <= '0';
     gpio_OUT(8) <= '0';
     gpio_OUT(9) <= '0';
     gpio_OUT(10) <= '0';
+    gpio_OUT(11) <= '0';
+    gpio_OUT(12) <= '0';
+    gpio_OUT(13) <= '0';
+    gpio_OUT(14) <= '0';
+    gpio_OUT(15) <= '0';
 
     led_OUT(0) <= '0';
     led_OUT(1) <= '0';
@@ -423,14 +420,14 @@ begin
     ---------------------------------------------------------------------------
     -- Chipscope core instantiation
     ---------------------------------------------------------------------------
-
-    Inst_chipscope_icon: chipscope_icon PORT MAP(
-        CONTROL0 => control
-    );
-
-    Inst_chipscope_ila: chipscope_ila PORT MAP(
-        CONTROL => control,
-        CLK => sys_clk,
-        TRIG0 => threshold_out & global_counter & x"00000000" & "000"
-    );
+    --
+    -- Inst_chipscope_icon: chipscope_icon PORT MAP(
+    --     CONTROL0 => control
+    -- );
+    --
+    -- Inst_chipscope_ila: chipscope_ila PORT MAP(
+    --     CONTROL => control,
+    --     CLK => sys_clk,
+    --     TRIG0 => threshold_out & global_counter & x"00000000" & "000"
+    -- );
 end rtl;
