@@ -1,0 +1,2 @@
+vhdl work ../../DCM_CLKGEN.vhd
+vhdl work ../example_design/DCM_CLKGEN_exdes.vhd

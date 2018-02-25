@@ -1,0 +1,1 @@
+vhdtdtfi -prj test_1KHz -o /home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/clk_wiz_v3_6.vhi -module clk_wiz_v3_6 -template /opt/Xilinx/14.7/ISE_DS/ISE//data/vhdlinst.tft -deleteonerror -lib work clk_wiz_v3_6.vhd 

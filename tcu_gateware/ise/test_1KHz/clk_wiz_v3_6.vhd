@@ -55,15 +55,15 @@
 -- "Output    Output      Phase     Duty      Pk-to-Pk        Phase"
 -- "Clock    Freq (MHz) (degrees) Cycle (%) Jitter (ps)  Error (ps)"
 ------------------------------------------------------------------------------
--- CLK_OUT1___400.000______0.000______50.0______132.266____235.738
--- CLK_OUT2___100.000______0.000______50.0______172.490____235.738
--- CLK_OUT3____10.000______0.000______50.0______275.182____235.738
--- CLK_OUT4_____4.000______0.000______50.0______330.210____235.738
+-- CLK_OUT1___400.000______0.000______50.0______129.905____235.738
+-- CLK_OUT2___100.000______0.000______50.0______170.687____235.738
+-- CLK_OUT3____10.000______0.000______50.0______268.695____235.738
+-- CLK_OUT4_____4.000______0.000______50.0______321.856____235.738
 --
 ------------------------------------------------------------------------------
 -- "Input Clock   Freq (MHz)    Input Jitter (UI)"
 ------------------------------------------------------------------------------
--- __primary_________100.000_____________0.01
+-- __primary_________100.000____________0.001
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -77,7 +77,8 @@ use unisim.vcomponents.all;
 entity clk_wiz_v3_6 is
 port
  (-- Clock in ports
-  CLK_IN           : in     std_logic;
+  CLK_IN_P         : in     std_logic;
+  CLK_IN_N         : in     std_logic;
   -- Clock out ports
   CLK_400MHz_OUT          : out    std_logic;
   CLK_100MHz_OUT          : out    std_logic;
@@ -108,10 +109,11 @@ begin
 
   -- Input buffering
   --------------------------------------
-  clkin1_buf : BUFG
+  clkin1_buf : IBUFGDS
   port map
-   (O => clkin1,
-    I => CLK_IN);
+   (O  => clkin1,
+    I  => CLK_IN_P,
+    IB => CLK_IN_N);
 
 
   -- Clocking primitive
@@ -141,7 +143,7 @@ begin
     CLKOUT3_PHASE        => 0.000,
     CLKOUT3_DUTY_CYCLE   => 0.500,
     CLKIN_PERIOD         => 10.0,
-    REF_JITTER           => 0.010)
+    REF_JITTER           => 0.001)
   port map
     -- Output clocks
    (CLKFBOUT            => clkfbout,

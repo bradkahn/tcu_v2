@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Thu Feb 22 15:26:07 2018
+# Date: Fri Feb 23 10:33:40 2018
 #
 ##############################################################
 #
@@ -64,8 +64,8 @@ CSET clkfb_out_n_port=CLKFB_OUT_N
 CSET clkfb_out_p_port=CLKFB_OUT_P
 CSET clkfb_out_port=CLKFB_OUT
 CSET clkfb_stopped_port=CLKFB_STOPPED
-CSET clkin1_jitter_ps=100.0
-CSET clkin1_ui_jitter=100.000
+CSET clkin1_jitter_ps=10.0
+CSET clkin1_ui_jitter=10.000
 CSET clkin2_jitter_ps=100.0
 CSET clkin2_ui_jitter=100.000
 CSET clkout1_drives=BUFG
@@ -221,11 +221,11 @@ CSET pll_clkout5_phase=0.000
 CSET pll_compensation=INTERNAL
 CSET pll_divclk_divide=1
 CSET pll_notes=None
-CSET pll_ref_jitter=0.010
+CSET pll_ref_jitter=0.001
 CSET power_down_port=POWER_DOWN
 CSET prim_in_freq=100.000
-CSET prim_in_jitter=0.01
-CSET prim_source=Global_buffer
+CSET prim_in_jitter=0.001
+CSET prim_source=Differential_clock_capable_pin
 CSET primary_port=CLK_IN
 CSET primitive=MMCM
 CSET primtype_sel=PLL_BASE
@@ -266,4 +266,4 @@ CSET use_status=false
 MISC pkg_timestamp=2012-05-10T12:44:55Z
 # END Extra information
 GENERATE
-# CRC: 64287448
+# CRC: 8dabb6a0

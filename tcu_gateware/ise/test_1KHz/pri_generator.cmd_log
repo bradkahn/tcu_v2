@@ -1,0 +1,1 @@
+vhdtdtfi -prj test_1KHz -o /home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/pri_generator.vhi -module pri_generator -template /opt/Xilinx/14.7/ISE_DS/ISE//data/vhdlinst.tft -deleteonerror -lib work c_counter_binary_v11_0.vhd -lib work ../../hdl/pri_generator.vhd 

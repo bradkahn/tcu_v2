@@ -68,7 +68,8 @@ generic (
   TCQ               : in time := 100 ps);
 port
  (-- Clock in ports
-  CLK_IN1           : in  std_logic;
+  CLK_IN1_P         : in  std_logic;
+  CLK_IN1_N         : in  std_logic;
   -- Reset that only drives logic in example design
   COUNTER_RESET     : in  std_logic;
   CLK_OUT           : out std_logic_vector(4 downto 1) ;
@@ -109,7 +110,8 @@ architecture xilinx of clk_wiz_v3_6_exdes is
 component clk_wiz_v3_6 is
 port
  (-- Clock in ports
-  CLK_IN           : in     std_logic;
+  CLK_IN_P         : in     std_logic;
+  CLK_IN_N         : in     std_logic;
   -- Clock out ports
   CLK_400MHz_OUT          : out    std_logic;
   CLK_100MHz_OUT          : out    std_logic;
@@ -150,7 +152,8 @@ end generate counters_1;
   clknetwork : clk_wiz_v3_6
   port map
    (-- Clock in ports
-    CLK_IN            => CLK_IN1,
+    CLK_IN_P          => CLK_IN1_P,
+    CLK_IN_N          => CLK_IN1_N,
     -- Clock out ports
     CLK_400MHz_OUT           => clk_int(1),
     CLK_100MHz_OUT           => clk_int(2),

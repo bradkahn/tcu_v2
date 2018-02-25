@@ -57,7 +57,7 @@ begin
             else
                 case (count_int) is
                     when 0 to 2999 => pri <= '0';
-                    when 3000 to 53000 => pri <= '1';
+                    when 3000 to 5299 => pri <= '1';
                     when others => pri <= '0';
                 end case;
             end if;

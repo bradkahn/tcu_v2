@@ -1,0 +1,9 @@
+run
+-ifmt MIXED
+-top DCM_CLKGEN_WIZ_exdes
+-p xc6slx150t-fgg676-4
+-ifn xst.prj
+-ofn DCM_CLKGEN_WIZ_exdes
+-keep_hierarchy soft 
+-equivalent_register_removal no 
+-max_fanout 65535

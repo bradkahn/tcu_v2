@@ -87,6 +87,8 @@ architecture test of clk_wiz_v3_6_tb is
 
   -- Declare the input clock signals
   signal CLK_IN1       : std_logic := '1';
+  signal CLK_IN1_P     : std_logic := '1';
+  signal CLK_IN1_N     : std_logic := '0';
   -- The high bits of the sampling counters
   signal COUNT         : std_logic_vector(4 downto 1);
   -- Status and control signals
@@ -101,7 +103,8 @@ architecture test of clk_wiz_v3_6_tb is
 component clk_wiz_v3_6_exdes
 port
  (-- Clock in ports
-  CLK_IN1           : in  std_logic;
+  CLK_IN1_P         : in  std_logic;
+  CLK_IN1_N         : in  std_logic;
   -- Reset that only drives logic in example design
   COUNTER_RESET     : in  std_logic;
   CLK_OUT           : out std_logic_vector(4 downto 1) ;
@@ -119,6 +122,8 @@ begin
   process begin
     CLK_IN1 <= not CLK_IN1; wait for (PER1/2);
   end process;
+  CLK_IN1_P <=     CLK_IN1;
+  CLK_IN1_N <= not CLK_IN1;
 
   -- Test sequence
   process 
@@ -200,7 +205,8 @@ begin
   dut : clk_wiz_v3_6_exdes
   port map
    (-- Clock in ports
-    CLK_IN1            => CLK_IN1,
+    CLK_IN1_P          => CLK_IN1_P,
+    CLK_IN1_N          => CLK_IN1_N,
     -- Reset for logic in example design
     COUNTER_RESET      => COUNTER_RESET,
     CLK_OUT            => CLK_OUT,

@@ -22,56 +22,92 @@
   <sourceproject xmlns="http://www.xilinx.com/XMLSchema" xil_pn:fileType="FILE_XISE" xil_pn:name="test_1KHz.xise"/>
 
   <files xmlns="http://www.xilinx.com/XMLSchema">
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="_ngo"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/bitgen.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/map.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/par.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/trce.xmsgs"/>
     <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/xst.xmsgs"/>
-    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="netgen"/>
-    <file xil_pn:branch="PostSynthSim" xil_pn:fileType="FILE_NETGEN_REPORT" xil_pn:name="netgen/synthesis/tcu_top_synthesis.nlf"/>
-    <file xil_pn:branch="PostSynthSim" xil_pn:fileType="FILE_VHDL" xil_pn:name="netgen/synthesis/tcu_top_synthesis.vhd"/>
+    <file xil_pn:fileType="FILE_VHDL_INSTTEMPLATE" xil_pn:name="c_counter_binary_v11_0.vhi"/>
+    <file xil_pn:fileType="FILE_VHDL_INSTTEMPLATE" xil_pn:name="pri_generator.vhi"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BITGEN_REPORT" xil_pn:name="tcu_top.bgn" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:fileType="FILE_BIN" xil_pn:name="tcu_top.bin"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BIT" xil_pn:name="tcu_top.bit" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGDBUILD_LOG" xil_pn:name="tcu_top.bld"/>
     <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="tcu_top.cmd_log"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BITGEN_DRC" xil_pn:name="tcu_top.drc" xil_pn:subbranch="FPGAConfiguration"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="tcu_top.lso"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NCD" xil_pn:name="tcu_top.ncd" xil_pn:subbranch="Par"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGC" xil_pn:name="tcu_top.ngc"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGD" xil_pn:name="tcu_top.ngd"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGR" xil_pn:name="tcu_top.ngr"/>
+    <file xil_pn:fileType="FILE_PAD_MISC" xil_pn:name="tcu_top.pad"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PAR_REPORT" xil_pn:name="tcu_top.par" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PCF" xil_pn:name="tcu_top.pcf" xil_pn:subbranch="Map"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="tcu_top.prj"/>
+    <file xil_pn:fileType="FILE_TRCE_MISC" xil_pn:name="tcu_top.ptwx"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_STX" xil_pn:name="tcu_top.stx"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_REPORT" xil_pn:name="tcu_top.syr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_TIMING_TXT_REPORT" xil_pn:name="tcu_top.twr" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_TIMING_XML_REPORT" xil_pn:name="tcu_top.twx" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_UNROUTES" xil_pn:name="tcu_top.unroutes" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BITGEN_REPORT" xil_pn:name="tcu_top.ut" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:fileType="FILE_XPI" xil_pn:name="tcu_top.xpi"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST" xil_pn:name="tcu_top.xst"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="tcu_top_envsettings.html"/>
+    <file xil_pn:fileType="FILE_NCD" xil_pn:name="tcu_top_guide.ncd" xil_pn:origination="imported"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="tcu_top_map.map" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="tcu_top_map.mrp" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NCD" xil_pn:name="tcu_top_map.ncd" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGM" xil_pn:name="tcu_top_map.ngm" xil_pn:subbranch="Map"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="tcu_top_map.xrpt"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="tcu_top_ngdbuild.xrpt"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PAD_EXCEL_REPORT" xil_pn:name="tcu_top_pad.csv" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PAD_TXT_REPORT" xil_pn:name="tcu_top_pad.txt" xil_pn:subbranch="Par"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="tcu_top_par.xrpt"/>
     <file xil_pn:fileType="FILE_HTML" xil_pn:name="tcu_top_summary.html"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="tcu_top_summary.xml"/>
+    <file xil_pn:fileType="FILE_WEBTALK" xil_pn:name="tcu_top_usage.xml"/>
     <file xil_pn:fileType="FILE_XRPT" xil_pn:name="tcu_top_xst.xrpt"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="usage_statistics_webtalk.html"/>
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="webtalk.log"/>
     <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="webtalk_pn.xml"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xlnx_auto_0_xdb"/>
     <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xst"/>
   </files>
 
   <transforms xmlns="http://www.xilinx.com/XMLSchema">
-    <transform xil_pn:end_ts="1519303979" xil_pn:name="TRAN_copyInitialToXSTAbstractSynthesis" xil_pn:start_ts="1519303979">
-      <status xil_pn:value="SuccessfullyRun"/>
-    </transform>
-    <transform xil_pn:end_ts="1519303979" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="3367457509931016788" xil_pn:start_ts="1519303979">
+    <transform xil_pn:end_ts="1519380405" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="3367457509931016788" xil_pn:start_ts="1519380405">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1519303979" xil_pn:name="TRAN_regenerateCores" xil_pn:prop_ck="-6593864445523758840" xil_pn:start_ts="1519303979">
+    <transform xil_pn:end_ts="1519380405" xil_pn:name="TRAN_regenerateCores" xil_pn:prop_ck="-6593864445523758840" xil_pn:start_ts="1519380405">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1519303979" xil_pn:name="TRAN_SubProjectAbstractToPreProxy" xil_pn:start_ts="1519303979">
+    <transform xil_pn:end_ts="1519380405" xil_pn:name="TRAN_SubProjectAbstractToPreProxy" xil_pn:start_ts="1519380405">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1519303979" xil_pn:name="TRAN_xawsTohdl" xil_pn:prop_ck="-1291760442117997098" xil_pn:start_ts="1519303979">
+    <transform xil_pn:end_ts="1519380405" xil_pn:name="TRAN_xawsTohdl" xil_pn:prop_ck="-1291760442117997098" xil_pn:start_ts="1519380405">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1519303979" xil_pn:name="TRAN_SubProjectPreToStructuralProxy" xil_pn:prop_ck="-563469029221826088" xil_pn:start_ts="1519303979">
+    <transform xil_pn:end_ts="1519380405" xil_pn:name="TRAN_SubProjectPreToStructuralProxy" xil_pn:prop_ck="-563469029221826088" xil_pn:start_ts="1519380405">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1519303979" xil_pn:name="TRAN_platgen" xil_pn:prop_ck="2656937401139984402" xil_pn:start_ts="1519303979">
+    <transform xil_pn:end_ts="1519380405" xil_pn:name="TRAN_platgen" xil_pn:prop_ck="2656937401139984402" xil_pn:start_ts="1519380405">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1519303984" xil_pn:in_ck="655584713918347765" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="7251847084112999457" xil_pn:start_ts="1519303979">
+    <transform xil_pn:end_ts="1519389563" xil_pn:in_ck="-8016588385088134748" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="631199421142386980" xil_pn:start_ts="1519389556">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
       <outfile xil_pn:name="tcu_top.lso"/>
       <outfile xil_pn:name="tcu_top.ngc"/>
@@ -84,16 +120,67 @@
       <outfile xil_pn:name="webtalk_pn.xml"/>
       <outfile xil_pn:name="xst"/>
     </transform>
-    <transform xil_pn:end_ts="1519303984" xil_pn:in_ck="3555806292547648113" xil_pn:name="TRAN_compileBCD2" xil_pn:prop_ck="8290583523110119755" xil_pn:start_ts="1519303984">
+    <transform xil_pn:end_ts="1519382053" xil_pn:in_ck="-3885994819238063610" xil_pn:name="TRAN_compileBCD2" xil_pn:prop_ck="8290583523110119755" xil_pn:start_ts="1519382053">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1519303985" xil_pn:in_ck="182426652095799012" xil_pn:name="TRAN_postSynthesisSimModel" xil_pn:prop_ck="-695245319794702472" xil_pn:start_ts="1519303984">
+    <transform xil_pn:end_ts="1519389568" xil_pn:in_ck="-1909595527473831638" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="221644565574464083" xil_pn:start_ts="1519389563">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_ngo"/>
+      <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+      <outfile xil_pn:name="tcu_top.bld"/>
+      <outfile xil_pn:name="tcu_top.ngd"/>
+      <outfile xil_pn:name="tcu_top_ngdbuild.xrpt"/>
+    </transform>
+    <transform xil_pn:end_ts="1519389586" xil_pn:in_ck="-1909595527473831637" xil_pn:name="TRANEXT_map_spartan6" xil_pn:prop_ck="-3141885506818876029" xil_pn:start_ts="1519389568">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <outfile xil_pn:name="netgen"/>
-      <outfile xil_pn:name="netgen/synthesis/tcu_top_synthesis.nlf"/>
-      <outfile xil_pn:name="netgen/synthesis/tcu_top_synthesis.vhd"/>
+      <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
+      <outfile xil_pn:name="tcu_top.pcf"/>
+      <outfile xil_pn:name="tcu_top_map.map"/>
+      <outfile xil_pn:name="tcu_top_map.mrp"/>
+      <outfile xil_pn:name="tcu_top_map.ncd"/>
+      <outfile xil_pn:name="tcu_top_map.ngm"/>
+      <outfile xil_pn:name="tcu_top_map.xrpt"/>
+      <outfile xil_pn:name="tcu_top_summary.xml"/>
+      <outfile xil_pn:name="tcu_top_usage.xml"/>
+    </transform>
+    <transform xil_pn:end_ts="1519389615" xil_pn:in_ck="3545417819718340036" xil_pn:name="TRANEXT_par_spartan6" xil_pn:prop_ck="-7978487711023391987" xil_pn:start_ts="1519389586">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/par.xmsgs"/>
+      <outfile xil_pn:name="tcu_top.ncd"/>
+      <outfile xil_pn:name="tcu_top.pad"/>
+      <outfile xil_pn:name="tcu_top.par"/>
+      <outfile xil_pn:name="tcu_top.ptwx"/>
+      <outfile xil_pn:name="tcu_top.unroutes"/>
+      <outfile xil_pn:name="tcu_top.xpi"/>
+      <outfile xil_pn:name="tcu_top_pad.csv"/>
+      <outfile xil_pn:name="tcu_top_pad.txt"/>
+      <outfile xil_pn:name="tcu_top_par.xrpt"/>
+    </transform>
+    <transform xil_pn:end_ts="1519389635" xil_pn:in_ck="182426652095798881" xil_pn:name="TRANEXT_bitFile_spartan6" xil_pn:prop_ck="-6778459577953582440" xil_pn:start_ts="1519389615">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/bitgen.xmsgs"/>
+      <outfile xil_pn:name="tcu_top.bgn"/>
+      <outfile xil_pn:name="tcu_top.bin"/>
+      <outfile xil_pn:name="tcu_top.bit"/>
+      <outfile xil_pn:name="tcu_top.drc"/>
+      <outfile xil_pn:name="tcu_top.ut"/>
+      <outfile xil_pn:name="usage_statistics_webtalk.html"/>
+      <outfile xil_pn:name="webtalk.log"/>
+      <outfile xil_pn:name="webtalk_pn.xml"/>
+    </transform>
+    <transform xil_pn:end_ts="1519389615" xil_pn:in_ck="-1909595527473831769" xil_pn:name="TRAN_postRouteTrce" xil_pn:prop_ck="445577401284416186" xil_pn:start_ts="1519389606">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/trce.xmsgs"/>
+      <outfile xil_pn:name="tcu_top.twr"/>
+      <outfile xil_pn:name="tcu_top.twx"/>
     </transform>
   </transforms>
 

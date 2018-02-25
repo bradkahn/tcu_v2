@@ -54,15 +54,15 @@
 -- "Output    Output      Phase     Duty      Pk-to-Pk        Phase"
 -- "Clock    Freq (MHz) (degrees) Cycle (%) Jitter (ps)  Error (ps)"
 ------------------------------------------------------------------------------
--- CLK_OUT1___400.000______0.000______50.0______132.266____235.738
--- CLK_OUT2___100.000______0.000______50.0______172.490____235.738
--- CLK_OUT3____10.000______0.000______50.0______275.182____235.738
--- CLK_OUT4_____4.000______0.000______50.0______330.210____235.738
+-- CLK_OUT1___400.000______0.000______50.0______129.905____235.738
+-- CLK_OUT2___100.000______0.000______50.0______170.687____235.738
+-- CLK_OUT3____10.000______0.000______50.0______268.695____235.738
+-- CLK_OUT4_____4.000______0.000______50.0______321.856____235.738
 --
 ------------------------------------------------------------------------------
 -- "Input Clock   Freq (MHz)    Input Jitter (UI)"
 ------------------------------------------------------------------------------
--- __primary_________100.000_____________0.01
+-- __primary_________100.000____________0.001
 
 
 -- The following code must appear in the VHDL architecture header:
@@ -70,7 +70,8 @@
 component clk_wiz_v3_6
 port
  (-- Clock in ports
-  CLK_IN           : in     std_logic;
+  CLK_IN_P         : in     std_logic;
+  CLK_IN_N         : in     std_logic;
   -- Clock out ports
   CLK_400MHz_OUT          : out    std_logic;
   CLK_100MHz_OUT          : out    std_logic;
@@ -88,7 +89,8 @@ end component;
 your_instance_name : clk_wiz_v3_6
   port map
    (-- Clock in ports
-    CLK_IN => CLK_IN,
+    CLK_IN_P => CLK_IN_P,
+    CLK_IN_N => CLK_IN_N,
     -- Clock out ports
     CLK_400MHz_OUT => CLK_400MHz_OUT,
     CLK_100MHz_OUT => CLK_100MHz_OUT,

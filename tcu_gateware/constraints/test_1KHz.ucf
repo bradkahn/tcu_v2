@@ -9,7 +9,7 @@ NET "gpio_IN[0]" PULLDOWN;
 # LOW = external clk, HIGH = internal clk
 NET "gpio_IN[1]" LOC = T8;
 NET "gpio_IN[1]" PULLDOWN;
-NET "gpio_OUT[2]" LOC = U5;
+NET "gpio_OUT[2]" LOC = U5 | SLEW = FAST;
 NET "gpio_OUT[3]" LOC = T4;
 NET "gpio_OUT[4]" LOC = R10;
 NET "gpio_OUT[5]" LOC = T9;
