@@ -54,15 +54,13 @@
 -- "Output    Output      Phase     Duty      Pk-to-Pk        Phase"
 -- "Clock    Freq (MHz) (degrees) Cycle (%) Jitter (ps)  Error (ps)"
 ------------------------------------------------------------------------------
--- CLK_OUT1___400.000______0.000______50.0______129.905____235.738
--- CLK_OUT2___100.000______0.000______50.0______170.687____235.738
--- CLK_OUT3____10.000______0.000______50.0______268.695____235.738
--- CLK_OUT4_____4.000______0.000______50.0______321.856____235.738
+-- CLK_OUT1___400.000______0.000______50.0______142.531____177.296
+-- CLK_OUT2___100.000______0.000______50.0______185.728____177.296
 --
 ------------------------------------------------------------------------------
 -- "Input Clock   Freq (MHz)    Input Jitter (UI)"
 ------------------------------------------------------------------------------
--- __primary_________100.000____________0.001
+-- __primary_________100.000____________0.010
 
 
 -- The following code must appear in the VHDL architecture header:
@@ -75,8 +73,6 @@ port
   -- Clock out ports
   CLK_400MHz_OUT          : out    std_logic;
   CLK_100MHz_OUT          : out    std_logic;
-  CLK_10MHz_OUT          : out    std_logic;
-  CLK_4MHz_OUT          : out    std_logic;
   -- Status and control signals
   LOCKED            : out    std_logic
  );
@@ -94,8 +90,6 @@ your_instance_name : clk_wiz_v3_6
     -- Clock out ports
     CLK_400MHz_OUT => CLK_400MHz_OUT,
     CLK_100MHz_OUT => CLK_100MHz_OUT,
-    CLK_10MHz_OUT => CLK_10MHz_OUT,
-    CLK_4MHz_OUT => CLK_4MHz_OUT,
     -- Status and control signals
     LOCKED => LOCKED);
 -- INST_TAG_END ------ End INSTANTIATION Template ------------

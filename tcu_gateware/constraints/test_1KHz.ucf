@@ -22,7 +22,7 @@ NET "gpio_OUT[11]" LOC = R5;
 NET "gpio_OUT[12]" LOC = N8;
 NET "gpio_OUT[13]" LOC = N7;
 NET "gpio_OUT[14]" LOC = R4 | SLEW = FAST;
-NET "gpio_OUT[15]" LOC = R3 | SLEW = FAST | DRIVE = 24;
+NET "gpio_OUT[15]" LOC = R3 | SLEW = FAST;
 
 # Set location of LED pins
 
@@ -50,7 +50,7 @@ NET "sys_clk_100MHz_ext_IN" IOSTANDARD = LVCMOS33;
 
 NET "sys_clk_100MHz_int_p_IN" TNM_NET = "TM_sys_clk";
 NET "sys_clk_100MHz_int_n_IN" TNM_NET = "TM_sys_clk";
-TIMESPEC "TS_sys_clk" = PERIOD "TM_sys_clk"  10.0  ns HIGH 50 %;
+TIMESPEC "TS_sys_clk" = PERIOD "TM_sys_clk"  10  ns HIGH 50 %;
 
 NET "sys_clk_100MHz_ext_IN" TNM_NET =  FFS "TM_sys_clk_100MHz_ext_IN";
 TIMESPEC TS_sys_clk_100MHz_ext_IN = PERIOD "TM_sys_clk_100MHz_ext_IN" 10 ns HIGH 50 %;

@@ -112,9 +112,6 @@ Slice Utilization Ratio Delta      : 5
 =========================================================================
 *                          HDL Parsing                                  *
 =========================================================================
-Parsing VHDL file "/home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/clk_wiz_v3_6.vhd" into library work
-Parsing entity <clk_wiz_v3_6>.
-Parsing architecture <xilinx> of entity <clk_wiz_v3_6>.
 Parsing VHDL file "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" into library work
 Parsing entity <tcu_top>.
 Parsing architecture <rtl> of entity <tcu_top>.
@@ -124,11 +121,8 @@ Parsing architecture <rtl> of entity <tcu_top>.
 =========================================================================
 
 Elaborating entity <tcu_top> (architecture <rtl>) from library <work>.
-WARNING:HDLCompiler:871 - "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 44: Using initial value '0' for pri_out_100mhz since it is never assigned
-WARNING:HDLCompiler:871 - "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 47: Using initial value '0' for pri_out_4mhz since it is never assigned
-
-Elaborating entity <clk_wiz_v3_6> (architecture <xilinx>) from library <work>.
-WARNING:HDLCompiler:1127 - "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 150: Assignment to trigger_in ignored, since the identifier is never used
+WARNING:HDLCompiler:871 - "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 49: Using initial value '0' for reset since it is never assigned
+WARNING:HDLCompiler:634 - "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 44: Net <pri_out_100MHz> does not have a driver.
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -138,35 +132,22 @@ Synthesizing Unit <tcu_top>.
     Related source file is "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd".
 WARNING:Xst:647 - Input <gpio_IN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <sys_clk_100MHz_ext_IN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-INFO:Xst:3210 - "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" line 78: Output port <CLK_400MHz_OUT> of the instance <Inst_clk_wiz_v3_6> is unconnected or connected to loadless signal.
-    Found 1-bit register for signal <pri_out_50MHz>.
-    Found 32-bit register for signal <count>.
-    Found 1-bit register for signal <pri_out_10MHz>.
-    Found 32-bit register for signal <count_10MHz>.
+WARNING:Xst:2935 - Signal 'pri_out_100MHz', unconnected in block 'tcu_top', is tied to its initial value (0).
     Found 32-bit register for signal <count_100MHz>.
-    Found 32-bit adder for signal <count_100MHz[31]_GND_5_o_add_0_OUT> created at line 99.
-    Found 32-bit adder for signal <count[31]_GND_5_o_add_3_OUT> created at line 110.
-    Found 32-bit adder for signal <count_10MHz[31]_GND_5_o_add_7_OUT> created at line 122.
+    Found 32-bit adder for signal <count_100MHz[31]_GND_5_o_add_0_OUT> created at line 119.
     Summary:
-	inferred   3 Adder/Subtractor(s).
-	inferred  98 D-type flip-flop(s).
+	inferred   1 Adder/Subtractor(s).
+	inferred  32 D-type flip-flop(s).
 Unit <tcu_top> synthesized.
-
-Synthesizing Unit <clk_wiz_v3_6>.
-    Related source file is "/home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/clk_wiz_v3_6.vhd".
-    Summary:
-	no macro.
-Unit <clk_wiz_v3_6> synthesized.
 
 =========================================================================
 HDL Synthesis Report
 
 Macro Statistics
-# Adders/Subtractors                                   : 3
- 32-bit adder                                          : 3
-# Registers                                            : 5
- 1-bit register                                        : 2
- 32-bit register                                       : 3
+# Adders/Subtractors                                   : 1
+ 32-bit adder                                          : 1
+# Registers                                            : 1
+ 32-bit register                                       : 1
 
 =========================================================================
 
@@ -177,64 +158,33 @@ Macro Statistics
 
 Synthesizing (advanced) Unit <tcu_top>.
 The following registers are absorbed into counter <count_100MHz>: 1 register on signal <count_100MHz>.
-The following registers are absorbed into counter <count_10MHz>: 1 register on signal <count_10MHz>.
-The following registers are absorbed into counter <count>: 1 register on signal <count>.
 Unit <tcu_top> synthesized (advanced).
 
 =========================================================================
 Advanced HDL Synthesis Report
 
 Macro Statistics
-# Counters                                             : 3
- 32-bit up counter                                     : 3
-# Registers                                            : 2
- Flip-Flops                                            : 2
+# Counters                                             : 1
+ 32-bit up counter                                     : 1
 
 =========================================================================
 
 =========================================================================
 *                         Low Level Synthesis                           *
 =========================================================================
-WARNING:Xst:2677 - Node <count_100MHz_9> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_10> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_11> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_12> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_13> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_14> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_15> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_16> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_17> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_18> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_19> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_20> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_21> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_22> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_23> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_24> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_25> of sequential type is unconnected in block <tcu_top>.
-WARNING:Xst:2677 - Node <count_100MHz_26> of sequential type is unconnected in block <tcu_top>.
 WARNING:Xst:2677 - Node <count_100MHz_27> of sequential type is unconnected in block <tcu_top>.
 WARNING:Xst:2677 - Node <count_100MHz_28> of sequential type is unconnected in block <tcu_top>.
 WARNING:Xst:2677 - Node <count_100MHz_29> of sequential type is unconnected in block <tcu_top>.
 WARNING:Xst:2677 - Node <count_100MHz_30> of sequential type is unconnected in block <tcu_top>.
 WARNING:Xst:2677 - Node <count_100MHz_31> of sequential type is unconnected in block <tcu_top>.
-INFO:Xst:1901 - Instance Inst_clk_wiz_v3_6/pll_base_inst in unit Inst_clk_wiz_v3_6/pll_base_inst of type PLL_BASE has been replaced by PLL_ADV
 
 Optimizing unit <tcu_top> ...
 
 Mapping all equations...
 Building and optimizing final netlist ...
 Found area constraint ratio of 100 (+ 5) on block tcu_top, actual ratio is 0.
-Replicating register count_100MHz_1 to handle IOB=TRUE attribute
-Replicating register count_100MHz_2 to handle IOB=TRUE attribute
-Replicating register count_100MHz_3 to handle IOB=TRUE attribute
-Replicating register count_100MHz_4 to handle IOB=TRUE attribute
-Replicating register count_100MHz_5 to handle IOB=TRUE attribute
-Replicating register count_100MHz_6 to handle IOB=TRUE attribute
-Replicating register count_100MHz_7 to handle IOB=TRUE attribute
-Replicating register count_100MHz_8 to handle IOB=TRUE attribute
-Replicating register pri_out_50MHz to handle IOB=TRUE attribute
-Replicating register pri_out_10MHz to handle IOB=TRUE attribute
+Replicating register count_100MHz_15 to handle IOB=TRUE attribute
+Replicating register count_100MHz_26 to handle IOB=TRUE attribute
 
 
 Final Macro Processing ...
@@ -243,8 +193,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 85
- Flip-Flops                                            : 85
+# Registers                                            : 29
+ Flip-Flops                                            : 29
 
 =========================================================================
 
@@ -267,27 +217,20 @@ Top Level Output File Name         : tcu_top.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 301
+# BELS                             : 82
 #      GND                         : 1
-#      INV                         : 3
-#      LUT1                        : 70
-#      LUT2                        : 65
-#      LUT3                        : 1
-#      LUT4                        : 2
-#      LUT5                        : 1
-#      LUT6                        : 14
-#      MUXCY                       : 70
+#      INV                         : 1
+#      LUT1                        : 26
+#      MUXCY                       : 26
 #      VCC                         : 1
-#      XORCY                       : 73
-# FlipFlops/Latches                : 85
-#      FD                          : 85
-# Clock Buffers                    : 5
-#      BUFG                        : 5
+#      XORCY                       : 27
+# FlipFlops/Latches                : 29
+#      FD                          : 29
+# Clock Buffers                    : 1
+#      BUFG                        : 1
 # IO Buffers                       : 23
 #      IBUFGDS                     : 1
 #      OBUF                        : 22
-# Others                           : 1
-#      PLL_ADV                     : 1
 
 Device utilization summary:
 ---------------------------
@@ -296,25 +239,24 @@ Selected Device : 6slx150tfgg676-4
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:              75  out of  184304     0%  
- Number of Slice LUTs:                  156  out of  92152     0%  
-    Number used as Logic:               156  out of  92152     0%  
+ Number of Slice Registers:              27  out of  184304     0%  
+ Number of Slice LUTs:                   27  out of  92152     0%  
+    Number used as Logic:                27  out of  92152     0%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:    157
-   Number with an unused Flip Flop:      82  out of    157    52%  
-   Number with an unused LUT:             1  out of    157     0%  
-   Number of fully used LUT-FF pairs:    74  out of    157    47%  
-   Number of unique control sets:         3
+ Number of LUT Flip Flop pairs used:     27
+   Number with an unused Flip Flop:       0  out of     27     0%  
+   Number with an unused LUT:             0  out of     27     0%  
+   Number of fully used LUT-FF pairs:    27  out of     27   100%  
+   Number of unique control sets:         1
 
 IO Utilization: 
  Number of IOs:                          27
  Number of bonded IOBs:                  24  out of    396     6%  
-    IOB Flip Flops/Latches:              10
+    IOB Flip Flops/Latches:               2
 
 Specific Feature Utilization:
- Number of BUFG/BUFGCTRLs:                5  out of     16    31%  
- Number of PLL_ADVs:                      1  out of      6    16%  
+ Number of BUFG/BUFGCTRLs:                1  out of     16     6%  
 
 ---------------------------
 Partition Resource Summary:
@@ -334,13 +276,11 @@ NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
 
 Clock Information:
 ------------------
----------------------------------------+------------------------+-------+
-Clock Signal                           | Clock buffer(FF name)  | Load  |
----------------------------------------+------------------------+-------+
-Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT1| BUFG                   | 17    |
-count_100MHz_0                         | BUFG                   | 34    |
-Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT2| BUFG                   | 34    |
----------------------------------------+------------------------+-------+
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+sys_clk_100MHz_int_p_IN            | IBUFGDS+BUFG           | 29    |
+-----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
 ----------------------------------------
@@ -350,9 +290,9 @@ Timing Summary:
 ---------------
 Speed Grade: -4
 
-   Minimum period: 3.732ns (Maximum Frequency: 267.982MHz)
+   Minimum period: 2.059ns (Maximum Frequency: 485.743MHz)
    Minimum input arrival time before clock: No path found
-   Maximum output required time after clock: 3.526ns
+   Maximum output required time after clock: 3.495ns
    Maximum combinational path delay: No path found
 
 Timing Details:
@@ -360,21 +300,21 @@ Timing Details:
 All values displayed in nanoseconds (ns)
 
 =========================================================================
-Timing constraint: Default period analysis for Clock 'Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT1'
-  Clock period: 1.748ns (frequency: 572.246MHz)
-  Total number of paths / destination ports: 89 / 17
+Timing constraint: Default period analysis for Clock 'sys_clk_100MHz_int_p_IN'
+  Clock period: 2.059ns (frequency: 485.743MHz)
+  Total number of paths / destination ports: 421 / 29
 -------------------------------------------------------------------------
-Delay:               1.748ns (Levels of Logic = 10)
+Delay:               2.059ns (Levels of Logic = 28)
   Source:            count_100MHz_0 (FF)
-  Destination:       count_100MHz_8 (FF)
-  Source Clock:      Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT1 rising
-  Destination Clock: Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT1 rising
+  Destination:       count_100MHz_26 (FF)
+  Source Clock:      sys_clk_100MHz_int_p_IN rising
+  Destination Clock: sys_clk_100MHz_int_p_IN rising
 
-  Data Path: count_100MHz_0 to count_100MHz_8
+  Data Path: count_100MHz_0 to count_100MHz_26
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q               2   0.447   0.507  count_100MHz_0 (count_100MHz_0)
+     FD:C->Q               1   0.447   0.477  count_100MHz_0 (count_100MHz_0)
      INV:I->O              1   0.206   0.000  Mcount_count_100MHz_lut<0>_INV_0 (Mcount_count_100MHz_lut<0>)
      MUXCY:S->O            1   0.172   0.000  Mcount_count_100MHz_cy<0> (Mcount_count_100MHz_cy<0>)
      MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<1> (Mcount_count_100MHz_cy<1>)
@@ -383,113 +323,45 @@ Delay:               1.748ns (Levels of Logic = 10)
      MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<4> (Mcount_count_100MHz_cy<4>)
      MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<5> (Mcount_count_100MHz_cy<5>)
      MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<6> (Mcount_count_100MHz_cy<6>)
-     MUXCY:CI->O           0   0.019   0.000  Mcount_count_100MHz_cy<7> (Mcount_count_100MHz_cy<7>)
-     XORCY:CI->O           2   0.180   0.000  Mcount_count_100MHz_xor<8> (Result<8>)
-     FD:D                      0.102          count_100MHz_8
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<7> (Mcount_count_100MHz_cy<7>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<8> (Mcount_count_100MHz_cy<8>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<9> (Mcount_count_100MHz_cy<9>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<10> (Mcount_count_100MHz_cy<10>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<11> (Mcount_count_100MHz_cy<11>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<12> (Mcount_count_100MHz_cy<12>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<13> (Mcount_count_100MHz_cy<13>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<14> (Mcount_count_100MHz_cy<14>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<15> (Mcount_count_100MHz_cy<15>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<16> (Mcount_count_100MHz_cy<16>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<17> (Mcount_count_100MHz_cy<17>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<18> (Mcount_count_100MHz_cy<18>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<19> (Mcount_count_100MHz_cy<19>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<20> (Mcount_count_100MHz_cy<20>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<21> (Mcount_count_100MHz_cy<21>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<22> (Mcount_count_100MHz_cy<22>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<23> (Mcount_count_100MHz_cy<23>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<24> (Mcount_count_100MHz_cy<24>)
+     MUXCY:CI->O           0   0.019   0.000  Mcount_count_100MHz_cy<25> (Mcount_count_100MHz_cy<25>)
+     XORCY:CI->O           2   0.180   0.000  Mcount_count_100MHz_xor<26> (Result<26>)
+     FD:D                      0.102          count_100MHz_26
     ----------------------------------------
-    Total                      1.748ns (1.240ns logic, 0.507ns route)
-                                       (71.0% logic, 29.0% route)
+    Total                      2.059ns (1.582ns logic, 0.477ns route)
+                                       (76.8% logic, 23.2% route)
 
 =========================================================================
-Timing constraint: Default period analysis for Clock 'count_100MHz_0'
-  Clock period: 3.732ns (frequency: 267.982MHz)
-  Total number of paths / destination ports: 1618 / 34
--------------------------------------------------------------------------
-Delay:               3.732ns (Levels of Logic = 3)
-  Source:            count_25 (FF)
-  Destination:       pri_out_50MHz (FF)
-  Source Clock:      count_100MHz_0 rising
-  Destination Clock: count_100MHz_0 rising
-
-  Data Path: count_25 to pri_out_50MHz
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FD:C->Q               2   0.447   0.872  count_25 (count_25)
-     LUT6:I0->O            2   0.203   0.852  count[31]_GND_5_o_equal_3_o<31>5 (count[31]_GND_5_o_equal_3_o<31>4)
-     LUT6:I1->O           17   0.203   0.847  count[31]_GND_5_o_equal_3_o<31>7 (count[31]_GND_5_o_equal_3_o)
-     LUT2:I1->O            1   0.205   0.000  count_0_rstpot (count_0_rstpot)
-     FD:D                      0.102          count_0
-    ----------------------------------------
-    Total                      3.732ns (1.160ns logic, 2.572ns route)
-                                       (31.1% logic, 68.9% route)
-
-=========================================================================
-Timing constraint: Default period analysis for Clock 'Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT2'
-  Clock period: 3.721ns (frequency: 268.767MHz)
-  Total number of paths / destination ports: 1618 / 34
--------------------------------------------------------------------------
-Delay:               3.721ns (Levels of Logic = 3)
-  Source:            count_10MHz_7 (FF)
-  Destination:       count_10MHz_1 (FF)
-  Source Clock:      Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT2 rising
-  Destination Clock: Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT2 rising
-
-  Data Path: count_10MHz_7 to count_10MHz_1
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FD:C->Q               2   0.447   0.852  count_10MHz_7 (count_10MHz_7)
-     LUT5:I0->O            3   0.203   0.880  count_10MHz[31]_GND_5_o_equal_7_o<31>2 (count_10MHz[31]_GND_5_o_equal_7_o<31>1)
-     LUT6:I1->O           16   0.203   0.828  count_10MHz[31]_GND_5_o_equal_7_o<31>7 (count_10MHz[31]_GND_5_o_equal_7_o)
-     LUT2:I1->O            1   0.205   0.000  count_10MHz_1_rstpot (count_10MHz_1_rstpot)
-     FD:D                      0.102          count_10MHz_1
-    ----------------------------------------
-    Total                      3.721ns (1.160ns logic, 2.561ns route)
-                                       (31.2% logic, 68.8% route)
-
-=========================================================================
-Timing constraint: Default OFFSET OUT AFTER for Clock 'Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT1'
-  Total number of paths / destination ports: 9 / 9
--------------------------------------------------------------------------
-Offset:              3.526ns (Levels of Logic = 1)
-  Source:            count_100MHz_0 (FF)
-  Destination:       gpio_OUT<15> (PAD)
-  Source Clock:      Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT1 rising
-
-  Data Path: count_100MHz_0 to gpio_OUT<15>
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FD:C->Q               2   0.447   0.507  count_100MHz_0 (count_100MHz_0)
-     OBUF:I->O                 2.571          gpio_OUT_15_OBUF (gpio_OUT<15>)
-    ----------------------------------------
-    Total                      3.526ns (3.018ns logic, 0.507ns route)
-                                       (85.6% logic, 14.4% route)
-
-=========================================================================
-Timing constraint: Default OFFSET OUT AFTER for Clock 'count_100MHz_0'
-  Total number of paths / destination ports: 1 / 1
+Timing constraint: Default OFFSET OUT AFTER for Clock 'sys_clk_100MHz_int_p_IN'
+  Total number of paths / destination ports: 2 / 2
 -------------------------------------------------------------------------
 Offset:              3.495ns (Levels of Logic = 1)
-  Source:            pri_out_50MHz (FF)
-  Destination:       gpio_OUT<5> (PAD)
-  Source Clock:      count_100MHz_0 rising
-
-  Data Path: pri_out_50MHz to gpio_OUT<5>
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FD:C->Q               1   0.447   0.477  pri_out_50MHz (pri_out_50MHz)
-     OBUF:I->O                 2.571          gpio_OUT_5_OBUF (gpio_OUT<5>)
-    ----------------------------------------
-    Total                      3.495ns (3.018ns logic, 0.477ns route)
-                                       (86.4% logic, 13.6% route)
-
-=========================================================================
-Timing constraint: Default OFFSET OUT AFTER for Clock 'Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT2'
-  Total number of paths / destination ports: 1 / 1
--------------------------------------------------------------------------
-Offset:              3.495ns (Levels of Logic = 1)
-  Source:            pri_out_10MHz (FF)
+  Source:            count_100MHz_15 (FF)
   Destination:       gpio_OUT<3> (PAD)
-  Source Clock:      Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT2 rising
+  Source Clock:      sys_clk_100MHz_int_p_IN rising
 
-  Data Path: pri_out_10MHz to gpio_OUT<3>
+  Data Path: count_100MHz_15 to gpio_OUT<3>
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q               1   0.447   0.477  pri_out_10MHz (pri_out_10MHz)
+     FD:C->Q               1   0.447   0.477  count_100MHz_15 (count_100MHz_15)
      OBUF:I->O                 2.571          gpio_OUT_3_OBUF (gpio_OUT<3>)
     ----------------------------------------
     Total                      3.495ns (3.018ns logic, 0.477ns route)
@@ -500,43 +372,26 @@ Offset:              3.495ns (Levels of Logic = 1)
 Cross Clock Domains Report:
 --------------------------
 
-Clock to Setup on destination clock Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT1
----------------------------------------+---------+---------+---------+---------+
-                                       | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock                           |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
----------------------------------------+---------+---------+---------+---------+
-Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT1|    1.748|         |         |         |
----------------------------------------+---------+---------+---------+---------+
-
-Clock to Setup on destination clock Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT2
----------------------------------------+---------+---------+---------+---------+
-                                       | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock                           |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
----------------------------------------+---------+---------+---------+---------+
-Inst_clk_wiz_v3_6/pll_base_inst/CLKOUT2|    3.721|         |         |         |
----------------------------------------+---------+---------+---------+---------+
-
-Clock to Setup on destination clock count_100MHz_0
----------------+---------+---------+---------+---------+
-               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
----------------+---------+---------+---------+---------+
-count_100MHz_0 |    3.732|         |         |         |
----------------+---------+---------+---------+---------+
+Clock to Setup on destination clock sys_clk_100MHz_int_p_IN
+-----------------------+---------+---------+---------+---------+
+                       | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock           |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+-----------------------+---------+---------+---------+---------+
+sys_clk_100MHz_int_p_IN|    2.059|         |         |         |
+-----------------------+---------+---------+---------+---------+
 
 =========================================================================
-WARNING:Xst:615 - Flip flop associated with net count_100MHz_0_BUFG not found, property IOB not attached.
 
 
-Total REAL time to Xst completion: 5.00 secs
-Total CPU time to Xst completion: 5.26 secs
+Total REAL time to Xst completion: 4.00 secs
+Total CPU time to Xst completion: 4.82 secs
  
 --> 
 
 
-Total memory usage is 404640 kilobytes
+Total memory usage is 403044 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :   30 (   0 filtered)
-Number of infos    :    2 (   0 filtered)
+Number of warnings :   11 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
 

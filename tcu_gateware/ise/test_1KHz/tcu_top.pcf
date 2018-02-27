@@ -1,5 +1,5 @@
 //! **************************************************************************
-// Written by: Map P.20131013 on Fri Feb 23 14:39:45 2018
+// Written by: Map P.20131013 on Mon Feb 26 16:49:00 2018
 //! **************************************************************************
 
 SCHEMATIC START;
@@ -31,57 +31,17 @@ COMP "gpio_OUT<14>" LOCATE = SITE "R4" LEVEL 1;
 COMP "gpio_OUT<15>" LOCATE = SITE "R3" LEVEL 1;
 COMP "sys_clk_100MHz_ext_IN" LOCATE = SITE "AE15" LEVEL 1;
 COMP "sys_clk_100MHz_int_n_IN" LOCATE = SITE "A14" LEVEL 1;
-TIMEGRP Inst_clk_wiz_v3_6_clkout1 = BEL "count_100MHz_0" BEL "count_100MHz_1"
-        BEL "count_100MHz_2" BEL "count_100MHz_3" BEL "count_100MHz_4" BEL
+TIMEGRP TM_sys_clk = BEL "count_100MHz_0" BEL "count_100MHz_1" BEL
+        "count_100MHz_2" BEL "count_100MHz_3" BEL "count_100MHz_4" BEL
         "count_100MHz_5" BEL "count_100MHz_6" BEL "count_100MHz_7" BEL
-        "count_100MHz_8" BEL "Inst_clk_wiz_v3_6/clkout2_buf" BEL
-        "count_100MHz_1_1" BEL "count_100MHz_2_1" BEL "count_100MHz_3_1" BEL
-        "count_100MHz_4_1" BEL "count_100MHz_5_1" BEL "count_100MHz_6_1" BEL
-        "count_100MHz_7_1" BEL "count_100MHz_8_1";
-TIMEGRP Inst_clk_wiz_v3_6_clkout1_0 = BEL "count_100MHz_0" BEL
-        "count_100MHz_1" BEL "count_100MHz_2" BEL "count_100MHz_3" BEL
-        "count_100MHz_4" BEL "count_100MHz_5" BEL "count_100MHz_6" BEL
-        "count_100MHz_7" BEL "count_100MHz_8" BEL
-        "Inst_clk_wiz_v3_6/clkout2_buf" BEL "count_100MHz_1_1" BEL
-        "count_100MHz_2_1" BEL "count_100MHz_3_1" BEL "count_100MHz_4_1" BEL
-        "count_100MHz_5_1" BEL "count_100MHz_6_1" BEL "count_100MHz_7_1" BEL
-        "count_100MHz_8_1";
-TIMEGRP Inst_clk_wiz_v3_6_clkout2 = BEL "Inst_clk_wiz_v3_6/clkout3_buf" BEL
-        "count_10MHz_0" BEL "pri_out_10MHz" BEL "count_10MHz_1" BEL
-        "count_10MHz_2" BEL "count_10MHz_3" BEL "count_10MHz_4" BEL
-        "count_10MHz_5" BEL "count_10MHz_6" BEL "count_10MHz_7" BEL
-        "count_10MHz_8" BEL "count_10MHz_9" BEL "count_10MHz_10" BEL
-        "count_10MHz_11" BEL "count_10MHz_12" BEL "count_10MHz_13" BEL
-        "count_10MHz_14" BEL "count_10MHz_15" BEL "count_10MHz_16" BEL
-        "count_10MHz_17" BEL "count_10MHz_18" BEL "count_10MHz_19" BEL
-        "count_10MHz_20" BEL "count_10MHz_21" BEL "count_10MHz_22" BEL
-        "count_10MHz_23" BEL "count_10MHz_24" BEL "count_10MHz_25" BEL
-        "count_10MHz_26" BEL "count_10MHz_27" BEL "count_10MHz_28" BEL
-        "count_10MHz_29" BEL "count_10MHz_30" BEL "count_10MHz_31" BEL
-        "pri_out_10MHz_1";
-TIMEGRP Inst_clk_wiz_v3_6_clkout2_0 = BEL "Inst_clk_wiz_v3_6/clkout3_buf" BEL
-        "count_10MHz_0" BEL "pri_out_10MHz" BEL "count_10MHz_1" BEL
-        "count_10MHz_2" BEL "count_10MHz_3" BEL "count_10MHz_4" BEL
-        "count_10MHz_5" BEL "count_10MHz_6" BEL "count_10MHz_7" BEL
-        "count_10MHz_8" BEL "count_10MHz_9" BEL "count_10MHz_10" BEL
-        "count_10MHz_11" BEL "count_10MHz_12" BEL "count_10MHz_13" BEL
-        "count_10MHz_14" BEL "count_10MHz_15" BEL "count_10MHz_16" BEL
-        "count_10MHz_17" BEL "count_10MHz_18" BEL "count_10MHz_19" BEL
-        "count_10MHz_20" BEL "count_10MHz_21" BEL "count_10MHz_22" BEL
-        "count_10MHz_23" BEL "count_10MHz_24" BEL "count_10MHz_25" BEL
-        "count_10MHz_26" BEL "count_10MHz_27" BEL "count_10MHz_28" BEL
-        "count_10MHz_29" BEL "count_10MHz_30" BEL "count_10MHz_31" BEL
-        "pri_out_10MHz_1";
-PIN SP6_BUFIO2_INSERT_PLL1_ML_BUFIO2_0_pins<0> = BEL
-        "SP6_BUFIO2_INSERT_PLL1_ML_BUFIO2_0" PINNAME DIVCLK;
-PIN Inst_clk_wiz_v3_6/pll_base_inst/PLL_ADV_pins<2> = BEL
-        "Inst_clk_wiz_v3_6/pll_base_inst/PLL_ADV" PINNAME CLKIN1;
-TIMEGRP TM_sys_clk = PIN "SP6_BUFIO2_INSERT_PLL1_ML_BUFIO2_0_pins<0>" PIN
-        "Inst_clk_wiz_v3_6/pll_base_inst/PLL_ADV_pins<2>";
+        "count_100MHz_8" BEL "count_100MHz_9" BEL "count_100MHz_10" BEL
+        "count_100MHz_11" BEL "count_100MHz_12" BEL "count_100MHz_13" BEL
+        "count_100MHz_14" BEL "count_100MHz_15" BEL "count_100MHz_16" BEL
+        "count_100MHz_17" BEL "count_100MHz_18" BEL "count_100MHz_19" BEL
+        "count_100MHz_20" BEL "count_100MHz_21" BEL "count_100MHz_22" BEL
+        "count_100MHz_23" BEL "count_100MHz_24" BEL "count_100MHz_25" BEL
+        "count_100MHz_26" BEL "clk_100MHz_BUFG" BEL "count_100MHz_15_1" BEL
+        "count_100MHz_26_1";
 TS_sys_clk = PERIOD TIMEGRP "TM_sys_clk" 10 ns HIGH 50%;
-TS_Inst_clk_wiz_v3_6_clkout1_0 = PERIOD TIMEGRP "Inst_clk_wiz_v3_6_clkout1_0"
-        TS_sys_clk HIGH 50%;
-TS_Inst_clk_wiz_v3_6_clkout2_0 = PERIOD TIMEGRP "Inst_clk_wiz_v3_6_clkout2_0"
-        TS_sys_clk / 0.1 HIGH 50%;
 SCHEMATIC END;
 

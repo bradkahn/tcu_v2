@@ -25,18 +25,6 @@ WARNING:ConstraintSystem:56 - Constraint <TIMESPEC TS_sys_clk_100MHz_ext_IN =
    find an active 'TNM' or 'TimeGrp' constraint named
    'TM_sys_clk_100MHz_ext_IN'.
 
-INFO:ConstraintSystem:178 - TNM 'TM_sys_clk', used in period specification
-   'TS_sys_clk', was traced into PLL_ADV instance PLL_ADV. The following new TNM
-   groups and period specifications were generated at the PLL_ADV output(s): 
-   CLKOUT1: <TIMESPEC TS_Inst_clk_wiz_v3_6_clkout1_0 = PERIOD
-   "Inst_clk_wiz_v3_6_clkout1_0" TS_sys_clk HIGH 50%>
-
-INFO:ConstraintSystem:178 - TNM 'TM_sys_clk', used in period specification
-   'TS_sys_clk', was traced into PLL_ADV instance PLL_ADV. The following new TNM
-   groups and period specifications were generated at the PLL_ADV output(s): 
-   CLKOUT2: <TIMESPEC TS_Inst_clk_wiz_v3_6_clkout2_0 = PERIOD
-   "Inst_clk_wiz_v3_6_clkout2_0" TS_sys_clk / 0.1 HIGH 50%>
-
 WARNING:ConstraintSystem:191 - The TNM 'TM_sys_clk_100MHz_ext_IN', does not
    directly or indirectly drive any flip-flops, latches and/or RAMS and cannot
    be actively used by the referencing Period constraint
@@ -68,10 +56,10 @@ NGDBUILD Design Results Summary:
   Number of errors:     0
   Number of warnings:   4
 
-Total memory usage is 400884 kilobytes
+Total memory usage is 400184 kilobytes
 
 Writing NGD file "tcu_top.ngd" ...
-Total REAL time to NGDBUILD completion:  3 sec
-Total CPU time to NGDBUILD completion:   3 sec
+Total REAL time to NGDBUILD completion:  2 sec
+Total CPU time to NGDBUILD completion:   2 sec
 
 Writing NGDBUILD log file "tcu_top.bld"...

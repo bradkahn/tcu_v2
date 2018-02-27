@@ -5,13 +5,10 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="warning" file="HDLCompiler" num="871" delta="old" >"/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 44: Using initial value <arg fmt="%s" index="1">&apos;0&apos;</arg> for <arg fmt="%s" index="2">pri_out_100mhz</arg> since it is never assigned
+<msg type="warning" file="HDLCompiler" num="871" delta="old" >"/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 49: Using initial value <arg fmt="%s" index="1">&apos;0&apos;</arg> for <arg fmt="%s" index="2">reset</arg> since it is never assigned
 </msg>
 
-<msg type="warning" file="HDLCompiler" num="871" delta="old" >"/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 47: Using initial value <arg fmt="%s" index="1">&apos;0&apos;</arg> for <arg fmt="%s" index="2">pri_out_4mhz</arg> since it is never assigned
-</msg>
-
-<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 150: Assignment to <arg fmt="%s" index="1">trigger_in</arg> ignored, since the identifier is never used
+<msg type="warning" file="HDLCompiler" num="634" delta="old" >"/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Line 44: Net &lt;<arg fmt="%s" index="1">pri_out_100MHz</arg>&gt; does not have a driver.
 </msg>
 
 <msg type="warning" file="Xst" num="647" delta="old" >Input &lt;<arg fmt="%s" index="1">gpio_IN</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
@@ -20,61 +17,7 @@
 <msg type="warning" file="Xst" num="647" delta="old" >Input &lt;<arg fmt="%s" index="1">sys_clk_100MHz_ext_IN</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 </msg>
 
-<msg type="info" file="Xst" num="3210" delta="old" >&quot;<arg fmt="%s" index="1">/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd</arg>&quot; line <arg fmt="%s" index="2">78</arg>: Output port &lt;<arg fmt="%s" index="3">CLK_400MHz_OUT</arg>&gt; of the instance &lt;<arg fmt="%s" index="4">Inst_clk_wiz_v3_6</arg>&gt; is unconnected or connected to loadless signal.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_9</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_10</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_11</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_12</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_13</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_14</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_15</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_16</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_17</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_18</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_19</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_20</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_21</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_22</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_23</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_24</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_25</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_26</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
+<msg type="warning" file="Xst" num="2935" delta="old" >Signal &apos;<arg fmt="%s" index="1">pri_out_100MHz</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">tcu_top</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">0</arg>).
 </msg>
 
 <msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_27</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
@@ -90,12 +33,6 @@
 </msg>
 
 <msg type="warning" file="Xst" num="2677" delta="old" >Node &lt;<arg fmt="%s" index="1">count_100MHz_31</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">tcu_top</arg>&gt;.
-</msg>
-
-<msg type="info" file="Xst" num="1901" delta="old" >Instance <arg fmt="%s" index="1">Inst_clk_wiz_v3_6/pll_base_inst</arg> in unit <arg fmt="%s" index="2">Inst_clk_wiz_v3_6/pll_base_inst</arg> of type <arg fmt="%s" index="3">PLL_BASE</arg> has been replaced by <arg fmt="%s" index="4">PLL_ADV</arg>
-</msg>
-
-<msg type="warning" file="Xst" num="615" delta="new" ><arg fmt="%s" index="1">Flip flop associated with net</arg> <arg fmt="%s" index="2">count_100MHz_0_BUFG</arg> not found, property <arg fmt="%s" index="3">IOB</arg> not attached.
 </msg>
 
 </messages>

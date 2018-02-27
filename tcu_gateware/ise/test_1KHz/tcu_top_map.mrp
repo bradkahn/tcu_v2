@@ -10,40 +10,40 @@ Target Device  : xc6slx150t
 Target Package : fgg676
 Target Speed   : -4
 Mapper Version : spartan6 -- $Revision: 1.55 $
-Mapped Date    : Fri Feb 23 14:39:30 2018
+Mapped Date    : Mon Feb 26 16:48:45 2018
 
 Design Summary
 --------------
 Number of errors:      0
 Number of warnings:    0
 Slice Logic Utilization:
-  Number of Slice Registers:                    75 out of 184,304    1%
-    Number used as Flip Flops:                  75
+  Number of Slice Registers:                    27 out of 184,304    1%
+    Number used as Flip Flops:                  27
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                        156 out of  92,152    1%
-    Number used as logic:                      153 out of  92,152    1%
-      Number using O6 output only:              83
-      Number using O5 output only:              67
-      Number using O5 and O6:                    3
+  Number of Slice LUTs:                         27 out of  92,152    1%
+    Number used as logic:                       26 out of  92,152    1%
+      Number using O6 output only:               0
+      Number using O5 output only:              25
+      Number using O5 and O6:                    1
       Number used as ROM:                        0
     Number used as Memory:                       0 out of  21,680    0%
-    Number used exclusively as route-thrus:      3
+    Number used exclusively as route-thrus:      1
       Number with same-slice register load:      0
-      Number with same-slice carry load:         3
+      Number with same-slice carry load:         1
       Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                    45 out of  23,038    1%
-  Number of MUXCYs used:                        76 out of  46,076    1%
-  Number of LUT Flip Flop pairs used:          157
-    Number with an unused Flip Flop:            82 out of     157   52%
-    Number with an unused LUT:                   1 out of     157    1%
-    Number of fully used LUT-FF pairs:          74 out of     157   47%
-    Number of unique control sets:               3
+  Number of occupied Slices:                     8 out of  23,038    1%
+  Number of MUXCYs used:                        28 out of  46,076    1%
+  Number of LUT Flip Flop pairs used:           28
+    Number with an unused Flip Flop:             1 out of      28    3%
+    Number with an unused LUT:                   1 out of      28    3%
+    Number of fully used LUT-FF pairs:          26 out of      28   92%
+    Number of unique control sets:               1
     Number of slice register sites lost
-      to control set restrictions:              21 out of 184,304    1%
+      to control set restrictions:               5 out of 184,304    1%
 
   A LUT Flip Flop pair for this architecture represents one LUT paired with
   one Flip Flop within a slice.  A control set is a unique combination of
@@ -54,23 +54,21 @@ Slice Logic Distribution:
 IO Utilization:
   Number of bonded IOBs:                        27 out of     396    6%
     Number of LOCed IOBs:                       27 out of      27  100%
-    IOB Flip Flops:                             10
+    IOB Flip Flops:                              2
 
 Specific Feature Utilization:
   Number of RAMB16BWERs:                         0 out of     268    0%
   Number of RAMB8BWERs:                          0 out of     536    0%
-  Number of BUFIO2/BUFIO2_2CLKs:                 1 out of      32    3%
-    Number used as BUFIO2s:                      1
-    Number used as BUFIO2_2CLKs:                 0
+  Number of BUFIO2/BUFIO2_2CLKs:                 0 out of      32    0%
   Number of BUFIO2FB/BUFIO2FB_2CLKs:             0 out of      32    0%
-  Number of BUFG/BUFGMUXs:                       3 out of      16   18%
-    Number used as BUFGs:                        3
+  Number of BUFG/BUFGMUXs:                       1 out of      16    6%
+    Number used as BUFGs:                        1
     Number used as BUFGMUX:                      0
   Number of DCM/DCM_CLKGENs:                     0 out of      12    0%
   Number of ILOGIC2/ISERDES2s:                   0 out of     586    0%
   Number of IODELAY2/IODRP2/IODRP2_MCBs:         0 out of     586    0%
-  Number of OLOGIC2/OSERDES2s:                  10 out of     586    1%
-    Number used as OLOGIC2s:                    10
+  Number of OLOGIC2/OSERDES2s:                   2 out of     586    1%
+    Number used as OLOGIC2s:                     2
     Number used as OSERDES2s:                    0
   Number of BSCANs:                              0 out of       4    0%
   Number of BUFHs:                               0 out of     384    0%
@@ -82,16 +80,16 @@ Specific Feature Utilization:
   Number of MCBs:                                0 out of       4    0%
   Number of PCIE_A1s:                            0 out of       1    0%
   Number of PCILOGICSEs:                         0 out of       2    0%
-  Number of PLL_ADVs:                            1 out of       6   16%
+  Number of PLL_ADVs:                            0 out of       6    0%
   Number of PMVs:                                0 out of       1    0%
   Number of STARTUPs:                            0 out of       1    0%
   Number of SUSPEND_SYNCs:                       0 out of       1    0%
 
-Average Fanout of Non-Clock Nets:                1.74
+Average Fanout of Non-Clock Nets:                0.95
 
-Peak Memory Usage:  960 MB
-Total REAL time to MAP completion:  16 secs 
-Total CPU time to MAP completion:   15 secs 
+Peak Memory Usage:  955 MB
+Total REAL time to MAP completion:  14 secs 
+Total CPU time to MAP completion:   14 secs 
 
 Table of Contents
 -----------------
@@ -138,27 +136,10 @@ INFO:Pack:1650 - Map created a placed design.
 
 Section 4 - Removed Logic Summary
 ---------------------------------
-   2 block(s) removed
    2 block(s) optimized away
-   2 signal(s) removed
 
 Section 5 - Removed Logic
 -------------------------
-
-The trimmed logic report below shows the logic removed from your design due to
-sourceless or loadless signals, and VCC or ground connections.  If the removal
-of a signal or symbol results in the subsequent removal of an additional signal
-or symbol, the message explaining that second removal will be indented.  This
-indentation will be repeated as a chain of related logic is removed.
-
-To quickly locate the original cause for the removal of a chain of logic, look
-above the place where that logic is listed in the trimming report, then locate
-the lines that are least indented (begin at the leftmost edge).
-
-Loadless block "Inst_clk_wiz_v3_6/clkout1_buf" (CKBUF) removed.
- The signal "Inst_clk_wiz_v3_6/clkout0" is loadless and has been removed.
-Loadless block "Inst_clk_wiz_v3_6/clkout4_buf" (CKBUF) removed.
- The signal "Inst_clk_wiz_v3_6/clkout3" is loadless and has been removed.
 
 Optimized Block(s):
 TYPE 		BLOCK
@@ -180,19 +161,19 @@ Section 6 - IOB Properties
 | gpio_OUT<2>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | FAST |              |          |          |
 | gpio_OUT<3>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
 | gpio_OUT<4>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
-| gpio_OUT<5>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
+| gpio_OUT<5>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
 | gpio_OUT<6>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
-| gpio_OUT<7>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
-| gpio_OUT<8>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
-| gpio_OUT<9>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
-| gpio_OUT<10>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
-| gpio_OUT<11>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
-| gpio_OUT<12>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
-| gpio_OUT<13>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
-| gpio_OUT<14>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | FAST | OFF          |          |          |
-| gpio_OUT<15>                       | IOB              | OUTPUT    | LVCMOS25             |       | 24       | FAST |              |          |          |
+| gpio_OUT<7>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| gpio_OUT<8>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| gpio_OUT<9>                        | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| gpio_OUT<10>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| gpio_OUT<11>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| gpio_OUT<12>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| gpio_OUT<13>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| gpio_OUT<14>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | FAST |              |          |          |
+| gpio_OUT<15>                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | FAST |              |          |          |
 | led_OUT<0>                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
-| led_OUT<1>                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| led_OUT<1>                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF          |          |          |
 | led_OUT<2>                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
 | led_OUT<3>                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
 | led_OUT<4>                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
@@ -200,8 +181,8 @@ Section 6 - IOB Properties
 | led_OUT<6>                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
 | led_OUT<7>                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
 | sys_clk_100MHz_ext_IN              | IOB              | INPUT     | LVCMOS33             |       |          |      |              |          |          |
-| sys_clk_100MHz_int_n_IN            | IOB              | INPUT     | LVDS_25              | FALSE |          |      |              |          |          |
-| sys_clk_100MHz_int_p_IN            | IOB              | INPUT     | LVDS_25              | FALSE |          |      |              |          |          |
+| sys_clk_100MHz_int_n_IN            | IOB              | INPUT     | LVDS_25              | TRUE  |          |      |              |          |          |
+| sys_clk_100MHz_int_p_IN            | IOB              | INPUT     | LVDS_25              | TRUE  |          |      |              |          |          |
 +---------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Section 7 - RPMs
