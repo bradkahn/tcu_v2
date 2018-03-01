@@ -12,10 +12,9 @@ port
     gpio_IN                     : in    std_logic_vector(1 downto 0);
     gpio_OUT                    : out   std_logic_vector(15 downto 2);
     led_OUT                     : out   std_logic_vector(7 downto 0);
-    sys_clk_100MHz_ext_IN       : in    std_logic;
-    sys_clk_100MHz_int_p_IN     : in    std_logic;
-    sys_clk_100MHz_int_n_IN     : in    std_logic
-
+--    sys_clk_100MHz_int_p_IN     : in    std_logic;
+--    sys_clk_100MHz_int_n_IN     : in    std_logic;
+    sys_clk_100MHz_ext_IN       : in    std_logic
     -- TODO: ethernet, fmc pins
 
 );
@@ -41,12 +40,12 @@ architecture rtl of tcu_top is
 --    signal clk_10MHz           : std_logic := '0';                             -- 10MHz
 --    signal clk_4MHz           : std_logic := '0';
 
-    signal pri_out_100MHz           : std_logic := '0';
+--    signal pri_out_100MHz           : std_logic := '0';
 --		signal pri_out_50MHz           : std_logic := '0';
 --    signal pri_out_10MHz           : std_logic := '0';
 --    signal pri_out_4MHz           : std_logic := '0';
     signal trigger_in           : std_logic := '0';
-		signal reset : std_logic := '0';
+--		signal reset : std_logic := '0';
 
     --signal count_100MHz : unsigned(31 downto 0) := (others=>'0');
 		signal count_100MHz : unsigned(31 downto 0) := (others=>'0');
@@ -113,17 +112,10 @@ begin
 
 
 --		reset <=  not clk_locked;
-    sig_1KHz_100MHz : process(clk_100MHz, reset)
+    sig_1KHz_100MHz : process(clk_100MHz)
     begin
-				if reset = '1' then
-					count_100MHz <= (others=>'0'); 
-					pri_out_100MHz <= '0';
-        elsif rising_edge(clk_100MHz) then
-						count_100MHz <= count_100MHz + x"00000001";
---            if count_100MHz = x"0000c34f" then  -- 50000 ticks
---                pri_out_100MHz <= not pri_out_100MHz;
---                count_100MHz <= (others=>'0');    
---            end if;
+        if rising_edge(clk_100MHz) then
+            count_100MHz <= count_100MHz + x"00000001";
         end if;
     end process;
    
@@ -198,7 +190,7 @@ begin
 
    -- reset <= gpio_IN(0);
 --    clk_sel <= gpio_IN(1);
-    gpio_OUT(2) <= pri_out_100MHz;
+    gpio_OUT(2) <= '0';
     gpio_OUT(3) <= count_100MHz(15);
     gpio_OUT(4) <= '0';
     gpio_OUT(5) <=  '0';
@@ -213,14 +205,14 @@ begin
     gpio_OUT(14) <= '0';
     gpio_OUT(15) <= '0';
 
-    led_OUT(0) <= '1';
+    led_OUT(0) <= count_100MHz(26);
     led_OUT(1) <= count_100MHz(26);
-    led_OUT(2) <= '1';
-    led_OUT(3) <= '0';
-    led_OUT(4) <= '1';
-    led_OUT(5) <= '0';
-    led_OUT(6) <= '1';
-    led_OUT(7) <= '0';
+    led_OUT(2) <= count_100MHz(26);
+    led_OUT(3) <= count_100MHz(26);
+    led_OUT(4) <= count_100MHz(26);
+    led_OUT(5) <= count_100MHz(26);
+    led_OUT(6) <= count_100MHz(26);
+    led_OUT(7) <= count_100MHz(26);
 
 
 
