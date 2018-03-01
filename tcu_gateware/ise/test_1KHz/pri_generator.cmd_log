@@ -1,1 +1,7 @@
 vhdtdtfi -prj test_1KHz -o /home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/pri_generator.vhi -module pri_generator -template /opt/Xilinx/14.7/ISE_DS/ISE//data/vhdlinst.tft -deleteonerror -lib work c_counter_binary_v11_0.vhd -lib work ../../hdl/pri_generator.vhd 
+xst -intstyle ise -ifn "/home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/pri_generator.xst" -ofn "/home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/pri_generator.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx150t-fgg676-4 pri_generator.ngc pri_generator.ngd  
+map -intstyle ise -p xc6slx150t-fgg676-4 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o pri_generator_map.ncd pri_generator.ngd pri_generator.pcf 
+par -w -intstyle ise -ol high -mt off pri_generator_map.ncd pri_generator.ncd pri_generator.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml pri_generator.twx pri_generator.ncd -o pri_generator.twr pri_generator.pcf 
+bitgen -intstyle ise -f pri_generator.ut pri_generator.ncd 

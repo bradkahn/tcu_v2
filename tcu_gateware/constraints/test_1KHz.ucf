@@ -44,7 +44,8 @@ NET "sys_clk_100MHz_int_p_IN"     LOC = B14;
 # From FMC 0
 # J1 P1
 NET "sys_clk_100MHz_ext_IN" LOC = AE15;
-NET "sys_clk_100MHz_ext_IN" IOSTANDARD = LVCMOS33;
+#NET "sys_clk_100MHz_ext_IN" IOSTANDARD = LVCMOS33;
+NET "sys_clk_100MHz_ext_IN" IOSTANDARD = LVCMOS25;
 
 # Clock constraints
 

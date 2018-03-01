@@ -1,0 +1,10 @@
+#-----------------------------------------------------------
+# PlanAhead v14.7 (64-bit)
+# Build 321239 by xbuild on Fri Sep 27 19:24:36 MDT 2013
+# Start of session at: Tue Feb 27 15:24:25 2018
+# Process ID: 22796
+# Log file: /home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/planAhead_run_1/planAhead.log
+# Journal file: /home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/planAhead_run_1/planAhead.jou
+#-----------------------------------------------------------
+start_gui
+source /home/brad/tcu_v2/tcu_gateware/ise/test_1KHz/pa.fromNetlist.tcl

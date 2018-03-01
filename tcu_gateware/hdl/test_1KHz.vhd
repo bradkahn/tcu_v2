@@ -76,17 +76,29 @@ begin
     ---------------------------------------------------------------------------
     -- Clocking components instantiation
     ---------------------------------------------------------------------------
-		
-   IBUFGDS_inst : IBUFGDS
+
+--    UNCOMMENT FOR RHINO INTERNAL CLOCK		
+--   IBUFGDS_inst : IBUFGDS
+--   generic map (
+--      IBUF_LOW_PWR => FALSE, -- Low power (TRUE) vs. performance (FALSE) setting for referenced I/O standards
+--      IOSTANDARD => "LVDS_25",
+--			DIFF_TERM => TRUE)
+--   port map (
+--      O => clk_100MHz,  -- Clock buffer output
+--      I => sys_clk_100MHz_int_p_IN,  -- Diff_p clock buffer input
+--      IB => sys_clk_100MHz_int_n_IN -- Diff_n clock buffer input
+--   );
+
+--    UNCOMMENT FOR EXTERNAL / NEXYS3 INTERNAL CLOCK		
+   IBUFG_inst : IBUFG
    generic map (
       IBUF_LOW_PWR => FALSE, -- Low power (TRUE) vs. performance (FALSE) setting for referenced I/O standards
-      IOSTANDARD => "LVDS_25",
-			DIFF_TERM => TRUE)
+      IOSTANDARD => "DEFAULT")
    port map (
-      O => clk_100MHz,  -- Clock buffer output
-      I => sys_clk_100MHz_int_p_IN,  -- Diff_p clock buffer input
-      IB => sys_clk_100MHz_int_n_IN -- Diff_n clock buffer input
+      O => clk_100MHz, -- Clock buffer output
+      I => sys_clk_100MHz_ext_IN  -- Clock buffer input (connect directly to top-level port)
    );
+
 
 --   Inst_clk_wiz_v3_6: clk_wiz_v3_6
 --   PORT MAP(
@@ -99,15 +111,6 @@ begin
 --       LOCKED => clk_locked
 --   );
 
-
---   IBUFG_inst : IBUFG
---   generic map (
---      IBUF_LOW_PWR => FALSE, -- Low power (TRUE) vs. performance (FALSE) setting for referenced I/O standards
---      IOSTANDARD => "DEFAULT")
---   port map (
---      O => clk_100MHz, -- Clock buffer output
---      I => sys_clk_100MHz_ext_IN  -- Clock buffer input (connect directly to top-level port)
---   );
 
 --		reset <=  not clk_locked;
     sig_1KHz_100MHz : process(clk_100MHz, reset)

@@ -2,13 +2,12 @@ set -tmpdir "xst/projnav.tmp"
 set -xsthdpdir "xst"
 run
 -ifn tcu_top.prj
--use_new_parser  yes
 -ofn tcu_top
 -ofmt NGC
 -p xc6slx150t-4-fgg676
 -top tcu_top
 -opt_mode Speed
--opt_level 2
+-opt_level 1
 -power NO
 -iuc NO
 -keep_hierarchy No
@@ -43,13 +42,11 @@ run
 -max_fanout 100000
 -bufg 16
 -register_duplication YES
--register_balancing Yes
--move_first_stage YES
--move_last_stage YES
+-register_balancing No
 -optimize_primitives NO
 -use_clock_enable Auto
 -use_sync_set Auto
 -use_sync_reset Auto
--iob True
+-iob Auto
 -equivalent_register_removal YES
 -slice_utilization_ratio_maxmargin 5

@@ -5,17 +5,16 @@ Parameter TMPDIR set to xst/projnav.tmp
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.05 secs
+Total CPU time to Xst completion: 0.06 secs
  
 --> 
 Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.05 secs
+Total CPU time to Xst completion: 0.06 secs
  
 --> 
-WARNING:Xst:1583 - You are using an internal switch '-use_new_parser'.
 Reading design: tcu_top.prj
 
 TABLE OF CONTENTS
@@ -53,7 +52,6 @@ Output Format                      : NGC
 Target Device                      : xc6slx150t-4-fgg676
 
 ---- Source Options
-Use New Parser                     : yes
 Top Module Name                    : tcu_top
 Automatic FSM Extraction           : YES
 FSM Encoding Algorithm             : Auto
@@ -68,7 +66,7 @@ Resource Sharing                   : YES
 Asynchronous To Synchronous        : NO
 Shift Register Minimum Size        : 2
 Use DSP Block                      : Auto
-Automatic Register Balancing       : Yes
+Automatic Register Balancing       : No
 
 ---- Target Options
 LUT Combining                      : Auto
@@ -77,18 +75,16 @@ Add IO Buffers                     : YES
 Global Maximum Fanout              : 100000
 Add Generic Clock Buffer(BUFG)     : 16
 Register Duplication               : YES
-Move First FlipFlop Stage          : YES
-Move Last FlipFlop Stage           : YES
 Optimize Instantiated Primitives   : NO
 Use Clock Enable                   : Auto
 Use Synchronous Set                : Auto
 Use Synchronous Reset              : Auto
-Pack IO Registers into IOBs        : True
+Pack IO Registers into IOBs        : Auto
 Equivalent register Removal        : YES
 
 ---- General Options
 Optimization Goal                  : Speed
-Optimization Effort                : 2
+Optimization Effort                : 1
 Power Reduction                    : NO
 Keep Hierarchy                     : No
 Netlist Hierarchy                  : As_Optimized
@@ -131,10 +127,11 @@ WARNING:HDLCompiler:634 - "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd" Lin
 Synthesizing Unit <tcu_top>.
     Related source file is "/home/brad/tcu_v2/tcu_gateware/hdl/test_1KHz.vhd".
 WARNING:Xst:647 - Input <gpio_IN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <sys_clk_100MHz_ext_IN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <sys_clk_100MHz_int_p_IN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <sys_clk_100MHz_int_n_IN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:2935 - Signal 'pri_out_100MHz', unconnected in block 'tcu_top', is tied to its initial value (0).
     Found 32-bit register for signal <count_100MHz>.
-    Found 32-bit adder for signal <count_100MHz[31]_GND_5_o_add_0_OUT> created at line 119.
+    Found 32-bit adder for signal <count_100MHz[31]_GND_5_o_add_0_OUT> created at line 122.
     Summary:
 	inferred   1 Adder/Subtractor(s).
 	inferred  32 D-type flip-flop(s).
@@ -183,9 +180,6 @@ Optimizing unit <tcu_top> ...
 Mapping all equations...
 Building and optimizing final netlist ...
 Found area constraint ratio of 100 (+ 5) on block tcu_top, actual ratio is 0.
-Replicating register count_100MHz_15 to handle IOB=TRUE attribute
-Replicating register count_100MHz_26 to handle IOB=TRUE attribute
-
 
 Final Macro Processing ...
 
@@ -193,8 +187,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 29
- Flip-Flops                                            : 29
+# Registers                                            : 27
+ Flip-Flops                                            : 27
 
 =========================================================================
 
@@ -224,12 +218,12 @@ Primitive and Black Box Usage:
 #      MUXCY                       : 26
 #      VCC                         : 1
 #      XORCY                       : 27
-# FlipFlops/Latches                : 29
-#      FD                          : 29
+# FlipFlops/Latches                : 27
+#      FD                          : 27
 # Clock Buffers                    : 1
 #      BUFG                        : 1
 # IO Buffers                       : 23
-#      IBUFGDS                     : 1
+#      IBUFG                       : 1
 #      OBUF                        : 22
 
 Device utilization summary:
@@ -252,8 +246,7 @@ Slice Logic Distribution:
 
 IO Utilization: 
  Number of IOs:                          27
- Number of bonded IOBs:                  24  out of    396     6%  
-    IOB Flip Flops/Latches:               2
+ Number of bonded IOBs:                  23  out of    396     5%  
 
 Specific Feature Utilization:
  Number of BUFG/BUFGCTRLs:                1  out of     16     6%  
@@ -279,7 +272,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-sys_clk_100MHz_int_p_IN            | IBUFGDS+BUFG           | 29    |
+sys_clk_100MHz_ext_IN              | IBUFG+BUFG             | 27    |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -292,7 +285,7 @@ Speed Grade: -4
 
    Minimum period: 2.059ns (Maximum Frequency: 485.743MHz)
    Minimum input arrival time before clock: No path found
-   Maximum output required time after clock: 3.495ns
+   Maximum output required time after clock: 3.526ns
    Maximum combinational path delay: No path found
 
 Timing Details:
@@ -300,15 +293,15 @@ Timing Details:
 All values displayed in nanoseconds (ns)
 
 =========================================================================
-Timing constraint: Default period analysis for Clock 'sys_clk_100MHz_int_p_IN'
+Timing constraint: Default period analysis for Clock 'sys_clk_100MHz_ext_IN'
   Clock period: 2.059ns (frequency: 485.743MHz)
-  Total number of paths / destination ports: 421 / 29
+  Total number of paths / destination ports: 378 / 27
 -------------------------------------------------------------------------
 Delay:               2.059ns (Levels of Logic = 28)
   Source:            count_100MHz_0 (FF)
   Destination:       count_100MHz_26 (FF)
-  Source Clock:      sys_clk_100MHz_int_p_IN rising
-  Destination Clock: sys_clk_100MHz_int_p_IN rising
+  Source Clock:      sys_clk_100MHz_ext_IN rising
+  Destination Clock: sys_clk_100MHz_ext_IN rising
 
   Data Path: count_100MHz_0 to count_100MHz_26
                                 Gate     Net
@@ -342,54 +335,54 @@ Delay:               2.059ns (Levels of Logic = 28)
      MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<23> (Mcount_count_100MHz_cy<23>)
      MUXCY:CI->O           1   0.019   0.000  Mcount_count_100MHz_cy<24> (Mcount_count_100MHz_cy<24>)
      MUXCY:CI->O           0   0.019   0.000  Mcount_count_100MHz_cy<25> (Mcount_count_100MHz_cy<25>)
-     XORCY:CI->O           2   0.180   0.000  Mcount_count_100MHz_xor<26> (Result<26>)
+     XORCY:CI->O           1   0.180   0.000  Mcount_count_100MHz_xor<26> (Result<26>)
      FD:D                      0.102          count_100MHz_26
     ----------------------------------------
     Total                      2.059ns (1.582ns logic, 0.477ns route)
                                        (76.8% logic, 23.2% route)
 
 =========================================================================
-Timing constraint: Default OFFSET OUT AFTER for Clock 'sys_clk_100MHz_int_p_IN'
+Timing constraint: Default OFFSET OUT AFTER for Clock 'sys_clk_100MHz_ext_IN'
   Total number of paths / destination ports: 2 / 2
 -------------------------------------------------------------------------
-Offset:              3.495ns (Levels of Logic = 1)
+Offset:              3.526ns (Levels of Logic = 1)
   Source:            count_100MHz_15 (FF)
   Destination:       gpio_OUT<3> (PAD)
-  Source Clock:      sys_clk_100MHz_int_p_IN rising
+  Source Clock:      sys_clk_100MHz_ext_IN rising
 
   Data Path: count_100MHz_15 to gpio_OUT<3>
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q               1   0.447   0.477  count_100MHz_15 (count_100MHz_15)
+     FD:C->Q               2   0.447   0.507  count_100MHz_15 (count_100MHz_15)
      OBUF:I->O                 2.571          gpio_OUT_3_OBUF (gpio_OUT<3>)
     ----------------------------------------
-    Total                      3.495ns (3.018ns logic, 0.477ns route)
-                                       (86.4% logic, 13.6% route)
+    Total                      3.526ns (3.018ns logic, 0.507ns route)
+                                       (85.6% logic, 14.4% route)
 
 =========================================================================
 
 Cross Clock Domains Report:
 --------------------------
 
-Clock to Setup on destination clock sys_clk_100MHz_int_p_IN
------------------------+---------+---------+---------+---------+
-                       | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock           |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
------------------------+---------+---------+---------+---------+
-sys_clk_100MHz_int_p_IN|    2.059|         |         |         |
------------------------+---------+---------+---------+---------+
+Clock to Setup on destination clock sys_clk_100MHz_ext_IN
+---------------------+---------+---------+---------+---------+
+                     | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock         |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------------+---------+---------+---------+---------+
+sys_clk_100MHz_ext_IN|    2.059|         |         |         |
+---------------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
-Total REAL time to Xst completion: 4.00 secs
-Total CPU time to Xst completion: 4.82 secs
+Total REAL time to Xst completion: 8.00 secs
+Total CPU time to Xst completion: 7.46 secs
  
 --> 
 
 
-Total memory usage is 403044 kilobytes
+Total memory usage is 407064 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :   11 (   0 filtered)

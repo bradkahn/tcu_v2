@@ -4,9 +4,11 @@
 ## - rename the used signals according to the project
 
 ## Clock signal
-NET "sys_clk_100MHz_ext_IN"            LOC = "V10" | IOSTANDARD = "LVCMOS33";   #Bank = 2, pin name = IO_L30N_GCLK0_USERCCLK,            Sch name = GCLK
+#NET "sys_clk_100MHz_ext_IN"            LOC = "V10" | IOSTANDARD = "LVCMOS33";   #Bank = 2, pin name = IO_L30N_GCLK0_USERCCLK,            Sch name = GCLK
+NET "sys_clk_100MHz_ext_IN"          LOC = "G3"  | IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L46P_M3CLK,                     Sch name = JC4
+
 Net "sys_clk_100MHz_ext_IN" TNM_NET = sys_clk_pin;
-TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 100000 kHz;
+TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 10 ns;
 
 ## onBoard USB controller
 ## NOTE: DEPP and DSTM net names use some of the same pins, if trying to use both DEPP and DSTM use a signle net name for each shared pin.
