@@ -133,9 +133,9 @@ BEGIN
       -- set register values...
         num_pulses_IN <= x"0002";           -- block size = 2
         num_repeats_IN <= x"0000000a";      -- 10 repeats
-        x_amp_delay_IN <= x"012c";          -- 3us
-        l_amp_delay_IN <= x"012c";          -- 3us
-        pri_pulse_width_IN <= x"000000a0";  -- 
+        x_amp_delay_IN <= x"012e";          -- 3us NOTE ADD 2 CYCLES
+        l_amp_delay_IN <= x"012e";          -- 3us
+        pri_pulse_width_IN <= x"000003e8";  --
         --
         pulse_params_IN <= x"7700_0001_ffff_0001_03e8_0bb8";
 

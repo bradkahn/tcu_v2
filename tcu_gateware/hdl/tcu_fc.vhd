@@ -106,16 +106,16 @@ begin
                         if soft_arm = '0' then
                             state <= IDLE;
                         elsif trigger_IN = '1' then
-                            start_amp_flag <= '1';
                             state <= PRE_PULSE;
                         else
                             state <= ARMED;
                         end if;
 
                     when PRE_PULSE =>
-                        start_amp_flag <= '0';
+                        start_amp_flag <= '1';
                         pre_pulse_counter <= pre_pulse_counter + x"0001";
                         if pre_pulse_counter = (pre_pulse_duration-1) then
+                            start_amp_flag <= '0';
                             start_pri_flag <= '1';
                             state <= MAIN_BANG;
                             pre_pulse_counter <= (others => '0');
@@ -162,26 +162,6 @@ begin
 
                         end if;
 
-                        -- if block_counter = unsigned(num_repeats_IN) then
-                        --     -- finished all txfers
-                        --     block_counter <= (others => '0');
-                        --     state <= DONE;
-                        --
-                        -- elsif pulse_index = unsigned(num_pulses_IN) then
-                        --     -- reached the end of the block, increment block counter
-                        --     pulse_index <= (others => '0');
-                        --     block_counter <= block_counter + x"00000001";
-                        --     state <= PRE_PULSE;
-                        --
-                        -- elsif digitize_counter = digitization_duration then
-                        --     digitize_counter <= (others => '0');
-                        --     pulse_index <= pulse_index + "00001";
-                        --     state <= PRE_PULSE;
-                        --
-                        -- else
-                        --     state <= DIGITIZE;
-                        -- end if;
-
                     when DONE =>
                         state <= DONE;
 
@@ -205,7 +185,7 @@ begin
                 end if;
                 if amp_on = '1' then
                     amp_on_counter <= amp_on_counter + x"0001";
-                    if amp_on_counter = amp_on_duration then
+                    if amp_on_counter = (amp_on_duration-1) then
                         amp_on <= '0';
                         amp_on_counter <= (others => '0');
                     end if;
@@ -229,7 +209,7 @@ begin
                 end if;
                 if pri_on = '1' then
                     pri_on_counter <= pri_on_counter + x"000001";
-                    if pri_on_counter = pri_on_duration then
+                    if pri_on_counter = (pri_on_duration-1) then
                         pri_on <= '0';
                         pri_on_counter <= (others => '0');
                     end if;

@@ -97,6 +97,10 @@
       <obj_property name="ElementShortName">pri_on</obj_property>
       <obj_property name="ObjectShortName">pri_on</obj_property>
    </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/start_pri_flag" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">start_pri_flag</obj_property>
+      <obj_property name="ObjectShortName">start_pri_flag</obj_property>
+   </wvobject>
    <wvobject fp_name="/tcu_fc_tb/uut/pri_on_duration" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">pri_on_duration[31:0]</obj_property>
       <obj_property name="ObjectShortName">pri_on_duration[31:0]</obj_property>
@@ -155,10 +159,6 @@
    <wvobject fp_name="/tcu_fc_tb/uut/amp_on" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">amp_on</obj_property>
       <obj_property name="ObjectShortName">amp_on</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tcu_fc_tb/uut/start_pri_flag" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">start_pri_flag</obj_property>
-      <obj_property name="ObjectShortName">start_pri_flag</obj_property>
    </wvobject>
    <wvobject fp_name="/tcu_fc_tb/uut/sw_off_delay" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">sw_off_delay[15:0]</obj_property>
