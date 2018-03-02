@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/brad/tcu_v2/tcu_gateware/ise/tcu_fc/tcu_fc_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="tcu_fc_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="36" />
+   <wvobject fp_name="/tcu_fc_tb/clk_in" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk_in</obj_property>
+      <obj_property name="ObjectShortName">clk_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/rst_in" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst_in</obj_property>
+      <obj_property name="ObjectShortName">rst_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/trigger_in" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">trigger_in</obj_property>
+      <obj_property name="ObjectShortName">trigger_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/instruction_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">instruction_in[15:0]</obj_property>
+      <obj_property name="ObjectShortName">instruction_in[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/num_pulses_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">num_pulses_in[15:0]</obj_property>
+      <obj_property name="ObjectShortName">num_pulses_in[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/num_repeats_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">num_repeats_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">num_repeats_in[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/x_amp_delay_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">x_amp_delay_in[15:0]</obj_property>
+      <obj_property name="ObjectShortName">x_amp_delay_in[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/l_amp_delay_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">l_amp_delay_in[15:0]</obj_property>
+      <obj_property name="ObjectShortName">l_amp_delay_in[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/pri_pulse_width_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pri_pulse_width_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pri_pulse_width_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/pulse_params_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pulse_params_in[95:0]</obj_property>
+      <obj_property name="ObjectShortName">pulse_params_in[95:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/pulse_index_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pulse_index_out[4:0]</obj_property>
+      <obj_property name="ObjectShortName">pulse_index_out[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/status_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">status_out[15:0]</obj_property>
+      <obj_property name="ObjectShortName">status_out[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/bias_x_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">bias_x_out</obj_property>
+      <obj_property name="ObjectShortName">bias_x_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/bias_l_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">bias_l_out</obj_property>
+      <obj_property name="ObjectShortName">bias_l_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/pol_tx_x_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pol_tx_x_out</obj_property>
+      <obj_property name="ObjectShortName">pol_tx_x_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/bias_tx_l_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">bias_tx_l_out</obj_property>
+      <obj_property name="ObjectShortName">bias_tx_l_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/bias_rx_l_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">bias_rx_l_out</obj_property>
+      <obj_property name="ObjectShortName">bias_rx_l_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/pri_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pri_out</obj_property>
+      <obj_property name="ObjectShortName">pri_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/pri_on_counter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pri_on_counter[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pri_on_counter[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/pri_on" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pri_on</obj_property>
+      <obj_property name="ObjectShortName">pri_on</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/pri_on_duration" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pri_on_duration[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pri_on_duration[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider35" type="divider">
+      <obj_property name="label">state</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider34" type="divider">
+      <obj_property name="label">counters</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/amp_on_counter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">amp_on_counter[15:0]</obj_property>
+      <obj_property name="ObjectShortName">amp_on_counter[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/amp_on_duration" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">amp_on_duration[15:0]</obj_property>
+      <obj_property name="ObjectShortName">amp_on_duration[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/pre_pulse_counter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pre_pulse_counter[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pre_pulse_counter[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/main_bang_counter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">main_bang_counter[15:0]</obj_property>
+      <obj_property name="ObjectShortName">main_bang_counter[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/digitize_counter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">digitize_counter[31:0]</obj_property>
+      <obj_property name="ObjectShortName">digitize_counter[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/digitization_duration" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">digitization_duration[31:0]</obj_property>
+      <obj_property name="ObjectShortName">digitization_duration[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/start_amp_flag" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">start_amp_flag</obj_property>
+      <obj_property name="ObjectShortName">start_amp_flag</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/amp_on" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">amp_on</obj_property>
+      <obj_property name="ObjectShortName">amp_on</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/start_pri_flag" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">start_pri_flag</obj_property>
+      <obj_property name="ObjectShortName">start_pri_flag</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/sw_off_delay" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">sw_off_delay[15:0]</obj_property>
+      <obj_property name="ObjectShortName">sw_off_delay[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/block_counter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">block_counter[31:0]</obj_property>
+      <obj_property name="ObjectShortName">block_counter[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/pulse_index" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pulse_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">pulse_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>
