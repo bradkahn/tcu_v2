@@ -102,6 +102,7 @@ begin
                 case(state) is
 
                     when IDLE =>
+                        status_OUT(2 downto 0) <= "000";
                         if soft_arm = '1' then
                             state <= ARMED;
                         else
@@ -109,6 +110,7 @@ begin
                         end if;
 
                     when ARMED =>
+                        status_OUT(2 downto 0) <= "001";
                         if soft_arm = '0' then
                             state <= IDLE;
                         elsif trigger_IN = '1' then
@@ -118,6 +120,7 @@ begin
                         end if;
 
                     when PRE_PULSE =>
+                        status_OUT(2 downto 0) <= "010";
                         start_amp_flag <= '1';
                         pre_pulse_counter <= pre_pulse_counter + x"0001";
                         if pre_pulse_counter = (pre_pulse_duration-1) then
@@ -130,6 +133,7 @@ begin
                         end if;
 
                     when MAIN_BANG =>
+                        status_OUT(2 downto 0) <= "011";
                         start_pri_flag <= '0';
                         main_bang_counter <= main_bang_counter + x"0001";
                         if main_bang_counter = (main_bang_duration-1) then
@@ -140,6 +144,7 @@ begin
                         end if;
 
                     when DIGITIZE =>
+                        status_OUT(2 downto 0) <= "100";
                         digitize_counter <= digitize_counter + x"00000001";
 
                         if digitize_counter = (digitization_duration-1)  then
@@ -162,9 +167,11 @@ begin
                         end if;
 
                     when DONE =>
+                        status_OUT(2 downto 0) <= "101";
                         state <= DONE;
 
                     when OTHERS =>
+                        status_OUT(2 downto 0) <= "110";
                         state <= FAULT;
                 end case;
 
@@ -195,6 +202,8 @@ begin
 
     sw_off_delay    <= unsigned(l_amp_delay_IN) when pol_mode(2) = '0' else unsigned(x_amp_delay_IN);
     amp_on_duration <= pre_pulse_duration + main_bang_duration - sw_off_delay;
+    bias_L_OUT  <= '1' when amp_on = '1' and pol_mode(2) = '0' else '0';
+    bias_X_OUT  <= '1' when amp_on = '1' and pol_mode(2) = '1' else '0';
 
     pri : process(clk_IN, rst_IN, start_pri_flag)
     begin
