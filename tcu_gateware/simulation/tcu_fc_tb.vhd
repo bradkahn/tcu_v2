@@ -56,8 +56,8 @@ ARCHITECTURE behavior OF tcu_fc_tb IS
          bias_X_OUT : OUT  std_logic;
          bias_L_OUT : OUT  std_logic;
          pol_tx_X_OUT : OUT  std_logic;
-         bias_tx_L_OUT : OUT  std_logic;
-         bias_rx_L_OUT : OUT  std_logic;
+         pol_tx_L_OUT : OUT  std_logic;
+         pol_rx_L_OUT : OUT  std_logic;
          pri_OUT : OUT  std_logic
         );
     END COMPONENT;
@@ -81,8 +81,8 @@ ARCHITECTURE behavior OF tcu_fc_tb IS
    signal bias_X_OUT : std_logic;
    signal bias_L_OUT : std_logic;
    signal pol_tx_X_OUT : std_logic;
-   signal bias_tx_L_OUT : std_logic;
-   signal bias_rx_L_OUT : std_logic;
+   signal pol_tx_L_OUT : std_logic;
+   signal pol_rx_L_OUT : std_logic;
    signal pri_OUT : std_logic;
 
    -- Clock period definitions
@@ -107,8 +107,8 @@ BEGIN
           bias_X_OUT => bias_X_OUT,
           bias_L_OUT => bias_L_OUT,
           pol_tx_X_OUT => pol_tx_X_OUT,
-          bias_tx_L_OUT => bias_tx_L_OUT,
-          bias_rx_L_OUT => bias_rx_L_OUT,
+          pol_tx_L_OUT => pol_tx_L_OUT,
+          pol_rx_L_OUT => pol_rx_L_OUT,
           pri_OUT => pri_OUT
         );
 

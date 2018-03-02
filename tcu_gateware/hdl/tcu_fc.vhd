@@ -33,11 +33,11 @@ port(
         status_OUT              : out std_logic_vector(STATUS_WIDTH-1             downto 0);
 
         -- amp bias and polarization switches
-        bias_X_OUT              : out std_logic;
-        bias_L_OUT              : out std_logic;
-        pol_tx_X_OUT            : out std_logic;
-        bias_tx_L_OUT           : out std_logic;
-        bias_rx_L_OUT           : out std_logic;
+        bias_x_OUT              : out std_logic;
+        bias_l_OUT              : out std_logic;
+        pol_tx_x_OUT            : out std_logic;
+        pol_tx_l_OUT           : out std_logic;
+        pol_rx_l_OUT           : out std_logic;
         pri_OUT                 : out std_logic
 
         -- TODO: ethernet ports for frequency setting to REX
@@ -56,6 +56,18 @@ architecture behave of tcu_fc is
     signal amp_on_counter           : unsigned(15 downto 0)         := (others => '0');
     signal amp_on                   : std_logic                     := '0';
     signal sw_off_delay             : unsigned(15 downto 0)         := (others => '0');
+
+    -- amplifier active high/low constants, change if needed
+    constant X_POL_TX_HORIZONTAL: std_logic := '0';
+    constant X_POL_TX_VERTICAL  : std_logic := not X_POL_TX_HORIZONTAL;
+    constant L_POL_TX_HORIZONTAL: std_logic := '0';
+    constant L_POL_TX_VERTICAL  : std_logic := not L_POL_TX_HORIZONTAL;
+    constant L_POL_RX_HORIZONTAL: std_logic := '0';
+    constant L_POL_RX_VERTICAL  : std_logic := not L_POL_RX_HORIZONTAL;
+    constant X_AMP_ON           : std_logic := '0';
+    constant X_AMP_OFF          : std_logic := not X_AMP_ON;
+    constant L_AMP_ON           : std_logic := '1';
+    constant L_AMP_OFF          : std_logic := not L_AMP_ON;
 
     -- pri signals
     signal start_pri_flag           : std_logic                     := '0';
@@ -228,5 +240,38 @@ begin
 
     pri_on_duration <= unsigned(pri_pulse_width_IN);
     pri_OUT <= pri_on;
+
+    amp_pol_switches : process(clk_IN, rst_IN, state)
+    begin
+        if rising_edge(clk_IN) then
+            if rst_IN = '1' then
+                pol_rx_l_OUT <= '0';
+                pol_tx_l_OUT <= '0';
+                pol_tx_x_OUT <= '0';
+            else
+                --  X-band pulse
+                if pol_mode(2) = '1' then
+                    if pol_mode(0) = '0' then
+                        pol_tx_x_OUT <= X_POL_TX_HORIZONTAL;
+                    else
+                        pol_tx_x_OUT <= X_POL_TX_VERTICAL;
+                    end if;
+
+                -- L-band pulse
+                else
+                    if pol_mode(1) = '1' then
+                        pol_tx_l_OUT <= L_POL_TX_HORIZONTAL;
+                    else
+                        pol_tx_l_OUT <= L_POL_TX_VERTICAL;
+                    end if;
+                    if pol_mode(0) = '1' then
+                        pol_rx_l_OUT <= L_POL_RX_HORIZONTAL;
+                    else
+                        pol_rx_l_OUT <= L_POL_RX_VERTICAL;
+                    end if;
+                end if;
+            end if;
+        end if;
+    end process;
 
 end behave;

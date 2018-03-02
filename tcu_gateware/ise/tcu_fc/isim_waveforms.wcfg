@@ -72,17 +72,17 @@
       <obj_property name="ElementShortName">bias_l_out</obj_property>
       <obj_property name="ObjectShortName">bias_l_out</obj_property>
    </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/pol_rx_l_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pol_rx_l_out</obj_property>
+      <obj_property name="ObjectShortName">pol_rx_l_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/pol_tx_l_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pol_tx_l_out</obj_property>
+      <obj_property name="ObjectShortName">pol_tx_l_out</obj_property>
+   </wvobject>
    <wvobject fp_name="/tcu_fc_tb/pol_tx_x_out" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">pol_tx_x_out</obj_property>
       <obj_property name="ObjectShortName">pol_tx_x_out</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tcu_fc_tb/bias_tx_l_out" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">bias_tx_l_out</obj_property>
-      <obj_property name="ObjectShortName">bias_tx_l_out</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tcu_fc_tb/bias_rx_l_out" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">bias_rx_l_out</obj_property>
-      <obj_property name="ObjectShortName">bias_rx_l_out</obj_property>
    </wvobject>
    <wvobject fp_name="/tcu_fc_tb/pri_out" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">pri_out</obj_property>
