@@ -90,7 +90,13 @@ begin
     begin
         if rising_edge(clk_IN) then
             if rst_IN = '1' then
-
+                pre_pulse_counter   <= (others => '0');
+                main_bang_counter   <= (others => '0');
+                digitize_counter    <= (others => '0');
+                block_counter       <= (others => '0');
+                state               <= IDLE;
+                start_amp_flag      <= '0';
+                start_pri_flag      <= '0';
             else
 
                 case(state) is
@@ -155,13 +161,6 @@ begin
                             state <= DIGITIZE;
                         end if;
 
-
-
-
-                        if pulse_index = unsigned(num_repeats_IN) then
-
-                        end if;
-
                     when DONE =>
                         state <= DONE;
 
@@ -217,6 +216,7 @@ begin
             end if;
         end if;
     end process;
+
     pri_on_duration <= unsigned(pri_pulse_width_IN);
     pri_OUT <= pri_on;
 
