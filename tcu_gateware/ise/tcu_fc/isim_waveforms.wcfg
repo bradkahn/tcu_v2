@@ -11,7 +11,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="36" />
+   <WVObjectSize size="44" />
    <wvobject fp_name="/tcu_fc_tb/clk_in" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk_in</obj_property>
       <obj_property name="ObjectShortName">clk_in</obj_property>
@@ -23,6 +23,12 @@
    <wvobject fp_name="/tcu_fc_tb/trigger_in" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">trigger_in</obj_property>
       <obj_property name="ObjectShortName">trigger_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider56" type="divider">
+      <obj_property name="label">config inputs</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
    </wvobject>
    <wvobject fp_name="/tcu_fc_tb/instruction_in" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">instruction_in[15:0]</obj_property>
@@ -51,14 +57,447 @@
    <wvobject fp_name="/tcu_fc_tb/pri_pulse_width_in" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">pri_pulse_width_in[31:0]</obj_property>
       <obj_property name="ObjectShortName">pri_pulse_width_in[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tcu_fc_tb/pulse_params_in" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">pulse_params_in[95:0]</obj_property>
       <obj_property name="ObjectShortName">pulse_params_in[95:0]</obj_property>
    </wvobject>
+   <wvobject fp_name="divider279" type="divider">
+      <obj_property name="label">pulse params decoded</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="vbus239" type="vbus" db_ref_id="1">
+      <obj_property name="label">mode{0, 1, 2, 3, 4 , 5}</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[79]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[79]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[79]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[78]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[78]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[78]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[77]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[77]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[77]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[76]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[76]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[76]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[75]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[75]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[75]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[74]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[74]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[74]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[73]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[73]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[73]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[72]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[72]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[72]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[71]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[71]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[71]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[70]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[70]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[70]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[69]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[69]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[69]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[68]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[68]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[68]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[67]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[67]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[67]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[66]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[66]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[66]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[65]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[65]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[65]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[64]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[64]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[64]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="vbus222" type="vbus" db_ref_id="1">
+      <obj_property name="label">frequency{reversed hex}</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[63]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[63]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[63]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[62]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[62]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[62]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[61]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[61]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[61]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[60]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[60]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[60]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[59]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[59]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[59]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[58]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[58]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[58]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[57]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[57]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[57]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[56]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[56]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[56]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[55]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[55]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[55]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[54]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[54]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[54]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[53]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[53]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[53]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[52]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[52]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[52]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[51]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[51]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[51]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[50]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[50]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[50]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[49]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[49]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[49]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[48]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[48]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[48]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="vbus278" type="vbus" db_ref_id="1">
+      <obj_property name="label">pri{cycles}</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <wvobject fp_name="vbus205" type="vbus" db_ref_id="1">
+         <obj_property name="label">pri_upper</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[47]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[47]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[47]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[46]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[46]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[46]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[45]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[45]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[45]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[44]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[44]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[44]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[43]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[43]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[43]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[42]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[42]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[42]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[41]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[41]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[41]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[40]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[40]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[40]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[39]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[39]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[39]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[38]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[38]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[38]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[37]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[37]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[37]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[36]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[36]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[36]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[35]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[35]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[35]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[34]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[34]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[34]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[33]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[33]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[33]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[32]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[32]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[32]</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="vbus256" type="vbus" db_ref_id="1">
+         <obj_property name="label">pri_lower</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[95]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[95]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[95]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[94]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[94]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[94]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[93]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[93]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[93]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[92]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[92]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[92]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[91]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[91]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[91]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[90]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[90]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[90]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[89]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[89]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[89]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[88]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[88]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[88]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[87]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[87]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[87]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[86]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[86]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[86]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[85]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[85]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[85]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[84]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[84]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[84]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[83]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[83]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[83]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[82]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[82]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[82]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[81]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[81]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[81]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tcu_fc_tb/pulse_params_in[80]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[80]</obj_property>
+            <obj_property name="ObjectShortName">pulse_params_in[80]</obj_property>
+         </wvobject>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="vbus188" type="vbus" db_ref_id="1">
+      <obj_property name="label">prepulse_duration{cycles}</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[15]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[15]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[15]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[14]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[14]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[14]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[13]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[13]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[13]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[12]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[12]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[12]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[11]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[11]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[11]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[10]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[10]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[10]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[9]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[9]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[9]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[8]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[8]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[8]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[7]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[7]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[7]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[6]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[6]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[5]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[5]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[4]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[4]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[4]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[3]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[3]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[2]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[2]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[1]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[1]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[0]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="vbus187" type="vbus" db_ref_id="1">
+      <obj_property name="label">main_bang_duration{cycles}</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[31]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[31]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[31]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[30]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[30]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[30]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[29]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[29]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[29]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[28]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[28]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[28]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[27]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[27]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[27]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[26]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[26]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[26]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[25]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[25]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[25]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[24]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[24]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[24]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[23]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[23]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[23]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[22]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[22]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[22]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[21]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[21]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[21]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[20]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[20]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[20]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[19]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[19]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[19]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[18]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[18]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[18]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[17]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[17]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[17]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_tb/pulse_params_in[16]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[16]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_in[16]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="divider280" type="divider">
+      <obj_property name="label">output ports</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
    <wvobject fp_name="/tcu_fc_tb/pulse_index_out" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">pulse_index_out[4:0]</obj_property>
       <obj_property name="ObjectShortName">pulse_index_out[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tcu_fc_tb/status_out" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">status_out[15:0]</obj_property>
@@ -88,6 +527,22 @@
       <obj_property name="ElementShortName">pri_out</obj_property>
       <obj_property name="ObjectShortName">pri_out</obj_property>
    </wvobject>
+   <wvobject fp_name="divider35" type="divider">
+      <obj_property name="label">state</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_tb/uut/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider34" type="divider">
+      <obj_property name="label">internal counters</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
    <wvobject fp_name="/tcu_fc_tb/uut/pri_on_counter" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">pri_on_counter[31:0]</obj_property>
       <obj_property name="ObjectShortName">pri_on_counter[31:0]</obj_property>
@@ -105,22 +560,6 @@
       <obj_property name="ElementShortName">pri_on_duration[31:0]</obj_property>
       <obj_property name="ObjectShortName">pri_on_duration[31:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="divider35" type="divider">
-      <obj_property name="label">state</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="BkColor">128 128 255</obj_property>
-      <obj_property name="TextColor">230 230 230</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tcu_fc_tb/uut/state" type="other" db_ref_id="1">
-      <obj_property name="ElementShortName">state</obj_property>
-      <obj_property name="ObjectShortName">state</obj_property>
-   </wvobject>
-   <wvobject fp_name="divider34" type="divider">
-      <obj_property name="label">counters</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="BkColor">128 128 255</obj_property>
-      <obj_property name="TextColor">230 230 230</obj_property>
    </wvobject>
    <wvobject fp_name="/tcu_fc_tb/uut/amp_on_counter" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">amp_on_counter[15:0]</obj_property>

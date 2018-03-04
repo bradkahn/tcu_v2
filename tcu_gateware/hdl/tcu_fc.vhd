@@ -1,7 +1,10 @@
 -- tcu_fc.vhd
--- TIMING CONTROL UNIT FSM + Controller
+-- TIMING CONTROL UNIT FSM + i/o Controller
 -- Platform independent version
 
+-- TODO:
+--      fix generics, either give all or nothing
+--      drive pulse_index_OUT
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -190,6 +193,8 @@ begin
             end if;
         end if;
     end process;
+
+    pulse_index_OUT <= std_logic_vector(pulse_index);
 
     amplifiers : process(clk_IN, rst_IN, start_amp_flag)
     begin
