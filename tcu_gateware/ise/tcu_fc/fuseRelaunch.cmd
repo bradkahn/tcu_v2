@@ -1,1 +1,1 @@
--intstyle "ise" -incremental -lib "secureip" -o "/home/brad/tcu_v2/tcu_gateware/ise/tcu_fc/tcu_fc_tb_isim_beh.exe" -prj "/home/brad/tcu_v2/tcu_gateware/ise/tcu_fc/tcu_fc_tb_beh.prj" "work.tcu_fc_tb" 
+-intstyle "ise" -incremental -lib "secureip" -o "/home/brad/tcu_v2/tcu_gateware/ise/tcu_fc/tcu_fc_reg_tb_isim_beh.exe" -prj "/home/brad/tcu_v2/tcu_gateware/ise/tcu_fc/tcu_fc_reg_tb_beh.prj" "work.tcu_fc_reg_tb" 
