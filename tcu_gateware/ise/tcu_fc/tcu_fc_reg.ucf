@@ -21,7 +21,11 @@ NET "pri_OUT" OFFSET = OUT 10 ns AFTER "clk_IN";
 # -----------------------------------------------------------------------------
 # NEXYS3
 # -----------------------------------------------------------------------------
-NET "clk_IN"         LOC = H3    | IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L44N_GCLK20_M3A6, Sch name = JC1
+# external:
+#NET "clk_IN"         LOC = H3    | IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L44N_GCLK20_M3A6, Sch name = JC1
+
+# internal
+NET "clk_IN"            LOC = "V10" | IOSTANDARD = "LVCMOS33";   #Bank = 2, pin name = IO_L30N_GCLK0_USERCCLK,            Sch name = GCLK
 
 NET "rst_IN"         LOC = T12   | IOSTANDARD = "LVCMOS33" | PULLDOWN;   #Bank = 2, Pin name = IO_L19P, Sch name = JA1
 NET "trigger_IN"     LOC = V12   | IOSTANDARD = "LVCMOS33" | PULLDOWN;   #Bank = 2, Pin name = IO_L19N, Sch name = JA2

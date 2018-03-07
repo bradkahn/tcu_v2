@@ -63,9 +63,9 @@ ARCHITECTURE behavioral OF tcu_registers IS
 	SIGNAL num_pulses_reg       : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"0006";
 	-- SIGNAL num_repeats_reg      : STD_LOGIC_VECTOR(31 DOWNTO 0) := x"00000003";
 	SIGNAL num_repeats_reg      : STD_LOGIC_VECTOR(31 DOWNTO 0) := x"ffffffff";
-	SIGNAL x_amp_delay_reg      : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"012c";
-	SIGNAL l_amp_delay_reg      : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"0064";
-	SIGNAL pri_pulse_width_reg  : STD_LOGIC_VECTOR(31 DOWNTO 0) := x"00002710";
+	SIGNAL x_amp_delay_reg      : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"012c"; 		-- 0x012c 		= 300 cycles 	= 3000ns = 3us
+	SIGNAL l_amp_delay_reg      : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"0082"; 		-- 0x0082 		= 130 cycles 	= 1300ns = 1.3us
+	SIGNAL pri_pulse_width_reg  : STD_LOGIC_VECTOR(31 DOWNTO 0) := x"00002710"; 	-- 0x00002710 	= 10000 cycles = 100000ns = 100us
 	-- SIGNAL pulse_params_reg     : STD_LOGIC_VECTOR(3071 DOWNTO 0) := (OTHERS => '0');
 	SIGNAL pulse_params_reg     : array_type(0 to (REGISTER_PULSE_PARAMS_END - REGISTER_PULSE_PARAMS_BASE)) :=
 	(
