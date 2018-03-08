@@ -18,16 +18,18 @@ class TCUParamsGUILogic(Ui_MainWindow):
         self.setupUi(window)
         self.tcu_params = tcu_params
         self.button_export.clicked.connect(self.export)
-        self.button_add_pulse.clicked.connect(self.updateTable)
+        self.button_add_pulse.clicked.connect(self.addPulse)
+        self.button_remove_pulse.clicked.connect(self.removePulse)
+        self.spin_num_pulses.valueChanged.connect(self.updateTable)
 
     def export(self):
         # retrieve general params
-        tcu_params.num_pulses = self.spin_num_pulses
-        tcu_params.num_repeats = self.spin_num_repeats
-        tcu_params.pri_duty_cycle = self.spin_duty_cycle
-        tcu_params.prepulse = self.sping_prepulse
-        tcu_params.x_amp_delay = self.spin_x_amp_delay
-        tcu_params.l_amp_delay = self.spin_l_amp_delay
+        self.tcu_params.num_pulses = self.spin_num_pulses.value()
+        self.tcu_params.num_repeats = self.spin_num_repeats.value()
+        self.tcu_params.pri_duty_cycle = self.spin_duty_cycle.value()
+        self.tcu_params.prepulse = self.sping_prepulse.value()
+        self.tcu_params.x_amp_delay = self.spin_x_amp_delay.value()
+        self.tcu_params.l_amp_delay = self.spin_l_amp_delay.value()
         # retrieve pulse params from table
         # TODO: verify captured datatypes are ints / doubles....
         for row in range(self.table_pulse_params.rowCount()):
@@ -43,16 +45,51 @@ class TCUParamsGUILogic(Ui_MainWindow):
                                pol_mode = self.combo_mode.currentIndex(),
                                frequency = self.spin_frequency.value())
         self.tcu_params.params.append(pulse)
+        self.updateTable()
+        # if num added pulses == num_pulses, disabled add button
+
+
+    def removePulse(self):
+        # # get selected row, remove corresponding pulse_params from tcu_params.pulse_params list
+        # self.table_pulse_params.removeRow()
+        # self.tcu_params.params.pop() # TODO: getSelectedRow and delete that
+        index_list = []
+        for model_index in self.table_pulse_params.selectionModel().selectedRows():
+            index = QtCore.QPersistentModelIndex(model_index)
+            index_list.append(index)
+
+        for index in index_list:
+            print(index.row())
+            del self.tcu_params.params[index.row()]
+            self.table_pulse_params.removeRow(index.row())
+        self.updateTable()
 
     def updateTable(self):
-        self.addPulse()
-        print("updating table")
-        self.table_pulse_params.setRowCount(len(self.tcu_params.params))
+        # self.table_pulse_params.setRowCount(len(self.tcu_params.params))
+        self.table_pulse_params.setRowCount(self.spin_num_pulses.value())
         for index, pulse_param in enumerate(self.tcu_params.params):
             self.table_pulse_params.setItem(index, 0, QTableWidgetItem(str(pulse_param.pulse_width)))
             self.table_pulse_params.setItem(index, 1, QTableWidgetItem(str(pulse_param.pri)))
             self.table_pulse_params.setItem(index, 2, QTableWidgetItem(str(pulse_param.pol_mode)))
             self.table_pulse_params.setItem(index, 3, QTableWidgetItem(str(pulse_param.frequency)))
+
+        # select the last pulse
+        if len(self.tcu_params.params) > 0:
+            self.table_pulse_params.selectRow(len(self.tcu_params.params) -1)
+
+        print(str(len(self.tcu_params.params)) + " vs " +  str(self.spin_num_pulses.value()))
+        if  len(self.tcu_params.params) < self.spin_num_pulses.value():
+            self.button_add_pulse.setEnabled(True)
+        else:
+            self.button_add_pulse.setEnabled(False)
+        if len(self.tcu_params.params) > 0:
+            self.button_remove_pulse.setEnabled(True)
+        else:
+            self.button_remove_pulse.setEnabled(False)
+
+        print("setting min to : " + str(len(self.tcu_params.params)))
+        self.spin_num_pulses.setMinimum(len(self.tcu_params.params))
+
 
 
 class TCUParams(object):

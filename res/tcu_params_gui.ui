@@ -151,6 +151,9 @@ p, li { white-space: pre-wrap; }
       <property name="autoScroll">
        <bool>true</bool>
       </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectItems</enum>
+      </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
        <number>97</number>
       </attribute>
@@ -214,14 +217,14 @@ p, li { white-space: pre-wrap; }
        <string>Pulse Parameters</string>
       </property>
       <layout class="QFormLayout" name="formLayout">
-       <item row="1" column="0">
+       <item row="0" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Pulse width [μs]</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="0" column="1">
         <widget class="QDoubleSpinBox" name="spin_pulse_width">
          <property name="singleStep">
           <double>0.100000000000000</double>
@@ -231,14 +234,14 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="1" column="0">
         <widget class="QLabel" name="label_3">
          <property name="text">
           <string>PRI [μs]</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="1" column="1">
         <widget class="QDoubleSpinBox" name="spin_pri">
          <property name="maximum">
           <double>99999.990000000005239</double>
@@ -251,14 +254,14 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="label_5">
          <property name="text">
           <string>Pol. Mode</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="2" column="1">
         <widget class="QComboBox" name="combo_mode">
          <item>
           <property name="text">
@@ -292,14 +295,14 @@ p, li { white-space: pre-wrap; }
          </item>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Frequency [MHz]</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="3" column="1">
         <widget class="QDoubleSpinBox" name="spin_frequency">
          <property name="decimals">
           <number>0</number>
@@ -315,11 +318,27 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QPushButton" name="button_add_pulse">
-         <property name="text">
-          <string>Add pulse</string>
-         </property>
+       <item row="4" column="1">
+        <widget class="QWidget" name="widget" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QPushButton" name="button_remove_pulse">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="button_add_pulse">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
