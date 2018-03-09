@@ -4,6 +4,8 @@
 
 # TODO:
 #       initialize default values from tcu_params object
+#       change range of frequency spin box depending on mode setting
+#       add content to the info section, perhaps have help files with html
 
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -118,6 +120,38 @@ class TCUParams(object):
     def export(self):
         """exports pulse parameters in NeXtRAD.ini format"""
         pass
+
+    def _int_to_hex_str(self, num, endian='l'):
+        """ returns a hexidecimal string in format given an integer
+            endianess:
+                default is LITTLE endian
+                for big endian, pass char 'b' as an argument
+        """
+        hex_num = hex(num)
+        hex_num = hex_num.replace('0x', '')
+        num_zeros_to_pad = 0
+        if len(hex_num) % 4 != 0:
+            num_zeros_to_pad = 4 - len(hex_num) % 4
+        hex_num = '0'*num_zeros_to_pad + hex_num
+        num_bytes = len(hex_num)//2
+        num_words = num_bytes//2
+        byte_list = list()
+        index = 0
+        for count in range(num_words):
+            byte_upper = hex_num[index: (index)+2]
+            byte_lower = hex_num[index+2: (index)+4]
+            if endian == 'b':
+                byte_list.append([byte_upper, byte_lower])
+            else:
+                byte_list.append([byte_lower, byte_upper])
+            index += 4
+        # rev_byte_list = reversed(byte_list)
+        hex_str = str()
+        # for word in rev_byte_list:
+        # for word in reversed(byte_list):
+        for word in byte_list:
+            hex_str += '\\x' + word[0] + '\\x' + word[1]
+        return hex_str
 
 class PulseParameters(object):
     """docstring for PulseParameters."""
