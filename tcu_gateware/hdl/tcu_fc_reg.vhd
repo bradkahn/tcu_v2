@@ -44,12 +44,13 @@ architecture structural of tcu_fc_reg is
     signal pulse_index      : std_logic_vector (4 downto 0);
     signal status           : std_logic_vector (15 downto 0);
     signal instruction      : std_logic_vector (15 downto 0);
+    signal pre_pulse        : std_logic_vector (15 downto 0);
     signal num_pulses       : std_logic_vector (15 downto 0);
     signal num_repeats      : std_logic_vector (31 downto 0);
     signal x_amp_delay      : std_logic_vector (15 downto 0);
     signal l_amp_delay      : std_logic_vector (15 downto 0);
     signal pri_pulse_width  : std_logic_vector (31 downto 0);
-    signal pulse_params     : std_logic_vector (95 downto 0);
+    signal pulse_params     : std_logic_vector (79 downto 0);
 
     signal clk_in_b         : std_logic;
 
@@ -72,7 +73,8 @@ architecture structural of tcu_fc_reg is
 		x_amp_delay_OUT : OUT std_logic_vector(15 downto 0);
 		l_amp_delay_OUT : OUT std_logic_vector(15 downto 0);
 		pri_pulse_width_OUT : OUT std_logic_vector(31 downto 0);
-		pulse_params_OUT : OUT std_logic_vector(95 downto 0);
+		pulse_params_OUT : OUT std_logic_vector(79 downto 0);
+        pre_pulse_OUT 		: out   STD_LOGIC_VECTOR(15 DOWNTO 0);
 		ACK_O : OUT std_logic;
 		DAT_O : OUT std_logic_vector(15 downto 0)
 		);
@@ -89,8 +91,9 @@ architecture structural of tcu_fc_reg is
 		x_amp_delay_IN : IN std_logic_vector(15 downto 0);
 		l_amp_delay_IN : IN std_logic_vector(15 downto 0);
 		pri_pulse_width_IN : IN std_logic_vector(31 downto 0);
-		pulse_params_IN : IN std_logic_vector(95 downto 0);
+		pulse_params_IN : IN std_logic_vector(79 downto 0);
 		pulse_index_OUT : OUT std_logic_vector(4 downto 0);
+        pre_pulse_IN   : in   STD_LOGIC_VECTOR(15 DOWNTO 0);
 		status_OUT : OUT std_logic_vector(15 downto 0);
 		bias_x_OUT : OUT std_logic;
 		bias_l_OUT : OUT std_logic;
@@ -125,6 +128,7 @@ begin
 		l_amp_delay_OUT => l_amp_delay,
 		pri_pulse_width_OUT => pri_pulse_width,
 		pulse_params_OUT => pulse_params,
+        pre_pulse_OUT => pre_pulse,
 		CLK_I => CLK_I,
 		RST_I => RST_I,
 		STB_I => STB_I,
@@ -147,6 +151,7 @@ begin
         pri_pulse_width_IN => pri_pulse_width,
         pulse_params_IN => pulse_params,
         pulse_index_OUT => pulse_index,
+        pre_pulse_IN => pre_pulse,
         status_OUT => status,
         bias_x_OUT => bias_x_OUT,
         bias_l_OUT => bias_l_OUT,

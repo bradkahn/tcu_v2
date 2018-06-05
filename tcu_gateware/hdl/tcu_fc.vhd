@@ -12,7 +12,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity tcu_fc is
 generic(
-        PULSE_PARAMS_WIDTH      : natural := 96;
+        PULSE_PARAMS_WIDTH      : natural := 80;
         PULSE_PARAMS_ADDR_WIDTH : natural := 5;
         CONTROLLER_PARAMS_WIDTH : natural := 16;
         INSTRUCTION_WIDTH       : natural := 16;
@@ -30,6 +30,7 @@ port(
         num_repeats_IN          : in  std_logic_vector(31 downto 0);
         x_amp_delay_IN          : in  std_logic_vector(15 downto 0);
         l_amp_delay_IN          : in  std_logic_vector(15 downto 0);
+        pre_pulse_IN            : in  std_logic_vector(15 downto 0);
         pri_pulse_width_IN      : in  std_logic_vector(31 downto 0);
         pulse_params_IN         : in  std_logic_vector(PULSE_PARAMS_WIDTH-1       downto 0);
         pulse_index_OUT         : out std_logic_vector(PULSE_PARAMS_ADDR_WIDTH-1  downto 0);
@@ -95,10 +96,11 @@ architecture behave of tcu_fc is
 begin
 
     -- pulse parameter decoding
-    pre_pulse_duration      <= unsigned(pulse_params_IN(15 downto 0)); -- = 30us
-    main_bang_duration      <= unsigned(pulse_params_IN(31 downto 16));-- = rf_pulse_width
-    digitization_duration   <= unsigned(pulse_params_IN(47 downto 32) & pulse_params_IN(95 downto 80));-- =
-    pol_mode                <= pulse_params_IN(66 downto 64);
+    pre_pulse_duration      <= unsigned(pre_pulse_IN); -- = 30us
+    main_bang_duration      <= unsigned(pri_pulse_width_IN(15 downto 0));-- = rf_pulse_width TODO: 32bit or 16bit??
+    digitization_duration   <= unsigned(pulse_params_IN(47 downto 32) & pulse_params_IN(31 downto 16));-- =
+    pol_mode                <= pulse_params_IN(50 downto 48);
+    -- TODO: frequency to Pentek
 
     -- TCU FSM
     fsm : process(clk_IN, rst_IN, trigger_IN)
