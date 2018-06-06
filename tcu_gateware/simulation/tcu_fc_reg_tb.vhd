@@ -1,44 +1,44 @@
 --------------------------------------------------------------------------------
--- Company: 
+-- Company:
 -- Engineer:
 --
 -- Create Date:   09:52:13 03/05/2018
--- Design Name:   
+-- Design Name:
 -- Module Name:   /home/brad/tcu_v2/tcu_gateware/simulation/tcu_fc_reg_tb.vhd
 -- Project Name:  tcu_fc
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
+-- Target Device:
+-- Tool versions:
+-- Description:
+--
 -- VHDL Test Bench Created by ISE for module: tcu_fc_reg
--- 
+--
 -- Dependencies:
--- 
+--
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
 --
--- Notes: 
+-- Notes:
 -- This testbench has been automatically generated using types std_logic and
 -- std_logic_vector for the ports of the unit under test.  Xilinx recommends
 -- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
+-- to guarantee that the testbench will bind correctly to the post-implementation
 -- simulation model.
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
+
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --USE ieee.numeric_std.ALL;
- 
+
 ENTITY tcu_fc_reg_tb IS
 END tcu_fc_reg_tb;
- 
-ARCHITECTURE behavior OF tcu_fc_reg_tb IS 
- 
+
+ARCHITECTURE behavior OF tcu_fc_reg_tb IS
+
     -- Component Declaration for the Unit Under Test (UUT)
- 
+
     COMPONENT tcu_fc_reg
     PORT(
          clk_IN : IN  std_logic;
@@ -61,7 +61,7 @@ ARCHITECTURE behavior OF tcu_fc_reg_tb IS
          DAT_O : OUT  std_logic_vector(15 downto 0)
         );
     END COMPONENT;
-    
+
 
    --Inputs
    signal clk_IN : std_logic := '0';
@@ -88,9 +88,9 @@ ARCHITECTURE behavior OF tcu_fc_reg_tb IS
    -- Clock period definitions
    constant clk_IN_period : time := 10 ns;
    constant CLK_I_period : time := 10 ns;
- 
+
 BEGIN
- 
+
 	-- Instantiate the Unit Under Test (UUT)
    uut: tcu_fc_reg PORT MAP (
           clk_IN => clk_IN,
@@ -121,7 +121,7 @@ BEGIN
 		clk_IN <= '1';
 		wait for clk_IN_period/2;
    end process;
- 
+
    CLK_I_process :process
    begin
 		CLK_I <= '0';
@@ -129,17 +129,20 @@ BEGIN
 		CLK_I <= '1';
 		wait for CLK_I_period/2;
    end process;
- 
+
 
    -- Stimulus process
    stim_proc: process
-   begin		
+   begin
       -- hold reset state for 100 ns.
---		instruction<=
-      wait for 100 ns;	
-		trigger_IN <= '1';
+      rst_IN <= '1';
+      wait for 100 ns;
 
-      -- insert stimulus here 
+      rst_IN <= '0';
+      wait for 100 ns;
+
+      trigger_IN <= '1';
+
       wait;
    end process;
 
