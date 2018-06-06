@@ -97,7 +97,7 @@ begin
 
     -- pulse parameter decoding
     pre_pulse_duration      <= unsigned(pre_pulse_IN); -- = 30us
-    main_bang_duration      <= unsigned(pri_pulse_width_IN(15 downto 0));-- = rf_pulse_width TODO: 32bit or 16bit??
+    main_bang_duration      <= unsigned(pulse_params_IN(15 downto 0));
     digitization_duration   <= unsigned(pulse_params_IN(47 downto 32) & pulse_params_IN(31 downto 16));-- =
     pol_mode                <= pulse_params_IN(50 downto 48);
     -- TODO: frequency to Pentek
