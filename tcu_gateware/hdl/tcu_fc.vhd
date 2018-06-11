@@ -40,8 +40,8 @@ port(
         bias_x_OUT              : out std_logic;
         bias_l_OUT              : out std_logic;
         pol_tx_x_OUT            : out std_logic;
-        pol_tx_l_OUT           : out std_logic;
-        pol_rx_l_OUT           : out std_logic;
+        pol_tx_l_OUT            : out std_logic;
+        pol_rx_l_OUT            : out std_logic;
         pri_OUT                 : out std_logic
 
         -- TODO: ethernet ports for frequency setting to REX
@@ -62,16 +62,16 @@ architecture behave of tcu_fc is
     signal sw_off_delay             : unsigned(15 downto 0)         := (others => '0');
 
     -- amplifier active high/low constants, change if needed
-    constant X_POL_TX_HORIZONTAL: std_logic := '0';
-    constant X_POL_TX_VERTICAL  : std_logic := not X_POL_TX_HORIZONTAL;
-    constant L_POL_TX_HORIZONTAL: std_logic := '0';
-    constant L_POL_TX_VERTICAL  : std_logic := not L_POL_TX_HORIZONTAL;
-    constant L_POL_RX_HORIZONTAL: std_logic := '0';
-    constant L_POL_RX_VERTICAL  : std_logic := not L_POL_RX_HORIZONTAL;
-    constant X_AMP_ON           : std_logic := '0';
-    constant X_AMP_OFF          : std_logic := not X_AMP_ON;
-    constant L_AMP_ON           : std_logic := '1';
-    constant L_AMP_OFF          : std_logic := not L_AMP_ON;
+    constant X_POL_TX_HORIZONTAL    : std_logic := '0';
+    constant X_POL_TX_VERTICAL      : std_logic := not X_POL_TX_HORIZONTAL;
+    constant L_POL_TX_HORIZONTAL    : std_logic := '0';
+    constant L_POL_TX_VERTICAL      : std_logic := not L_POL_TX_HORIZONTAL;
+    constant L_POL_RX_HORIZONTAL    : std_logic := '0';
+    constant L_POL_RX_VERTICAL      : std_logic := not L_POL_RX_HORIZONTAL;
+    constant X_AMP_ON               : std_logic := '0';
+    constant X_AMP_OFF              : std_logic := not X_AMP_ON;
+    constant L_AMP_ON               : std_logic := '1';
+    constant L_AMP_OFF              : std_logic := not L_AMP_ON;
 
     -- pri signals
     signal start_pri_flag           : std_logic                     := '0';
