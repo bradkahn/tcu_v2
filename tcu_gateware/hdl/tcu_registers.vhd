@@ -23,31 +23,31 @@ PORT (
     -- ------------------------------------------------------------------------------------------------
     -- USER-DEFINED PORTS
     -- ------------------------------------------------------------------------------------------------
-    clk_IN          : in    STD_LOGIC;
-    rst_IN          : in    STD_LOGIC;
-    pulse_index_IN  : in    STD_LOGIC_VECTOR(4 DOWNTO 0);
-    status_IN      : in   STD_LOGIC_VECTOR(15 DOWNTO 0);
-    status_OUT      : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
-    instruction_OUT : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
-    num_pulses_OUT  : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
-    num_repeats_OUT : out   STD_LOGIC_VECTOR(31 DOWNTO 0);
-    x_amp_delay_OUT : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
-    l_amp_delay_OUT : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
-    pre_pulse_OUT         : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
+    clk_IN              : in    STD_LOGIC;
+    rst_IN              : in    STD_LOGIC;
+    pulse_index_IN      : in    STD_LOGIC_VECTOR(4 DOWNTO 0);
+    status_IN           : in    STD_LOGIC_VECTOR(15 DOWNTO 0);
+    status_OUT          : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
+    instruction_OUT     : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
+    num_pulses_OUT      : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
+    num_repeats_OUT     : out   STD_LOGIC_VECTOR(31 DOWNTO 0);
+    x_amp_delay_OUT     : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
+    l_amp_delay_OUT     : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
+    pre_pulse_OUT       : out   STD_LOGIC_VECTOR(15 DOWNTO 0);
     pri_pulse_width_OUT : out   STD_LOGIC_VECTOR(31 DOWNTO 0);
-    pulse_params_OUT : out   STD_LOGIC_VECTOR(79 DOWNTO 0);
+    pulse_params_OUT    : out   STD_LOGIC_VECTOR(79 DOWNTO 0);
 
     -- ------------------------------------------------------------------------------------------------
     -- WISHBONE PORTS - DO NOT MODIFY
     -- ------------------------------------------------------------------------------------------------
-    CLK_I           : IN    STD_LOGIC;
-    RST_I           : IN    STD_LOGIC;
-    STB_I           : IN    STD_LOGIC;
-    WE_I            : IN    STD_LOGIC;
-    DAT_I           : IN    STD_LOGIC_VECTOR(WB_DATA_BUS_WIDTH - 1 DOWNTO 0);
-    ADR_I           : IN    STD_LOGIC_VECTOR(WB_ADDRESS_BUS_WIDTH - 1 DOWNTO 0);
-    ACK_O           : OUT   STD_LOGIC;
-    DAT_O           : OUT   STD_LOGIC_VECTOR(WB_DATA_BUS_WIDTH - 1 DOWNTO 0)
+    CLK_I   : IN    STD_LOGIC;
+    RST_I   : IN    STD_LOGIC;
+    STB_I   : IN    STD_LOGIC;
+    WE_I    : IN    STD_LOGIC;
+    DAT_I   : IN    STD_LOGIC_VECTOR(WB_DATA_BUS_WIDTH - 1 DOWNTO 0);
+    ADR_I   : IN    STD_LOGIC_VECTOR(WB_ADDRESS_BUS_WIDTH - 1 DOWNTO 0);
+    ACK_O   : OUT   STD_LOGIC;
+    DAT_O   : OUT   STD_LOGIC_VECTOR(WB_DATA_BUS_WIDTH - 1 DOWNTO 0)
     );
 END tcu_registers;
 
@@ -63,7 +63,7 @@ ARCHITECTURE behavioral OF tcu_registers IS
 
     SIGNAL num_pulses_reg       : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"0006";        -- 6 pulses
     SIGNAL num_repeats_reg      : STD_LOGIC_VECTOR(31 DOWNTO 0) := x"00000003";    -- 3 repeats
-    SIGNAL pre_pulse_reg           : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"0bb8";        -- 30.0us
+    SIGNAL pre_pulse_reg        : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"0bb8";        -- 30.0us
     SIGNAL pri_pulse_width_reg  : STD_LOGIC_VECTOR(31 DOWNTO 0) := x"0000c350";    -- 500.0us
     SIGNAL x_amp_delay_reg      : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"015e";        -- 3.5us
     SIGNAL l_amp_delay_reg      : STD_LOGIC_VECTOR(15 DOWNTO 0) := x"0064";        -- 1.0us
@@ -224,12 +224,12 @@ BEGIN
                         null;
                 end case;
             else
-                num_pulses_reg <= num_pulses_reg;
-                num_repeats_reg <= num_repeats_reg;
-                x_amp_delay_reg <= x_amp_delay_reg;
-                l_amp_delay_reg <= l_amp_delay_reg;
+                num_pulses_reg      <= num_pulses_reg;
+                num_repeats_reg     <= num_repeats_reg;
+                x_amp_delay_reg     <= x_amp_delay_reg;
+                l_amp_delay_reg     <= l_amp_delay_reg;
                 pri_pulse_width_reg <= pri_pulse_width_reg;
-                pre_pulse_reg <= pre_pulse_reg;
+                pre_pulse_reg       <= pre_pulse_reg;
                 -- pulse_params_reg <= pulse_params_reg;
             end if;
         END IF;
@@ -256,18 +256,18 @@ BEGIN
         -- <???> <= clk_IN; -- input port
         -- <???> <= rst_IN; -- input port
         pulse_index         <= to_integer(unsigned(pulse_index_IN)); -- input port
-        status_OUT             <=  status_reg; -- output port
+        status_OUT          <=  status_reg; -- output port
         instruction_OUT     <= instruction_reg; -- output port
-        num_pulses_OUT         <= num_pulses_reg; -- output port
+        num_pulses_OUT      <= num_pulses_reg; -- output port
         num_repeats_OUT     <= num_repeats_reg(31 downto 16) & num_repeats_reg(15 downto 0); -- output port
         x_amp_delay_OUT     <= x_amp_delay_reg; -- output port
         l_amp_delay_OUT     <= l_amp_delay_reg; -- output port
         pre_pulse_OUT       <= pre_pulse_reg; -- output port
         pri_pulse_width_OUT <= pri_pulse_width_reg(31 downto 16) & pri_pulse_width_reg(15 downto 0); -- output port
-        pulse_params_OUT    <=    pulse_params_reg((5 * pulse_index) + 4)   & -- frequency        [79 - 64]
-                                pulse_params_reg((5 * pulse_index) + 3)   & -- mode                [63 - 48]
-                                pulse_params_reg((5 * pulse_index) + 2)   & -- pri_upper        [47 - 32]
-                                pulse_params_reg((5 * pulse_index) + 1)   & -- pri_lower        [31 - 16]
-                                pulse_params_reg((5 * pulse_index) + 0)   ; -- rf_pulse_width    [15 - 0]
+        pulse_params_OUT    <= pulse_params_reg((5 * pulse_index) + 4) & -- frequency      [79 - 64]
+                               pulse_params_reg((5 * pulse_index) + 3) & -- mode           [63 - 48]
+                               pulse_params_reg((5 * pulse_index) + 2) & -- pri_upper      [47 - 32]
+                               pulse_params_reg((5 * pulse_index) + 1) & -- pri_lower      [31 - 16]
+                               pulse_params_reg((5 * pulse_index) + 0) ; -- rf_pulse_width [15 - 0]
 
 END behavioral;
