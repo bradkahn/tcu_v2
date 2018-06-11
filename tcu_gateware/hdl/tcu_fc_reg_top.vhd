@@ -37,34 +37,34 @@ end entity;
 architecture structural of tcu_fc_reg_top is
     COMPONENT gpmc_wb
     PORT(
-        gpmc_a : IN std_logic_vector(10 downto 1);
-        gpmc_clk_i : IN std_logic;
-        gpmc_n_cs : IN std_logic_vector(6 downto 0);
-        gpmc_n_we : IN std_logic;
-        gpmc_n_oe : IN std_logic;
-        gpmc_n_adv_ale : IN std_logic;
-        sys_clk_P : IN std_logic;
-        sys_clk_N : IN std_logic;
-        ACK_I : IN std_logic;
-        DAT_I : IN std_logic_vector(15 downto 0);
-        ADR_O : OUT std_logic_vector(7 downto 0);
-        gpmc_d : INOUT std_logic_vector(15 downto 0);
-        CLK_400MHz : OUT std_logic;
-        CLK_100MHz : OUT std_logic;
-        debug_port : OUT std_logic_vector(52 downto 0);
-        CLK : OUT std_logic;
-        RST : OUT std_logic;
-        DAT_O : OUT std_logic_vector(15 downto 0);
-        WE_O : OUT std_logic;
-        slave_sel_OUT : OUT std_logic
+        gpmc_a          : IN    std_logic_vector(10 downto 1);
+        gpmc_clk_i      : IN    std_logic;
+        gpmc_n_cs       : IN    std_logic_vector(6 downto 0);
+        gpmc_n_we       : IN    std_logic;
+        gpmc_n_oe       : IN    std_logic;
+        gpmc_n_adv_ale  : IN    std_logic;
+        sys_clk_P       : IN    std_logic;
+        sys_clk_N       : IN    std_logic;
+        ACK_I           : IN    std_logic;
+        DAT_I           : IN    std_logic_vector(15 downto 0);
+        ADR_O           : OUT   std_logic_vector(7 downto 0);
+        gpmc_d          : INOUT std_logic_vector(15 downto 0);
+        CLK_400MHz      : OUT   std_logic;
+        CLK_100MHz      : OUT   std_logic;
+        debug_port      : OUT   std_logic_vector(52 downto 0);
+        CLK             : OUT   std_logic;
+        RST             : OUT   std_logic;
+        DAT_O           : OUT   std_logic_vector(15 downto 0);
+        WE_O            : OUT   std_logic;
+        slave_sel_OUT   : OUT   std_logic
         );
     END COMPONENT;
 
     -- Interconnecting signals
 
 
-    signal s_clk_100        : std_logic;
-    signal s_rst_sys        : std_logic;
+    signal s_clk_100    : std_logic;
+    signal s_rst_sys    : std_logic;
     signal s_clk_wb     : std_logic;
     signal s_rst_wb     : std_logic;
     signal s_ack        : std_logic;
@@ -76,24 +76,24 @@ architecture structural of tcu_fc_reg_top is
 
     COMPONENT tcu_fc_reg
     PORT(
-        clk_IN : IN std_logic;
-        rst_IN : IN std_logic;
-        trigger_IN : IN std_logic;
-        CLK_I : IN std_logic;
-        RST_I : IN std_logic;
-        STB_I : IN std_logic;
-        WE_I : IN std_logic;
-        DAT_I : IN std_logic_vector(15 downto 0);
-        ADR_I : IN std_logic_vector(7 downto 0);
-        status_OUT : OUT std_logic_vector(15 downto 0);
-        bias_x_OUT : OUT std_logic;
-        bias_l_OUT : OUT std_logic;
-        pol_tx_x_OUT : OUT std_logic;
-        pol_tx_l_OUT : OUT std_logic;
-        pol_rx_l_OUT : OUT std_logic;
-        pri_OUT : OUT std_logic;
-        ACK_O : OUT std_logic;
-        DAT_O : OUT std_logic_vector(15 downto 0)
+        clk_IN          : IN    std_logic;
+        rst_IN          : IN    std_logic;
+        trigger_IN      : IN    std_logic;
+        CLK_I           : IN    std_logic;
+        RST_I           : IN    std_logic;
+        STB_I           : IN    std_logic;
+        WE_I            : IN    std_logic;
+        DAT_I           : IN    std_logic_vector(15 downto 0);
+        ADR_I           : IN    std_logic_vector(7 downto 0);
+        status_OUT      : OUT   std_logic_vector(15 downto 0);
+        bias_x_OUT      : OUT   std_logic;
+        bias_l_OUT      : OUT   std_logic;
+        pol_tx_x_OUT    : OUT   std_logic;
+        pol_tx_l_OUT    : OUT   std_logic;
+        pol_rx_l_OUT    : OUT   std_logic;
+        pri_OUT         : OUT   std_logic;
+        ACK_O           : OUT   std_logic;
+        DAT_O           : OUT   std_logic_vector(15 downto 0)
         );
     END COMPONENT;
 
@@ -102,48 +102,48 @@ begin
 
     Inst_gpmc_wb: gpmc_wb
     PORT MAP(
-        gpmc_a => i_GPMC_A,
-        gpmc_d => io_GPMC_D,
-        gpmc_clk_i => i_GPMC_CLK,
-        gpmc_n_cs => i_GPMC_N_CS,
-        gpmc_n_we => i_GPMC_N_WE,
-        gpmc_n_oe => i_GPMC_N_OE,
-        gpmc_n_adv_ale => i_GPMC_N_ADV_ALE,
-        sys_clk_P => i_CLK_P,
-        sys_clk_N => i_CLK_N,
+        gpmc_a          => i_GPMC_A,
+        gpmc_d          => io_GPMC_D,
+        gpmc_clk_i      => i_GPMC_CLK,
+        gpmc_n_cs       => i_GPMC_N_CS,
+        gpmc_n_we       => i_GPMC_N_WE,
+        gpmc_n_oe       => i_GPMC_N_OE,
+        gpmc_n_adv_ale  => i_GPMC_N_ADV_ALE,
+        sys_clk_P       => i_CLK_P,
+        sys_clk_N       => i_CLK_N,
         --CLK_400MHz => ,
-        CLK_100MHz => s_clk_100,
+        CLK_100MHz      => s_clk_100,
         --debug_port => ,
-        CLK => s_clk_wb,
-        RST => s_rst_wb,
-        ACK_I => s_ack,
-        ADR_O => s_adr,
-        DAT_I => s_dat_s2m,
-        DAT_O => s_dat_m2s,
-        WE_O => s_we,
-        slave_sel_OUT => s_slave_sel
+        CLK             => s_clk_wb,
+        RST             => s_rst_wb,
+        ACK_I           => s_ack,
+        ADR_O           => s_adr,
+        DAT_I           => s_dat_s2m,
+        DAT_O           => s_dat_m2s,
+        WE_O            => s_we,
+        slave_sel_OUT   => s_slave_sel
     );
 
     Inst_tcu_fc_reg: tcu_fc_reg
     PORT MAP(
-        clk_IN => s_clk_100,
-        rst_IN => s_rst_sys,
-        trigger_IN => i_TRIGGER,
+        clk_IN          => s_clk_100,
+        rst_IN          => s_rst_sys,
+        trigger_IN      => i_TRIGGER,
         -- status_OUT(2 downto 0) => o_LED_RHINO(2 downto 0),
-        bias_x_OUT => o_BIAS_X,
-        bias_l_OUT => o_BIAS_L,
-        pol_tx_x_OUT => o_POL_TX_X,
-        pol_tx_l_OUT => o_POL_TX_L,
-        pol_rx_l_OUT => o_POL_RX_L,
-        pri_OUT => o_PRI,
-        CLK_I => s_clk_wb,
-        RST_I => s_rst_wb,
-        STB_I => s_slave_sel,
-        WE_I => s_we,
-        DAT_I => s_dat_m2s,
-        ADR_I => s_adr,
-        ACK_O => s_ack,
-        DAT_O => s_dat_s2m
+        bias_x_OUT      => o_BIAS_X,
+        bias_l_OUT      => o_BIAS_L,
+        pol_tx_x_OUT    => o_POL_TX_X,
+        pol_tx_l_OUT    => o_POL_TX_L,
+        pol_rx_l_OUT    => o_POL_RX_L,
+        pri_OUT         => o_PRI,
+        CLK_I           => s_clk_wb,
+        RST_I           => s_rst_wb,
+        STB_I           => s_slave_sel,
+        WE_I            => s_we,
+        DAT_I           => s_dat_m2s,
+        ADR_I           => s_adr,
+        ACK_O           => s_ack,
+        DAT_O           => s_dat_s2m
     );
 
 

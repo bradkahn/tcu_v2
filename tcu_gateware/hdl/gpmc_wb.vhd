@@ -77,9 +77,9 @@ ARCHITECTURE behavioral OF gpmc_wb IS
     SIGNAL gpmc_data_i          : STD_LOGIC_VECTOR(15 DOWNTO 0) := (OTHERS => '0');
 
     -- Clocks
-    SIGNAL s_clk_100       : STD_LOGIC := '0';
-    SIGNAL s_clk_400      : STD_LOGIC := '0';
-    SIGNAL s_clk_200           : STD_LOGIC := '0';
+    SIGNAL s_clk_100            : STD_LOGIC := '0';
+    SIGNAL s_clk_400            : STD_LOGIC := '0';
+    SIGNAL s_clk_200            : STD_LOGIC := '0';
 
     -- General purpose input/output
     SIGNAL gpio_signal          : STD_LOGIC_VECTOR(15 DOWNTO 0) := (OTHERS => '0');
@@ -182,27 +182,27 @@ CLK_400MHz <= s_clk_400;
                 --First cycle of the bus transaction record the address
                 --RECORD THE ADDRESS
                 if (gpmc_n_adv_ale = '0') then
-                    adr_o_sig         <= gpmc_a & gpmc_d;
-                    wb_write_req     <= '0';
-                    wb_read_req      <= '0';
+                    adr_o_sig       <= gpmc_a & gpmc_d;
+                    wb_write_req    <= '0';
+                    wb_read_req     <= '0';
                     --Second cycle of the bus is read or write
                     --CHECK FOR READ
                 elsif (gpmc_n_oe = '0') then
-                    wb_read_req        <= '1';
-                    wb_write_req     <= '0';
+                    wb_read_req     <= '1';
+                    wb_write_req    <= '0';
                     --CHECK FOR WRITE
                 elsif (gpmc_n_we = '0') then
-                    wb_write_req     <= '1';
-                    wb_read_req      <= '0';
+                    wb_write_req    <= '1';
+                    wb_read_req     <= '0';
                 --OTHER CONDITION
                 else
-                    wb_write_req <= '0';
-                    wb_read_req <= '0';
+                    wb_write_req    <= '0';
+                    wb_read_req     <= '0';
                 end if;
             end if;
         else
-            wb_write_req <= '0';
-            wb_read_req <= '0';
+            wb_write_req    <= '0';
+            wb_read_req     <= '0';
         end if;
     end process;
 
@@ -226,39 +226,39 @@ CLK_400MHz <= s_clk_400;
                     else
                         state <= IDLE_STATE;
                     end if;
-                    dat_o_sig        <= (others => 'Z');
+                    dat_o_sig   <= (others => 'Z');
                     wb_stb_o_sig<= '0';
-                    we_o_sig        <= '0';
+                    we_o_sig    <= '0';
                     if wb_write_req = '0' then
-                        wb_write_end    <= '0';
+                        wb_write_end <= '0';
                     end if;
                     if wb_read_req = '0' then
-                        wb_read_end        <= '0';
+                        wb_read_end <= '0';
                     end if;
 
                 when WB_WRITE_STATE =>
-                    wb_clk_en <= '1';
-                    dat_o_sig        <= gpmc_data_i;
+                    wb_clk_en   <= '1';
+                    dat_o_sig   <= gpmc_data_i;
                     wb_stb_o_sig<= '1';
-                    we_o_sig        <= '1';
+                    we_o_sig    <= '1';
                     if cycle_counter < 2 then
                         state <= WB_WRITE_STATE;
                     else
                         state <= IDLE_STATE;
-                        wb_write_end    <= '1';
+                        wb_write_end <= '1';
                     end if;
                         cycle_counter := cycle_counter + 1;
 
                 when WB_READ_STATE =>
-                    wb_clk_en <= '1';
-                    gpmc_data_o     <= dat_i_sig;
-                    wb_stb_o_sig     <= '1';
-                    we_o_sig            <= '0';
+                    wb_clk_en   <= '1';
+                    gpmc_data_o <= dat_i_sig;
+                    wb_stb_o_sig<= '1';
+                    we_o_sig    <= '0';
                     if cycle_counter < 2 then
                         state <= WB_READ_STATE;
                     else
                         state <= IDLE_STATE;
-                        wb_read_end    <= '1';
+                        wb_read_end <= '1';
                     end if;
                         cycle_counter := cycle_counter + 1;
 
@@ -270,20 +270,20 @@ CLK_400MHz <= s_clk_400;
         end if;
     end process;
 
-    RST        <= wb_rst_sig;
-    CLK        <= wb_clk_sig;
+    RST     <= wb_rst_sig;
+    CLK     <= wb_clk_sig;
     -- TODO: add clock buffer primitive to use clk en line
     -- CLK        <= wb_clk_sig     when wb_clk_en = '1' else '0';
 
-    WE_O     <= we_o_sig;
-    DAT_O <= dat_o_sig;
-    ADR_O       <= adr_o_sig(WB_ADDRESS_BUS_WIDTH -1 downto 0);
+    WE_O    <= we_o_sig;
+    DAT_O   <= dat_o_sig;
+    ADR_O   <= adr_o_sig(WB_ADDRESS_BUS_WIDTH -1 downto 0);
     dat_i_sig <= DAT_I;
     -- These signals are used to ensure that a WB write/read occurs only once.
     -- The _req lines are driven in the slower GPMC 'FSM', while the _end lines
     -- are driven in the faster WB 'FSM'
-    wb_write    <= wb_write_req    and (not wb_write_end);
-    wb_read        <= wb_read_req     and (not wb_read_end);
+    wb_write <= wb_write_req and (not wb_write_end);
+    wb_read <= wb_read_req and (not wb_read_end);
 
 -- ------------------------------------------------------------------------------------------------
 -- SLAVE SELECT DECODING
