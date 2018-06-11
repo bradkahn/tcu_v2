@@ -71,7 +71,7 @@ ARCHITECTURE behavioral OF tcu_registers IS
     SIGNAL pulse_params_reg     : array_type(0 to (REGISTER_PULSE_PARAMS_END - REGISTER_PULSE_PARAMS_BASE)) :=
     (
 
-        -- <p. width>, <pri>, <mode>, <freq>
+        -- <p. width>, <pri_lower>, <pri_upper>, <mode>, <freq>
 
         -- pulse 0
         x"03e8", x"7700", x"0001", x"0000", x"1405",
