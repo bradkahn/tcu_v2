@@ -56,6 +56,10 @@ ARCHITECTURE behavioral OF tcu_registers IS
     ---------------------------------------------------------------------------------------
     -- REGISTER DECLARTIONS
     ---------------------------------------------------------------------------------------
+
+    --  TODO:   add address bases for other registers
+    --          add version register
+
     CONSTANT REGISTER_PULSE_PARAMS_BASE    :   NATURAL := 7;
     CONSTANT REGISTER_PULSE_PARAMS_END     :   NATURAL := 166;
 
@@ -183,7 +187,7 @@ BEGIN
                             dat_o_sig <= pri_pulse_width_reg(31 downto 16);
                         end if;
                     -- ------------------------------------------------------------------------------------------------
-                    -- REGISTER: pulse_params    SIZE: 384 bytes    PERMISSIONS: read and write
+                    -- REGISTER: pulse_params    SIZE: 320 bytes    PERMISSIONS: read and write
                     -- ------------------------------------------------------------------------------------------------
                           -- 7 - 166
                     when REGISTER_PULSE_PARAMS_BASE to REGISTER_PULSE_PARAMS_END =>
