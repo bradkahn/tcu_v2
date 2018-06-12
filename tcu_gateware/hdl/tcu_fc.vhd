@@ -12,7 +12,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity tcu_fc is
 generic(
-        PULSE_PARAMS_WIDTH      : natural := 96;
+        PULSE_PARAMS_WIDTH      : natural := 80;
         PULSE_PARAMS_ADDR_WIDTH : natural := 5;
         CONTROLLER_PARAMS_WIDTH : natural := 16;
         INSTRUCTION_WIDTH       : natural := 16;
@@ -30,6 +30,7 @@ port(
         num_repeats_IN          : in  std_logic_vector(31 downto 0);
         x_amp_delay_IN          : in  std_logic_vector(15 downto 0);
         l_amp_delay_IN          : in  std_logic_vector(15 downto 0);
+        pre_pulse_IN            : in  std_logic_vector(15 downto 0);
         pri_pulse_width_IN      : in  std_logic_vector(31 downto 0);
         pulse_params_IN         : in  std_logic_vector(PULSE_PARAMS_WIDTH-1       downto 0);
         pulse_index_OUT         : out std_logic_vector(PULSE_PARAMS_ADDR_WIDTH-1  downto 0);
@@ -39,8 +40,8 @@ port(
         bias_x_OUT              : out std_logic;
         bias_l_OUT              : out std_logic;
         pol_tx_x_OUT            : out std_logic;
-        pol_tx_l_OUT           : out std_logic;
-        pol_rx_l_OUT           : out std_logic;
+        pol_tx_l_OUT            : out std_logic;
+        pol_rx_l_OUT            : out std_logic;
         pri_OUT                 : out std_logic
 
         -- TODO: ethernet ports for frequency setting to REX
@@ -61,16 +62,16 @@ architecture behave of tcu_fc is
     signal sw_off_delay             : unsigned(15 downto 0)         := (others => '0');
 
     -- amplifier active high/low constants, change if needed
-    constant X_POL_TX_HORIZONTAL: std_logic := '0';
-    constant X_POL_TX_VERTICAL  : std_logic := not X_POL_TX_HORIZONTAL;
-    constant L_POL_TX_HORIZONTAL: std_logic := '0';
-    constant L_POL_TX_VERTICAL  : std_logic := not L_POL_TX_HORIZONTAL;
-    constant L_POL_RX_HORIZONTAL: std_logic := '0';
-    constant L_POL_RX_VERTICAL  : std_logic := not L_POL_RX_HORIZONTAL;
-    constant X_AMP_ON           : std_logic := '0';
-    constant X_AMP_OFF          : std_logic := not X_AMP_ON;
-    constant L_AMP_ON           : std_logic := '1';
-    constant L_AMP_OFF          : std_logic := not L_AMP_ON;
+    constant X_POL_TX_HORIZONTAL    : std_logic := '0';
+    constant X_POL_TX_VERTICAL      : std_logic := not X_POL_TX_HORIZONTAL;
+    constant L_POL_TX_HORIZONTAL    : std_logic := '0';
+    constant L_POL_TX_VERTICAL      : std_logic := not L_POL_TX_HORIZONTAL;
+    constant L_POL_RX_HORIZONTAL    : std_logic := '0';
+    constant L_POL_RX_VERTICAL      : std_logic := not L_POL_RX_HORIZONTAL;
+    constant X_AMP_ON               : std_logic := '0';
+    constant X_AMP_OFF              : std_logic := not X_AMP_ON;
+    constant L_AMP_ON               : std_logic := '1';
+    constant L_AMP_OFF              : std_logic := not L_AMP_ON;
 
     -- pri signals
     signal start_pri_flag           : std_logic                     := '0';
@@ -95,10 +96,11 @@ architecture behave of tcu_fc is
 begin
 
     -- pulse parameter decoding
-    pre_pulse_duration      <= unsigned(pulse_params_IN(15 downto 0)); -- = 30us
-    main_bang_duration      <= unsigned(pulse_params_IN(31 downto 16));-- = rf_pulse_width
-    digitization_duration   <= unsigned(pulse_params_IN(47 downto 32) & pulse_params_IN(95 downto 80));-- =
-    pol_mode                <= pulse_params_IN(66 downto 64);
+    pre_pulse_duration      <= unsigned(pre_pulse_IN); -- = 30us
+    main_bang_duration      <= unsigned(pulse_params_IN(15 downto 0));
+    digitization_duration   <= unsigned(pulse_params_IN(47 downto 32) & pulse_params_IN(31 downto 16));-- =
+    pol_mode                <= pulse_params_IN(50 downto 48);
+    -- TODO: frequency to Pentek
 
     -- TCU FSM
     fsm : process(clk_IN, rst_IN, trigger_IN)
@@ -208,7 +210,7 @@ begin
                 end if;
                 if amp_on = '1' then
                     amp_on_counter <= amp_on_counter + x"0001";
-                    if amp_on_counter = (amp_on_duration-1) then
+                    if amp_on_counter = (amp_on_duration-3) then -- -3 to compensate for 2 cycle lag
                         amp_on <= '0';
                         amp_on_counter <= (others => '0');
                     end if;

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/brad/tcu_v2/tcu_gateware/ise/tcu_fc/tcu_fc_reg_top_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_signed" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="tcu_fc_reg_top_tb" />
+            <top_module name="textio" />
+            <top_module name="vcomponents" />
+            <top_module name="vital_primitives" />
+            <top_module name="vital_timing" />
+            <top_module name="vpkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="64" />
+   <wvobject fp_name="divider23" type="divider">
+      <obj_property name="label">top_level</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/i_clk_p" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_clk_p</obj_property>
+      <obj_property name="ObjectShortName">i_clk_p</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/i_clk_n" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_clk_n</obj_property>
+      <obj_property name="ObjectShortName">i_clk_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/i_gpmc_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_gpmc_a[10:1]</obj_property>
+      <obj_property name="ObjectShortName">i_gpmc_a[10:1]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/i_gpmc_clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_gpmc_clk</obj_property>
+      <obj_property name="ObjectShortName">i_gpmc_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/i_gpmc_n_cs" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_gpmc_n_cs[6:0]</obj_property>
+      <obj_property name="ObjectShortName">i_gpmc_n_cs[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/i_gpmc_n_we" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_gpmc_n_we</obj_property>
+      <obj_property name="ObjectShortName">i_gpmc_n_we</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/i_gpmc_n_oe" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_gpmc_n_oe</obj_property>
+      <obj_property name="ObjectShortName">i_gpmc_n_oe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/i_gpmc_n_adv_ale" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_gpmc_n_adv_ale</obj_property>
+      <obj_property name="ObjectShortName">i_gpmc_n_adv_ale</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/i_trigger" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_trigger</obj_property>
+      <obj_property name="ObjectShortName">i_trigger</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/io_gpmc_d" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">io_gpmc_d[15:0]</obj_property>
+      <obj_property name="ObjectShortName">io_gpmc_d[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/o_logic_high" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_logic_high</obj_property>
+      <obj_property name="ObjectShortName">o_logic_high</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/o_bias_x" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_bias_x</obj_property>
+      <obj_property name="ObjectShortName">o_bias_x</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/o_bias_l" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_bias_l</obj_property>
+      <obj_property name="ObjectShortName">o_bias_l</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/o_pol_tx_x" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_pol_tx_x</obj_property>
+      <obj_property name="ObjectShortName">o_pol_tx_x</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/o_pol_tx_l" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_pol_tx_l</obj_property>
+      <obj_property name="ObjectShortName">o_pol_tx_l</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/o_pol_rx_l" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_pol_rx_l</obj_property>
+      <obj_property name="ObjectShortName">o_pol_rx_l</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/o_pri" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_pri</obj_property>
+      <obj_property name="ObjectShortName">o_pri</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/o_led_rhino" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_led_rhino[7:0]</obj_property>
+      <obj_property name="ObjectShortName">o_led_rhino[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/o_led_fmc" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_led_fmc[3:0]</obj_property>
+      <obj_property name="ObjectShortName">o_led_fmc[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/gpmc_fclk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">gpmc_fclk</obj_property>
+      <obj_property name="ObjectShortName">gpmc_fclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/sys_clk_period" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">sys_clk_period</obj_property>
+      <obj_property name="ObjectShortName">sys_clk_period</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider24" type="divider">
+      <obj_property name="label">gpmc_wb</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">gpmc_a[10:1]</obj_property>
+      <obj_property name="ObjectShortName">gpmc_a[10:1]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_d" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">gpmc_d[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpmc_d[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_clk_i" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">gpmc_clk_i</obj_property>
+      <obj_property name="ObjectShortName">gpmc_clk_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_n_cs" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">gpmc_n_cs[6:0]</obj_property>
+      <obj_property name="ObjectShortName">gpmc_n_cs[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_n_we" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">gpmc_n_we</obj_property>
+      <obj_property name="ObjectShortName">gpmc_n_we</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_n_oe" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">gpmc_n_oe</obj_property>
+      <obj_property name="ObjectShortName">gpmc_n_oe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_n_adv_ale" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">gpmc_n_adv_ale</obj_property>
+      <obj_property name="ObjectShortName">gpmc_n_adv_ale</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/sys_clk_p" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sys_clk_p</obj_property>
+      <obj_property name="ObjectShortName">sys_clk_p</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/sys_clk_n" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sys_clk_n</obj_property>
+      <obj_property name="ObjectShortName">sys_clk_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/clk_400mhz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk_400mhz</obj_property>
+      <obj_property name="ObjectShortName">clk_400mhz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/clk_100mhz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk_100mhz</obj_property>
+      <obj_property name="ObjectShortName">clk_100mhz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/debug_port" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">debug_port[52:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_port[52:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/ack_i" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ack_i</obj_property>
+      <obj_property name="ObjectShortName">ack_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/adr_o" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">adr_o[7:0]</obj_property>
+      <obj_property name="ObjectShortName">adr_o[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/dat_i" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dat_i[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dat_i[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/dat_o" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dat_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dat_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/we_o" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">we_o</obj_property>
+      <obj_property name="ObjectShortName">we_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/slave_sel_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slave_sel_out</obj_property>
+      <obj_property name="ObjectShortName">slave_sel_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="group86" type="group">
+      <obj_property name="label">internals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_clk_i_b" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">gpmc_clk_i_b</obj_property>
+         <obj_property name="ObjectShortName">gpmc_clk_i_b</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_address" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">gpmc_address[25:0]</obj_property>
+         <obj_property name="ObjectShortName">gpmc_address[25:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_data_o" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">gpmc_data_o[15:0]</obj_property>
+         <obj_property name="ObjectShortName">gpmc_data_o[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpmc_data_i" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">gpmc_data_i[15:0]</obj_property>
+         <obj_property name="ObjectShortName">gpmc_data_i[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/s_clk_100" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">s_clk_100</obj_property>
+         <obj_property name="ObjectShortName">s_clk_100</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/s_clk_400" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">s_clk_400</obj_property>
+         <obj_property name="ObjectShortName">s_clk_400</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/s_clk_200" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">s_clk_200</obj_property>
+         <obj_property name="ObjectShortName">s_clk_200</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/gpio_signal" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">gpio_signal[15:0]</obj_property>
+         <obj_property name="ObjectShortName">gpio_signal[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_rst_sig" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_rst_sig</obj_property>
+         <obj_property name="ObjectShortName">wb_rst_sig</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_clk_sig" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_clk_sig</obj_property>
+         <obj_property name="ObjectShortName">wb_clk_sig</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_clk_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_clk_en</obj_property>
+         <obj_property name="ObjectShortName">wb_clk_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_write_req" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_write_req</obj_property>
+         <obj_property name="ObjectShortName">wb_write_req</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_write" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_write</obj_property>
+         <obj_property name="ObjectShortName">wb_write</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_write_end" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_write_end</obj_property>
+         <obj_property name="ObjectShortName">wb_write_end</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_read_req" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_read_req</obj_property>
+         <obj_property name="ObjectShortName">wb_read_req</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_read" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_read</obj_property>
+         <obj_property name="ObjectShortName">wb_read</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_read_end" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_read_end</obj_property>
+         <obj_property name="ObjectShortName">wb_read_end</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/slave_select_sig" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">slave_select_sig[0:0]</obj_property>
+         <obj_property name="ObjectShortName">slave_select_sig[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/reg_adr_o_sig" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">reg_adr_o_sig[31:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_adr_o_sig[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/s_address_int" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">s_address_int</obj_property>
+         <obj_property name="ObjectShortName">s_address_int</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/wb_stb_o_sig" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">wb_stb_o_sig</obj_property>
+         <obj_property name="ObjectShortName">wb_stb_o_sig</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/we_o_sig" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">we_o_sig</obj_property>
+         <obj_property name="ObjectShortName">we_o_sig</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/adr_o_sig" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">adr_o_sig[25:0]</obj_property>
+         <obj_property name="ObjectShortName">adr_o_sig[25:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/dat_o_sig" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">dat_o_sig[15:0]</obj_property>
+         <obj_property name="ObjectShortName">dat_o_sig[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/dat_i_sig" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">dat_i_sig[15:0]</obj_property>
+         <obj_property name="ObjectShortName">dat_i_sig[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/ack_i_sig" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">ack_i_sig</obj_property>
+         <obj_property name="ObjectShortName">ack_i_sig</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_gpmc_wb/state" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">state</obj_property>
+         <obj_property name="ObjectShortName">state</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="divider45" type="divider">
+      <obj_property name="label">tcu_fc_reg</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/clk_in" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk_in</obj_property>
+      <obj_property name="ObjectShortName">clk_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/rst_in" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst_in</obj_property>
+      <obj_property name="ObjectShortName">rst_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/trigger_in" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">trigger_in</obj_property>
+      <obj_property name="ObjectShortName">trigger_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/status_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">status_out[15:0]</obj_property>
+      <obj_property name="ObjectShortName">status_out[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/bias_x_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">bias_x_out</obj_property>
+      <obj_property name="ObjectShortName">bias_x_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/bias_l_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">bias_l_out</obj_property>
+      <obj_property name="ObjectShortName">bias_l_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/pol_tx_x_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pol_tx_x_out</obj_property>
+      <obj_property name="ObjectShortName">pol_tx_x_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/pol_tx_l_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pol_tx_l_out</obj_property>
+      <obj_property name="ObjectShortName">pol_tx_l_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/pol_rx_l_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pol_rx_l_out</obj_property>
+      <obj_property name="ObjectShortName">pol_rx_l_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/pri_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pri_out</obj_property>
+      <obj_property name="ObjectShortName">pri_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/clk_i" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk_i</obj_property>
+      <obj_property name="ObjectShortName">clk_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/rst_i" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst_i</obj_property>
+      <obj_property name="ObjectShortName">rst_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/stb_i" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">stb_i</obj_property>
+      <obj_property name="ObjectShortName">stb_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/we_i" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">we_i</obj_property>
+      <obj_property name="ObjectShortName">we_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/dat_i" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dat_i[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dat_i[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/adr_i" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">adr_i[7:0]</obj_property>
+      <obj_property name="ObjectShortName">adr_i[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/ack_o" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ack_o</obj_property>
+      <obj_property name="ObjectShortName">ack_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/dat_o" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dat_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dat_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="group132" type="group">
+      <obj_property name="label">internals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/pulse_index_in" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">pulse_index_in[4:0]</obj_property>
+         <obj_property name="ObjectShortName">pulse_index_in[4:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/status_in" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">status_in[15:0]</obj_property>
+         <obj_property name="ObjectShortName">status_in[15:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/status_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">status_out[15:0]</obj_property>
+         <obj_property name="ObjectShortName">status_out[15:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/instruction_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">instruction_out[15:0]</obj_property>
+         <obj_property name="ObjectShortName">instruction_out[15:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/num_pulses_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">num_pulses_out[15:0]</obj_property>
+         <obj_property name="ObjectShortName">num_pulses_out[15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/num_repeats_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">num_repeats_out[31:0]</obj_property>
+         <obj_property name="ObjectShortName">num_repeats_out[31:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/x_amp_delay_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">x_amp_delay_out[15:0]</obj_property>
+         <obj_property name="ObjectShortName">x_amp_delay_out[15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/l_amp_delay_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">l_amp_delay_out[15:0]</obj_property>
+         <obj_property name="ObjectShortName">l_amp_delay_out[15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/pre_pulse_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">pre_pulse_out[15:0]</obj_property>
+         <obj_property name="ObjectShortName">pre_pulse_out[15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/pri_pulse_width_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">pri_pulse_width_out[31:0]</obj_property>
+         <obj_property name="ObjectShortName">pri_pulse_width_out[31:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/pulse_params_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">pulse_params_out[79:0]</obj_property>
+         <obj_property name="ObjectShortName">pulse_params_out[79:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/clk_i" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">clk_i</obj_property>
+         <obj_property name="ObjectShortName">clk_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/rst_i" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">rst_i</obj_property>
+         <obj_property name="ObjectShortName">rst_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/stb_i" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">stb_i</obj_property>
+         <obj_property name="ObjectShortName">stb_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/we_i" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">we_i</obj_property>
+         <obj_property name="ObjectShortName">we_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/dat_i" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">dat_i[15:0]</obj_property>
+         <obj_property name="ObjectShortName">dat_i[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/adr_i" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">adr_i[7:0]</obj_property>
+         <obj_property name="ObjectShortName">adr_i[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/ack_o" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">ack_o</obj_property>
+         <obj_property name="ObjectShortName">ack_o</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tcu_fc_reg_top_tb/uut/Inst_tcu_fc_reg/Inst_tcu_registers/dat_o" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">dat_o[15:0]</obj_property>
+         <obj_property name="ObjectShortName">dat_o[15:0]</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

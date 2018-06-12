@@ -1,1 +1,12 @@
 *.log
+
+tcu_gateware/ise/nexys_pri/*
+tcu_gateware/ise/tcu_counter/*
+tcu_gateware/ise/tcu_fc/*
+tcu_gateware/ise/pri_1KHz_RHINO/*
+tcu_gateware/ise/test1KHz/*
+
+
+!tcu_gateware/ise/**/*.xise
+!tcu_gateware/ise/**/*.wcfg
+!tcu_gateware/ise/**
