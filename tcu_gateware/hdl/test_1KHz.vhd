@@ -40,7 +40,7 @@ architecture rtl of tcu_top is
 --    signal clk_10MHz           : std_logic := '0';                             -- 10MHz
 --    signal clk_4MHz           : std_logic := '0';
 
---    signal pri_out_100MHz           : std_logic := '0';
+    signal pri_out          : std_logic := '0';
 --		signal pri_out_50MHz           : std_logic := '0';
 --    signal pri_out_10MHz           : std_logic := '0';
 --    signal pri_out_4MHz           : std_logic := '0';
@@ -115,7 +115,12 @@ begin
     sig_1KHz_100MHz : process(clk_100MHz)
     begin
         if rising_edge(clk_100MHz) then
-            count_100MHz <= count_100MHz + x"00000001";
+            if count_100MHz = x"0000_c350" then
+						pri_out <= not pri_out;
+						count_100MHz <= (others => '0');
+				else
+					count_100MHz <= count_100MHz + x"00000001";
+				end if;
         end if;
     end process;
    
@@ -195,7 +200,7 @@ begin
     gpio_OUT(4) <= '0';
     gpio_OUT(5) <=  '0';
     gpio_OUT(6) <= '0';
-    gpio_OUT(7) <= '0';
+    gpio_OUT(7) <= pri_out;
     gpio_OUT(8) <= '0';
     gpio_OUT(9) <= '0';
     gpio_OUT(10) <= '0';
