@@ -101,7 +101,7 @@ NET "o_BIAS_L"      LOC = U5; # gpio[2]
 NET "o_POL_TX_X"    LOC = T4; # gpio[3]
 NET "o_POL_TX_L"    LOC = R10; # gpio[4]
 NET "o_POL_RX_L"    LOC = T9; # gpio[5]
-NET "o_PRI"         LOC = P3; # gpio[6]
+#NET "o_PRI"         LOC = P3; # gpio[6]
 #NET ""              LOC = P1; # gpio[7]
 #NET ""              LOC = N6; # gpio[8]
 #NET ""              LOC = P6; # gpio[9]
@@ -119,22 +119,22 @@ NET "o_LOGIC_HIGH" LOC = AA12;  # fmc0_LA_N[19] J1 P40
 
 # Set location of LED pins
 
-NET "o_LED_RHINO[0]" LOC = Y3;
-NET "o_LED_RHINO[1]" LOC = Y1;
-NET "o_LED_RHINO[2]" LOC = W2;
-NET "o_LED_RHINO[3]" LOC = W1;
-NET "o_LED_RHINO[4]" LOC = V3;
-NET "o_LED_RHINO[5]" LOC = V1;
-NET "o_LED_RHINO[6]" LOC = U2;
-NET "o_LED_RHINO[7]" LOC = U1;
+#NET "o_LED_RHINO[0]" LOC = Y3;
+#NET "o_LED_RHINO[1]" LOC = Y1;
+#NET "o_LED_RHINO[2]" LOC = W2;
+#NET "o_LED_RHINO[3]" LOC = W1;
+#NET "o_LED_RHINO[4]" LOC = V3;
+#NET "o_LED_RHINO[5]" LOC = V1;
+#NET "o_LED_RHINO[6]" LOC = U2;
+#NET "o_LED_RHINO[7]" LOC = U1;
 
 #
 ## FMC105 LEDs
 #
-NET "o_LED_FMC[0]"   LOC = AC5 | IOSTANDARD = LVCMOS33;  # FMC0_LA_P32
-NET "o_LED_FMC[1]"   LOC = AD5 | IOSTANDARD = LVCMOS33;  # FMC0_LA_N32
-NET "o_LED_FMC[2]"   LOC = W8 | IOSTANDARD = LVCMOS33;   # FMC0_LA_P33
-NET "o_LED_FMC[3]"   LOC = W7 | IOSTANDARD = LVCMOS33;   # FMC0_LA_N33
+#NET "o_LED_FMC[0]"   LOC = AC5 | IOSTANDARD = LVCMOS25;  # FMC0_LA_P32
+#NET "o_LED_FMC[1]"   LOC = AD5 | IOSTANDARD = LVCMOS25;  # FMC0_LA_N32
+#NET "o_LED_FMC[2]"   LOC = W8 | IOSTANDARD = LVCMOS25;   # FMC0_LA_P33
+#NET "o_LED_FMC[3]"   LOC = W7 | IOSTANDARD = LVCMOS25;   # FMC0_LA_N33
 
 # Set ethernet pins
 
@@ -180,6 +180,9 @@ NET "i_CLK_N" LOC = AF15 | DIFF_TERM = TRUE;
 
 NET "i_GPMC_N_ADV_ALE" CLOCK_DEDICATED_ROUTE = FALSE;
 
-NET "sys_clk_100MHz_int_p_IN" TNM_NET = "TM_sys_clk";
-NET "sys_clk_100MHz_int_n_IN" TNM_NET = "TM_sys_clk";
+NET "i_CLK_P" TNM_NET = "TM_sys_clk";
+NET "i_CLK_N" TNM_NET = "TM_sys_clk";
 TIMESPEC "TS_sys_clk" = PERIOD "TM_sys_clk"  10.0  ns HIGH 50 %;
+
+# this is temporarily here because sending clock signal to ILA
+PIN "Inst_gpmc_wb/Inst_clk_wiz_v3_6/clkout3_buf.O" CLOCK_DEDICATED_ROUTE = FALSE;

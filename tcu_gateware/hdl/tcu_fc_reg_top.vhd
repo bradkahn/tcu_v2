@@ -96,10 +96,27 @@ architecture structural of tcu_fc_reg_top is
         DAT_O           : OUT   std_logic_vector(15 downto 0)
         );
     END COMPONENT;
+	 
+	COMPONENT chipscope_icon
+	PORT(       
+		CONTROL0 : INOUT std_logic_vector(35 downto 0)
+		);
+	END COMPONENT;
 
-
+	signal s_control_0 : std_logic_vector(35 downto 0);
+	signal s_gpmc_debug:	std_logic_vector(52 downto 0);
+	signal s_clk_400MHz: std_logic;
+	
+		COMPONENT ila_wb
+	PORT(
+		CLK : IN std_logic;
+		TRIG0 : IN std_logic_vector(52 downto 0);       
+		CONTROL : INOUT std_logic_vector(35 downto 0)
+		);
+	END COMPONENT;
+	
 begin
-
+	o_LOGIC_HIGH <= '1';
     Inst_gpmc_wb: gpmc_wb
     PORT MAP(
         gpmc_a          => i_GPMC_A,
@@ -111,9 +128,9 @@ begin
         gpmc_n_adv_ale  => i_GPMC_N_ADV_ALE,
         sys_clk_P       => i_CLK_P,
         sys_clk_N       => i_CLK_N,
-        --CLK_400MHz => ,
+        CLK_400MHz 		=> s_clk_400MHz,
         CLK_100MHz      => s_clk_100,
-        --debug_port => ,
+        debug_port 		=> s_gpmc_debug,
         CLK             => s_clk_wb,
         RST             => s_rst_wb,
         ACK_I           => s_ack,
@@ -146,5 +163,14 @@ begin
         DAT_O           => s_dat_s2m
     );
 
+	Inst_chipscope_icon: chipscope_icon PORT MAP(
+		CONTROL0 => s_control_0
+	);
+	
+	Inst_ila_wb: ila_wb PORT MAP(
+		CONTROL => s_control_0,
+		CLK => s_clk_400MHz,
+		TRIG0 => s_gpmc_debug
+	);
 
 end architecture;
