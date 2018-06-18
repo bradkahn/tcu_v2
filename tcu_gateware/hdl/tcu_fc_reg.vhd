@@ -25,6 +25,11 @@ entity tcu_fc_reg is
       pol_tx_l_OUT    : out std_logic;
       pol_rx_l_OUT    : out std_logic;
       pri_OUT         : out std_logic;
+
+    -- ------------------------------------------------------------------------------------------------
+    -- DEBUG PORT
+    -- ------------------------------------------------------------------------------------------------
+    control_INOUT : inout std_logic_vector(35 downto 0);
       -- ------------------------------------------------------------------------------------------------
       -- WISHBONE PORTS - DO NOT MODIFY
       -- ------------------------------------------------------------------------------------------------
@@ -54,8 +59,10 @@ architecture structural of tcu_fc_reg is
 
     signal clk_in_b         : std_logic;
 
+
     COMPONENT tcu_registers
     PORT(
+        control_INOUT : inout std_logic_vector(35 downto 0);
         clk_IN : IN std_logic;
         rst_IN : IN std_logic;
         pulse_index_IN : IN std_logic_vector(4 downto 0);
@@ -105,9 +112,8 @@ architecture structural of tcu_fc_reg is
     END COMPONENT;
 
 begin
-
-
     Inst_tcu_registers: tcu_registers PORT MAP(
+        control_INOUT => control_INOUT,
         clk_IN => clk_IN,
         rst_IN => rst_IN,
         pulse_index_IN => pulse_index,
