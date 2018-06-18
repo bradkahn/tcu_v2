@@ -113,7 +113,7 @@ ARCHITECTURE behavioral OF tcu_registers IS
 	COMPONENT chipscope_vio_tcu_registers
 	PORT(    
 		CONTROL : INOUT std_logic_vector(35 downto 0);      
-		ASYNC_OUT : OUT std_logic_vector(207 downto 0)
+		ASYNC_IN : OUT std_logic_vector(207 downto 0)
 		);
 	END COMPONENT;
 SIGNAL s_debug           : STD_LOGIC_VECTOR(207 DOWNTO 0) := (OTHERS => '0');
@@ -299,7 +299,7 @@ BEGIN
 
 	Inst_chipscope_vio_tcu_registers: chipscope_vio_tcu_registers PORT MAP(
 		CONTROL => control_INOUT,
-		ASYNC_OUT => s_debug
+		ASYNC_IN => s_debug
 	);
 
 END behavioral;
